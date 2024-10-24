@@ -1,0 +1,163 @@
+
+.requestContainer{
+    position: absolute;
+    left: 15vw;
+    top: 10vh;
+    display: grid;
+    grid-template-columns: 20% 5% auto 20%;
+    grid-template-rows: 15% 15% 12% 12% 12% auto 10%;
+
+    width: 70vw;
+    height: 80vh;
+
+    border-radius: 10px;
+    background-color: rgb(43, 101, 226);
+    box-shadow: 0px 0px 10px 30px rgb(43, 101, 226);
+}
+.requestBackground{
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    height: 100%;
+
+    background-color: rgba(50, 50, 50, 0.3);
+}
+.requestTitleContainer{
+    grid-column: 1/5;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 2px solid black;
+}
+.requestTitle{
+    margin-left: 5%;
+    width: 50%;
+    height: 100%;
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    font-size: 50px;
+    font-family: sans-serif;
+}
+.requestExit{
+    width: 50px;
+    height: 50px;
+    font-size: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: sans-serif;
+    margin-bottom: 5px;
+}
+.requestRecieverDropdown_Menu, .requestSenderDropdown_Menu, .requestImportanceDropdown_Menu, .requestMessage{
+    border-radius: 10px;
+}
+.requestRecieverDropdown_Menu:hover, .requestSenderDropdown_Menu:hover, .requestImportanceDropdown_Menu:hover{
+    z-index: 99;
+    box-shadow: 0px 5px 5px purple;
+}
+.requestRecieverDropdown_Menu, .requestSenderDropdown_Menu, .requestImportanceDropdown_Menu{
+    position: absolute;
+    width: 100%;    
+    height: 100%;
+    background-color: blueviolet;
+    grid-column: 1/2;
+    grid-row: 3/4;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.requestRecieverDropdown, .requestSenderDropdown, .requestImportanceDropdown{
+    position: absolute;
+    top: 80%;
+    width: inherit;
+    height: fit-content;
+
+    display: flex;
+    flex-direction: column;
+    background-color: blueviolet;
+    border-radius: 0px 0px 15px 15px;
+    box-shadow: 0px 5px 5px purple;
+}
+.requestRecieverDropdown div, .requestSenderDropdown div, .requestImportanceDropdown div{
+    width: inherit;
+    height: 5vh;
+    
+    display: flex;
+    justify-content: center;
+    align-items: center;    
+}
+.requestRecieverDropdown div:hover, .requestSenderDropdown div:hover, .requestImportanceDropdown div:hover{
+    z-index: 99;
+    border-radius: 15px;
+    box-shadow: 0px 5px 10px purple;
+}
+.requestSenderDropdown_Menu{
+    background-color: blueviolet;
+
+    grid-column: 1/2;
+    grid-row: 4/5;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.requestImportanceDropdown_Menu{
+    background-color: blueviolet;
+
+    grid-column: 1/2;
+    grid-row: 5/6;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.requestMessageArea{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    grid-column: 3/4;
+    grid-row: 3/7;
+}
+.requestMessageArea *{
+    width: 100%;
+    padding: 10px;
+    font-size: 25px;
+
+    border: 0px;
+    box-shadow: 0px;
+    background-color: rgba(245, 245, 245, 0.3);
+}
+.requestMessageArea *:hover{
+    box-shadow: 0px 0px 5px 2px orangered;
+}
+.requestSubject{
+    height: 10%;
+    border-bottom: 3px solid gray;
+    border-radius: 15px 15px 0px 0px;
+}
+.requestMessage{
+    height: 90%;
+    border-radius: 0px 0px 15px 15px;
+}
+.requestSubmitButtonContainer{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    width: 100%;
+    grid-column: 4/5;
+    grid-row: 4/6;
+}
+.requestSubmitButton{
+    width: 70%;
+    height: 50%;
+    border: 0px;
+    border-radius: 10px;
+    box-shadow: 0px;
+
+    font-size: 25px;
+    font-weight: bold;
+}

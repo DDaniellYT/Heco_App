@@ -1,0 +1,418 @@
+
+.info{
+    background-color: moccasin;
+    grid-column: 1/3;
+    grid-row: 2/4;
+    display: grid;
+    grid-template-columns: 3% auto 3%;
+    grid-template-rows: 10% auto;
+}
+.infoTitle{
+    width: 100%;
+    height: 100%;
+    grid-column: 2/3;
+    grid-row: 1/2;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    font-weight: bold;
+    font-size: 40px;
+}
+.infoListContainer{
+    border-radius: 20px;
+    grid-column: 2/3;
+    grid-row: 2/3;
+    display: grid;
+    grid-template-columns: 20% auto;
+    grid-template-rows: 30% auto;
+    top: 7vh;
+    left: 14vh;
+    background-color: beige;
+}
+.infoList{
+    grid-column: 2/3;
+    grid-row: 1/3;
+    margin-top: 10px;
+    padding: 20px;
+    width: 90%;
+    height: 72vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    overflow-y: scroll;
+}
+.infoList *{
+    flex-shrink: 0;
+    border-radius: 10px;
+}
+.infoItemContainer{
+    margin: 10px;
+    padding: 15px;
+
+    border: 3px solid black;
+
+    display: grid;
+    grid-template-columns: 5% 20% auto 20%;
+    grid-template-rows: 20% 20% auto 20% 20%;
+
+    width: 75%;
+    height: 17vh;
+
+    background-color: rgb(255, 128, 0);
+    box-shadow: 2px 2px 2px gray;
+}
+.infoId{
+    grid-column: 1/2;
+    grid-row: 1/2;
+    
+    border-radius: 5px 0px 5px 0px;
+    box-shadow: 2px 2px 5px gray;
+
+    width: 100%;
+    height: 100%;
+    
+    display: flex;
+    justify-content: center;
+    align-items: center;    
+    background-color: darkorange;
+}
+.infoSender{
+    grid-column: 2/3;
+    grid-row: 2/3;
+    
+    width: 100%;
+    height: 100%;
+    
+    display: flex;
+    justify-content: center;
+    align-items: center;    
+    background-color: darkorange;
+    border-radius: 5px 0px 5px 0px;
+    box-shadow: 2px 3px 5px gray;
+}
+.infoReceiver{
+    grid-column: 2/3;
+    grid-row: 3/4;
+    
+    width: 100%;
+    height: 100%;
+    
+    display: flex;
+    justify-content: center;
+    align-items: center;    
+    background-color: darkorange;
+    border-radius: 5px 0px 5px 0px;
+    box-shadow: 2px 3px 5px gray;
+}
+.infoUrgency{
+    grid-column: 2/3;
+    grid-row: 4/5;
+    
+    width: 100%;
+    height: 100%;
+    
+    display: flex;
+    justify-content: center;
+    align-items: center;    
+    background-color: darkorange;
+    border-radius: 5px 0px 5px 0px;
+    box-shadow: 2px 2px 5px gray;
+}
+.infoSubject{
+    font-size: 20px;
+    font-weight: bold;
+
+    border-radius: 0px;
+    border-bottom: 1px solid black;
+
+    grid-column: 2/4;
+    grid-row: 1/2;
+    
+    margin-left: 5%;
+    width: 91.75%;
+    height: 100%;
+}
+.infoMessage{
+    grid-column: 3/4;
+    grid-row: 2/6;
+
+    margin-left: 5%;
+    padding-top: 5%;
+    padding-left: 5%;
+    padding-right: 5%;
+    width: 80%;
+    height: 100%;
+
+    font-size: 15px;
+    border-radius: 0px;
+    border-right: 1px solid black;
+    border-left: 1px solid black;
+
+    overflow-wrap: break-word;
+    overflow: hidden;
+    overflow-y: hidden;
+}
+.infoAccept{
+    grid-column: 4/5;
+    grid-row: 1/2;
+    
+    width: 100%;
+    height: 100%;
+
+    border: 2px solid black;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;    
+    background-color: white;
+}
+.infoRemove{
+    grid-column: 4/5;
+    grid-row: 3/4;
+    
+    width: 100%;
+    height: 100%;
+    
+    border: 2px solid black;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;    
+    background-color: orangered;
+}
+.infoAccept:hover{
+    box-shadow: 3px 3px 5px greenyellow;
+    border-bottom: 1px solid black;
+    border-right: 1px solid black;
+}
+.infoRemove:hover{
+    box-shadow: 3px 3px 5px red;
+    border-bottom: 1px solid black;
+    border-right: 1px solid black;
+}
+.infoQuick{
+    grid-column: 1/2;
+    grid-row: 1/3;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    width: 100%;
+    height: 70%;
+    margin-top: 10px;
+    margin-left: 10px;
+    border-radius: 10px;
+    border: 2px solid black;
+    padding: 5px;
+    background-color: orangered;
+}
+.infoQuickStats{
+    display: grid;
+    grid-template-columns: 30% auto auto;
+    grid-template-rows: auto auto auto auto auto auto auto;
+
+    border-radius: 5px;
+    width: 90%;
+    height: 80%;
+}
+.infoQuickTitle{
+    font-size: 25px;
+    font-weight: bold;
+    width: 100%;
+    height: 5vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 3px;
+    border-bottom: 2px solid beige;
+}
+.infoQuickStatsTitle{
+    font-size: 20px;
+    font-weight: bold;
+    grid-column: 1/4;
+    grid-row: 1/2;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 70%;
+}
+.infoQuickHR{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: orange;
+    box-shadow: 1px 2px 2px gray;
+    border-radius: 5px;
+    font-size: 15px;
+    font-weight: bold;
+    border: 1px solid black;
+    width: 90%;
+    height: 90%;
+    grid-column: 1/2;
+    grid-row: 2/3;
+}
+.infoQuickClean{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: orange;
+    box-shadow: 1px 2px 2px gray;
+    border-radius: 5px;
+    font-size: 15px;
+    font-weight: bold;
+    border: 1px solid black;
+    width: 90%;
+    height: 90%;
+    grid-column: 1/2;
+    grid-row: 7/8;
+}
+.infoQuickMech{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: orange;
+    box-shadow: 1px 2px 2px gray;
+    border-radius: 5px;
+    font-size: 15px;
+    font-weight: bold;
+    border: 1px solid black;
+    width: 90%;
+    height: 90%;
+    grid-column: 1/2;
+    grid-row: 3/4;
+}
+.infoQuickChem{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: orange;
+    box-shadow: 1px 2px 2px gray;
+    border-radius: 5px;
+    font-size: 15px;
+    font-weight: bold;
+    border: 1px solid black;
+    width: 90%;
+    height: 90%;
+    grid-column: 1/2;
+    grid-row: 4/5;
+}
+.infoQuickWork{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: orange;
+    box-shadow: 1px 2px 2px gray;
+    border-radius: 5px;
+    font-size: 15px;
+    font-weight: bold;
+    border: 1px solid black;
+    width: 90%;
+    height: 90%;
+    grid-column: 1/2;
+    grid-row: 5/6;
+}
+.infoQuickSec{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: orange;
+    box-shadow: 1px 2px 2px gray;
+    border-radius: 5px;
+    font-size: 15px;
+    font-weight: bold;
+    border: 1px solid black;
+    width: 90%;
+    height: 90%;
+    grid-column: 1/2;
+    grid-row: 6/7;
+}
+.infoStatHR{
+    grid-column: 2/4;
+    grid-row: 2/3;
+    height: 90%;
+    width: 100%;
+    border-radius: 5px;
+    border: 2px solid black;
+    padding: 0px;
+    margin: 0px;
+    background-color:orange;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.infoStatMech{
+    grid-column: 2/4;
+    grid-row: 3/4;
+    height: 90%;
+    width: 100%;
+    border-radius: 5px;
+    border: 2px solid black;
+    padding: 0px;
+    margin: 0px;
+    background-color:orange;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.infoStatChem{
+    grid-column: 2/4;
+    grid-row: 4/5;
+    height: 90%;
+    width: 100%;
+    border-radius: 5px;
+    border: 2px solid black;
+    padding: 0px;
+    margin: 0px;
+    background-color:orange;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.infoStatWork{
+    grid-column: 2/4;
+    grid-row: 5/6;
+    height: 90%;
+    width: 100%;
+    border-radius: 5px;
+    border: 2px solid black;
+    padding: 0px;
+    margin: 0px;
+    background-color:orange;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.infoStatSec{
+    grid-column: 2/4;
+    grid-row: 6/7;
+    height: 90%;
+    width: 100%;
+    border-radius: 5px;
+    border: 2px solid black;
+    padding: 0px;
+    margin: 0px;
+    background-color:orange;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.infoStatClean{
+    grid-column: 2/4;
+    grid-row: 7/8;
+    height: 90%;
+    width: 100%;
+    border-radius: 5px;
+    border: 2px solid black;
+    padding: 0px;
+    margin: 0px;
+    background-color:orange;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
