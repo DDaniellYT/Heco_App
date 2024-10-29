@@ -55,7 +55,6 @@
     display: none;
 }
 .profileListItem{
-    font-size: 20px;
     font-weight: 600;
 
     border: 2px solid black;
@@ -65,12 +64,58 @@
     width: 15vw;
     height: 5vh;
 
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+    display: grid;
+    grid-template-columns: 5% 20% 30% auto auto;
 
     border-radius: 5px;
     background-color: orange;
+}
+.profileItemId{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    grid-column: 1/2;
+    grid-row: 1/2;
+    font-size: 20px;
+}
+.profileItemReciever{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    grid-column: 2/3;
+    grid-row: 1/2;
+    font-size: 14px;
+}
+.profileItemSubject{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    grid-column: 3/4;
+    grid-row: 1/2;
+    font-size: 16px;
+}
+.profileItemWhen{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    grid-column: 4/5;
+    grid-row: 1/2;
+    font-size: 16px;
+}
+.profileItemDone{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    grid-column: 5/6;
+    grid-row: 1/2;
+    font-size: 16px;
+
+    background-color: firebrick;
+    border-radius: 10px;
+    border: 2px solid black;
+    width: 100%;
+    height: 70%;
+    align-self: center;
 }
 .profileAccepted{
     grid-column: 1/2;
@@ -112,4 +157,16 @@
     border: 2px solid black;
     margin: 30px;
     padding: 10px;
+}
+.noTasks{
+    width: 100%;
+    height: 100%;
+    margin-bottom: 20px;
+    font-size: 30px;
+    font-weight: bold;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: whitesmoke;
+    text-shadow: 3px 3px orange;
 }

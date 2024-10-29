@@ -141,7 +141,7 @@ function RequestPanel(props){
         </div>
         <div className={styles.requestSubmitButtonContainer}>
             <button className={styles.requestSubmitButton} onClick={()=>{
-                props.setChange(true);
+                props.setChange(!props.change);
                 console.log({
                     subject,
                     message,

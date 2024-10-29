@@ -26,7 +26,7 @@ function AdminPortal(){
     return <div className={styles.container}>
             <NavBar change={change} setChange={setChange} requestPage={requestPage} setRequestPage={setRequestPage}/>
             <Requests change={change} setChange={setChange} requestPage={requestPage} infoRequests={infoRequests} setInfoRequests={setInfoRequests} infoAccepted={infoAccepted} setInfoAccepted={setInfoAccepted}/>
-            <Profile infoAccepted={infoAccepted}/>
+            <Profile change={change} setChange={setChange} infoAccepted={infoAccepted}/>
         </div>
 }
 export default AdminPortal;

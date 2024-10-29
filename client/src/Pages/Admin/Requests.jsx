@@ -165,7 +165,7 @@ function Requests(props){
                     </div>
                 </div>
                 <ul className={styles.infoList}>{
-                    props.infoRequests.map((item,index)=>{
+                    props.infoRequests.length==0?<div className={styles.noActivity}>No Activity Yet</div>:props.infoRequests.map((item,index)=>{
                         return <RequestItem change={props.change} setChange={props.setChange} infoRequests={props.infoRequests} setInfoRequests={props.setInfoRequests} infoAccepted={props.infoAccepted} setInfoAccepted={props.setInfoAccepted} item={item} index={index+1}/>
                     })
                 }</ul>

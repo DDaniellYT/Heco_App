@@ -8,7 +8,7 @@ function RequestItem(props){
             props.setInfoAccepted(req.data.accepted);
             props.setInfoRequests(req.data.requests);
         });
-    });
+    },[props.change]);
     const obj = {
         id: props.index,
         subject: props.item.subject,

@@ -1,12 +1,16 @@
 {
+  "type":"module",
   "name": "server",
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "pm2 start server.js",
-    "restart": "pm2 restart server.js",
-    "stop": "pm2 stop server.js"
+    "startNoDB": "pm2 start serverWithCurrentFileStorage.js",
+    "restartNoDB": "pm2 restart serverWithCurrentFileStorage.js",
+    "stopNoDB": "pm2 stop serverWithCurrentFileStorage.js",
+    "startWithDB": "pm2 start serverWithDB.js",
+    "restartWithDB": "pm2 restart serverWithDB.js",
+    "stopWithDB": "pm2 stop serverWithDB.js"
   },
   "author": "",
   "license": "ISC",
@@ -15,6 +19,8 @@
     "body-parser": "^1.20.3",
     "cors": "^2.8.5",
     "express": "^4.21.1",
-    "pm2": "^5.4.2"
+    "pm2": "^5.4.2",
+    "sequelize": "^6.37.5",
+    "sqlite3": "^5.1.7"
   }
 }
