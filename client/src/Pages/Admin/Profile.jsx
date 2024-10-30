@@ -7,7 +7,7 @@ function Profile(props){
         <div className={styles.profileTitle}>Profile</div>
             <div className={styles.profileListContainer}>
                 <div className={styles.profilePicture}>picture test</div>
-                <div className={styles.profileClock}>clock in or out buttons</div>
+                <div className={styles.profileClock}>button</div>
                 <div className={styles.profileChat}>chat</div>
                 <div className={styles.profileAccepted}>Accepted Tasks</div>
                     <div className={styles.profileList}>

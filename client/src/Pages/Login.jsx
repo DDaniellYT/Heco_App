@@ -1,8 +1,6 @@
 import styles from '../Styles/Login.module.css'
 import axios from "axios"
 
-import "react-responsive-carousel/lib/styles/carousel.min.css"
-
 import {useState} from "react"
 import { useEffect } from 'react'
 import {useNavigate} from "react-router-dom"
@@ -52,11 +50,6 @@ function Login(){
                 }}>Submit</button>
                 <div className={styles.carousel}>
                     <div>In place of carousel</div>
-                    {/* <Carousel>
-                        <div>
-                            elem1
-                        </div>
-                    </Carousel> */}
                 </div>
                 <footer className={styles.footer}>@Copywright Daniel.Co && Heco.Schrauben {new Date().getFullYear()}-{new Date().getFullYear()+1}</footer>
             </div>

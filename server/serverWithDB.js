@@ -8,10 +8,35 @@ import sqlite3 from "sqlite3";
 sqlite3.verbose();
 const db = new sqlite3.Database('./db/databseTest.db');
 
-const createTableQuery = `CREATE TABLE IF NOT EXISTS testing(
-  test TEXT
+const createTableQuery = `CREATE TABLE IF NOT EXISTS Users(
+  id INTEGER PRIMARY KEY,
+  name TEXT,
+  password TEXT,
+  role TEXT
 )`;
 db.run(createTableQuery);
+
+// db.exec(`INSERT INTO Users(name,password,role) VALUES("admin","adminpass","admin")`);
+// db.exec(`INSERT INTO Users(name,password,role) VALUES("hrTest","hrpass","hr")`);
+// db.exec(`INSERT INTO Users(name,password,role) VALUES("mechTest","mechpass","mech")`);
+// db.exec(`INSERT INTO Users(name,password,role) VALUES("admin2","adminpass2","admin")`);
+// db.exec(`INSERT INTO Users(name,password,role) VALUES("chemTest","chempass","chem")`);
+// db.exec(`INSERT INTO Users(name,password,role) VALUES("workTest","workpass","work")`);
+// db.exec(`INSERT INTO Users(name,password,role) VALUES("secTest","secpass","sec")`);
+// db.exec(`INSERT INTO Users(name,password,role) VALUES("cleanTest","cleanpass","clean")`);
+
+async function getUserFromDB(db,name){
+
+  // do the promise route and see what happesn
+
+  const query = `SELECT * FROM Users WHERE name = ?`;
+  var value;
+  await db.get(query,name,(err,rows)=>{
+    value = rows;
+  });
+  console.log(value);
+  return value;
+}
 
 const app = express();
 const port = 8080;
@@ -37,7 +62,9 @@ var countWorkAccepted = 0;
 var countSecAccepted = 0;
 var countCleanAccepted = 0;
 
-app.post('/login',(req,res)=>{
+app.post('/login',async (req,res)=>{
+  console.log(await getUserFromDB(db,req.body.user.name));
+  if(getUserFromDB(db,req.body.user.name)!=null)console.log("there exists a name already");
   if(req.body.user.name == 'admin') res.send({allowed: true});
   else res.send({allowed: false});
 });
@@ -124,5 +151,6 @@ app.get('/lists',(req,res)=>{
 });
 
 app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`)
+  console.log(`HecoServer Listening ${port}`)
 });
+
