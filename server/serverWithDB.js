@@ -1,4 +1,4 @@
-import express from "express";
+import express, { query } from "express";
 import cors from "cors";
 import bodyParser from "body-parser";
 
@@ -6,44 +6,99 @@ import bodyParser from "body-parser";
 import sqlite3 from "sqlite3";
 
 sqlite3.verbose();
-const db = new sqlite3.Database('./db/databseTest.db');
+const factory = new sqlite3.Database('./db/Factory.db');
 
-const createTableQuery = `CREATE TABLE IF NOT EXISTS Users(
+const createUsersTable = `CREATE TABLE IF NOT EXISTS Users(
   id INTEGER PRIMARY KEY,
   name TEXT,
   password TEXT,
-  role TEXT
+  role TEXT,
+  existance INTEGER NOT NULL
 )`;
-db.run(createTableQuery);
+const createRequestsTable = `CREATE TABLE IF NOT EXISTS Requests(
+  id INTEGER PRIMARY KEY,
+  sender TEXT,
+  reciever TEXT,
+  urgency TEXT,
+  subject TEXT,
+  message TEXT,
+  accepted INTEGER NOT NULL
+)`;
+await new Promise((resolve)=>{
+  resolve(factory.run(createUsersTable).run(createRequestsTable));
+  console.log('created tables');
+}).then(()=>{
+// get test users
+// factory.exec(`INSERT INTO Users(name,password,role,existance) VALUES("admin","adminpass","admin",1)`);
+// factory.exec(`INSERT INTO Users(name,password,role,existance) VALUES("hrTest","hrpass","hr",1)`);
+// factory.exec(`INSERT INTO Users(name,password,role,existance) VALUES("mechTest","mechpass","mech",1)`);
+// factory.exec(`INSERT INTO Users(name,password,role,existance) VALUES("admin2","adminpass2","admin",1)`);
+// factory.exec(`INSERT INTO Users(name,password,role,existance) VALUES("chemTest","chempass","chem",1)`);
+// factory.exec(`INSERT INTO Users(name,password,role,existance) VALUES("workTest","workpass","work",1)`);
+// factory.exec(`INSERT INTO Users(name,password,role,existance) VALUES("secTest","secpass","sec",1)`);
+// factory.exec(`INSERT INTO Users(name,password,role,existance) VALUES("cleanTest","cleanpass","clean",1)`);
 
-// db.exec(`INSERT INTO Users(name,password,role) VALUES("admin","adminpass","admin")`);
-// db.exec(`INSERT INTO Users(name,password,role) VALUES("hrTest","hrpass","hr")`);
-// db.exec(`INSERT INTO Users(name,password,role) VALUES("mechTest","mechpass","mech")`);
-// db.exec(`INSERT INTO Users(name,password,role) VALUES("admin2","adminpass2","admin")`);
-// db.exec(`INSERT INTO Users(name,password,role) VALUES("chemTest","chempass","chem")`);
-// db.exec(`INSERT INTO Users(name,password,role) VALUES("workTest","workpass","work")`);
-// db.exec(`INSERT INTO Users(name,password,role) VALUES("secTest","secpass","sec")`);
-// db.exec(`INSERT INTO Users(name,password,role) VALUES("cleanTest","cleanpass","clean")`);
-
-async function getUserFromDB(db,name){
-
-  // do the promise route and see what happesn
-
+// get test requests
+// factory.exec(`INSERT INTO Requests(sender,reciever,urgency,subject,message,accepted) VALUES('mech','hr','HIGH','subj','',0)`);
+// factory.exec(`INSERT INTO Requests(sender,reciever,urgency,subject,message,accepted) VALUES('hr','hr','HIGH','subj','',0)`);
+// factory.exec(`INSERT INTO Requests(sender,reciever,urgency,subject,message,accepted) VALUES('sec','clean','HIGH','subj','',0)`);
+// factory.exec(`INSERT INTO Requests(sender,reciever,urgency,subject,message,accepted) VALUES('work','clean','HIGH','subj','',0)`);
+// factory.exec(`INSERT INTO Requests(sender,reciever,urgency,subject,message,accepted) VALUES('clean','hr','HIGH','subj','',0)`);
+// factory.exec(`INSERT INTO Requests(sender,reciever,urgency,subject,message,accepted) VALUES('chem','mech','HIGH','subj','',0)`);
+// factory.exec(`INSERT INTO Requests(sender,reciever,urgency,subject,message,accepted) VALUES('chem','chem','HIGH','subj','',0)`);
+return;
+});
+async function getUserFromDB(name){
   const query = `SELECT * FROM Users WHERE name = ?`;
-  var value;
-  await db.get(query,name,(err,rows)=>{
-    value = rows;
+  return new Promise((resolve)=>{
+    factory.get(query,name,(err,rows)=>{
+      resolve(rows);
+    });
   });
-  console.log(value);
-  return value;
+};
+async function getRequestsFromDB(){
+  const all = `SELECT * FROM Requests`;
+  return new Promise((resolve)=>{
+    factory.all(all,(err,rows)=>{
+      console.log(rows);
+      resolve(rows);  
+    });
+  });
 }
-
 const app = express();
 const port = 8080;
 
 app.use(bodyParser.urlencoded({extended:true}));
 app.use(cors());
 app.use(express.json());
+
+app.post('/login',async (req,res)=>{
+  const user = await getUserFromDB(req.body.user.name);
+  res.send(user);
+});
+app.get('/requests',async (req,res)=>{
+  const re = await getRequestsFromDB();
+  res.send(re);
+})
+app.post('/requests',async (req,res)=>{
+  console.log(req.body);
+  factory.exec(`INSERT INTO Requests(sender,reciever,urgency,subject,message,accepted) VALUES('${req.body.sender}','${req.body.reciever}','${req.body.urgency}','${req.body.subject}','${req.body.message}',0)`,(err)=>{
+    console.log(err);
+    res.send(err);
+  });
+})
+app.get('/count',async (req,res)=>{
+
+
+  // query for every role and count the requests
+  // add into the requests endpoint a way to get the requests or number of requests for a certain role
+  // or add another endpoint for getting all accepted requests and another one for counting each one, ukwim.
+
+
+  const countQuery = `SELECT * FROM Requests`
+  res.send(factory.run(countQuery));
+})
+
 
 var requests = [];
 var accepted = [];
@@ -61,13 +116,6 @@ var countChemAccepted = 0;
 var countWorkAccepted = 0;
 var countSecAccepted = 0;
 var countCleanAccepted = 0;
-
-app.post('/login',async (req,res)=>{
-  console.log(await getUserFromDB(db,req.body.user.name));
-  if(getUserFromDB(db,req.body.user.name)!=null)console.log("there exists a name already");
-  if(req.body.user.name == 'admin') res.send({allowed: true});
-  else res.send({allowed: false});
-});
 
 app.post('/requestAdd',(req,res)=>{
   requests.push(req.body);

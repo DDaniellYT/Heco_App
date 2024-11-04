@@ -12,19 +12,32 @@ function Login(){
         name:'',
         pass:''
     });
+    const [checkText,setCheckText] = useState('Waiting . . .');
     useEffect(()=>{
         document.getElementById('root').className = styles.root;  
     })
     
-    const images = [
-        'https://www.heco-schrauben.de/Karriere/Ferien-und-Aushilfsjobs'
-        ];
+    // const images = [
+    //     'https://www.heco-schrauben.de/Karriere/Ferien-und-Aushilfsjobs'
+    //     ];
 
     return <div className={styles.rootCopy} onKeyDown={(e)=>{
                 if(e.key === 'Enter'){
+                    console.log('enter pressed');
                     axios.post("http://localhost:8080/login",{user}).then((req,res)=>{
-                        if(req.data.allowed === false)nav('/err');
-                        else nav('/admin');
+                        console.log('inside the then of enter pressed');
+                        if(req.data && req.data.constructor === Object && Object.keys(req.data).length !== 0){
+                            if(req.data.name == user.name && req.data.password == user.pass){
+                                switch(req.data.role){
+                                    case 'admin': nav('/admin');break;
+                                    case 'hr': nav('/hr');break;
+                                    case 'mech': nav('/mech');break;
+                                    case 'chem': nav('/chem');break;
+                                    case 'sec': nav('/sec');break;
+                                    case 'work': nav('/work');break;
+                                    case 'clean': nav('/clean');break;
+                                }}}
+                        else setCheckText('User or Password not found');
                     })
                 }
             }}>
@@ -43,13 +56,35 @@ function Login(){
                     console.log(user);
                 }}/>
                 <button className={styles.button} onClick={()=>{
+                    console.log('submit pressed');
                     axios.post("http://localhost:8080/login",{user}).then((req,res)=>{
-                        if(req.data.allowed === false)nav('/errorPage');
-                        else nav('/admin');
+                        console.log('inside the then of submit pressed');
+                        if(req.data && req.data.constructor === Object && Object.keys(req.data).length !== 0){
+                            if(req.data.name == user.name && req.data.password == user.pass){
+                                switch(req.data.role){
+                                    case 'admin': nav('/admin');break;
+                                    case 'hr': nav('/hr');break;
+                                    case 'mech': nav('/mech');break;
+                                    case 'chem': nav('/chem');break;
+                                    case 'sec': nav('/sec');break;
+                                    case 'work': nav('/work');break;
+                                    case 'clean': nav('/clean');break;
+                                }}}
+                        else setCheckText('User or Password not found');
                     })
                 }}>Submit</button>
-                <div className={styles.carousel}>
-                    <div>In place of carousel</div>
+                <div className={styles.carousel} onClick={()=>{
+                    // get requests template
+                    // axios.get('http://localhost:8080/requests').then((req,res)=>{
+                    //     console.log(req.data);
+                    // });
+
+                    axios.post('http://localhost:8080/requests',{sender:'chem',reciever:'mech',subject:'sssa1123',message:'127932'}).then((req,res)=>{
+                        console.log(req.data);
+                    });
+
+                }}>
+                    <div>{checkText}</div>
                 </div>
                 <footer className={styles.footer}>@Copywright Daniel.Co && Heco.Schrauben {new Date().getFullYear()}-{new Date().getFullYear()+1}</footer>
             </div>
