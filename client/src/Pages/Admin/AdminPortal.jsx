@@ -7,6 +7,16 @@ import NavBar from "./NavBar";
 import Requests from "./Requests";
 import Profile from "./Profile";
 
+// post request template
+// axios.post('http://localhost:8080/requests',{sender:'chem',reciever:'mech',subject:'sssa1123',message:'127932'}).then((req,res)=>{
+//     console.log(req.data);
+// });
+
+// use this to get all specific or place nothing and get them all
+// axios.get('http://localhost:8080/requests',{params:{reciever:'hr',sender:'mech'}}).then((req,res)=>{
+//     console.log(req.data);
+// })
+
 function AdminPortal(){
     const [requestPage,setRequestPage] = useState(false);
     const [infoRequests,setInfoRequests] = useState([]);

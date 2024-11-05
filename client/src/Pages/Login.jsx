@@ -73,17 +73,7 @@ function Login(){
                         else setCheckText('User or Password not found');
                     })
                 }}>Submit</button>
-                <div className={styles.carousel} onClick={()=>{
-                    // get requests template
-                    // axios.get('http://localhost:8080/requests').then((req,res)=>{
-                    //     console.log(req.data);
-                    // });
-
-                    axios.post('http://localhost:8080/requests',{sender:'chem',reciever:'mech',subject:'sssa1123',message:'127932'}).then((req,res)=>{
-                        console.log(req.data);
-                    });
-
-                }}>
+                <div className={styles.carousel}>
                     <div>{checkText}</div>
                 </div>
                 <footer className={styles.footer}>@Copywright Daniel.Co && Heco.Schrauben {new Date().getFullYear()}-{new Date().getFullYear()+1}</footer>

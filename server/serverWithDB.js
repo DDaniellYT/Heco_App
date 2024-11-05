@@ -49,21 +49,29 @@ await new Promise((resolve)=>{
 return;
 });
 async function getUserFromDB(name){
-  const query = `SELECT * FROM Users WHERE name = ?`;
+  const userQuery = `SELECT * FROM Users WHERE name = ?`;
   return new Promise((resolve)=>{
-    factory.get(query,name,(err,rows)=>{
+    factory.get(userQuery,name,(err,rows)=>{
+      // console.log(rows);
       resolve(rows);
     });
   });
 };
-async function getRequestsFromDB(){
-  const all = `SELECT * FROM Requests`;
+async function getRequestsFromDB(params){
+  const getQuery = `SELECT * FROM Requests ${Object.keys(params).length==0?'':`WHERE(
+    ${params.sender==null?'':`sender='${params.sender}' ${params.reciever!=null || params.urgency!=null || params.subject!=null || params.message!=null || params.accepted!=null?' AND ':' '}`} 
+    ${params.reciever==null?'':`reciever='${params.reciever}' ${params.urgency!=null || params.subject!=null || params.message!=null || params.accepted!=null?' AND ':' '}`} 
+    ${params.urgency==null?'':`urgency='${params.urgency}' ${params.subject!=null || params.message!=null || params.accepted!=null?' AND ':' '}`} 
+    ${params.subject==null?'':`subject='${params.subject}' ${params.message!=null || params.accepted!=null?' AND ':' '}`} 
+    ${params.message==null?'':`message='${params.message}' ${params.accepted!=null?' AND ':' '}`} 
+    ${params.accepted==null?'':`accepted=${params.accepted}`})`}`;
   return new Promise((resolve)=>{
-    factory.all(all,(err,rows)=>{
-      console.log(rows);
-      resolve(rows);  
-    });
-  });
+    factory.all(getQuery,(err,rows)=>{
+      // console.log(rows);
+      // console.log(getQuery);
+      resolve(rows);
+    })
+  })
 }
 const app = express();
 const port = 8080;
@@ -77,8 +85,8 @@ app.post('/login',async (req,res)=>{
   res.send(user);
 });
 app.get('/requests',async (req,res)=>{
-  const re = await getRequestsFromDB();
-  res.send(re);
+  console.log(req.query);
+  res.send(await getRequestsFromDB(req.query));
 })
 app.post('/requests',async (req,res)=>{
   console.log(req.body);
@@ -87,17 +95,13 @@ app.post('/requests',async (req,res)=>{
     res.send(err);
   });
 })
-app.get('/count',async (req,res)=>{
-
-
-  // query for every role and count the requests
-  // add into the requests endpoint a way to get the requests or number of requests for a certain role
-  // or add another endpoint for getting all accepted requests and another one for counting each one, ukwim.
-
-
-  const countQuery = `SELECT * FROM Requests`
-  res.send(factory.run(countQuery));
-})
+// app.get('/count',async (req,res)=>{
+//   console.log(req.query);
+//   // query for every role and count the requests
+//   // add into the requests endpoint a way to get the requests or number of requests for a certain role
+//   // or add another endpoint for getting all accepted requests and another one for counting each one, ukwim.
+//   res.send(await getCountOfRequest(req.query.reciever,req.query.accepted));
+// })
 
 
 var requests = [];
