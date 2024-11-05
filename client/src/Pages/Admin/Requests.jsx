@@ -4,45 +4,35 @@ import styles from '../../Styles/AdminInfo.module.css'
 import RequestItem from "./RequestItem";
 import axios from "axios";
 
+async function getProg(rec){
+    var prog = 0;
+    await axios.get('http://localhost:8080/requests',{params:{reciever:`${rec}`}}).then(async (req,res)=>{
+        const tempAll = req.data;
+        const tempYes = tempAll.filter((item)=>{
+            if(item.accepted == 'yes')return item;
+        })
+        prog = tempAll.length==0?0:(tempYes.length/tempAll.length*100).toFixed(0);
+        console.log(prog);
+    });
+    return await prog;
+}
+
 function Requests(props){
-    const [hrProg,setHrProg] = useState(43);
-    const [mechProg,setMechProg] = useState(43);
-    const [chemProg,setChemProg] = useState(43);
-    const [workProg,setWorkProg] = useState(43);
-    const [secProg,setSecProg] = useState(43);
-    const [cleanProg,setCleanProg] = useState(43);
+    const [hrProg,setHrProg] = useState(50);
+    const [mechProg,setMechProg] = useState(50);
+    const [chemProg,setChemProg] = useState(50);
+    const [workProg,setWorkProg] = useState(50);
+    const [secProg,setSecProg] = useState(50);
+    const [cleanProg,setCleanProg] = useState(50);
     
-
     useEffect(()=>{
-
-        // TODO not returning all the requests and have to make the progress show up nicely
-
-        var tempHrAll;
-        axios.get('http://localhost:8080/requests',{params:{reciever:'hr'}}).then((req)=>{
-            tempHrAll = req.data;
-            console.log(req.data);
-        });
-        axios.get('http://localhost:8080/requests',{params:{reciever:'hr',accepted:'yes'}}).then((req)=>{
-            console.log(req.data);
-            setHrProg(tempHrAll.length==0?0:(req.data/tempHrAll.length).toFixed(0));
-        });
-
-    //     // axios.get('http://localhost:8080/requests').then((req)=>{
-    //     //     const data = req.data;
-    //     //     props.setInfoAccepted(req.data.accepted);
-    //     //     props.setInfoRequests(req.data.requests);
-
-    //     //     console.log(data);
-
-    //     //     })
-    //     // setMechProg(data.countMechRequests == 0 && data.countMechAccepted == 0 ? 0 : (data.countMechAccepted/(data.countMechRequests+data.countMechAccepted)*100).toFixed(0));
-    //     // setChemProg(data.countChemRequests == 0 && data.countChemAccepted == 0 ? 0 : (data.countChemAccepted/(data.countChemRequests+data.countChemAccepted)*100).toFixed(0));
-    //     // setWorkProg(data.countWorkRequests == 0 && data.countWorkAccepted == 0 ? 0 : (data.countWorkAccepted/(data.countWorkRequests+data.countWorkAccepted)*100).toFixed(0));
-    //     // setSecProg(data.countSecRequests == 0 && data.countSecAccepted == 0 ? 0 : (data.countSecAccepted/(data.countSecRequests+data.countSecAccepted)*100).toFixed(0));
-    //     // setCleanProg(data.countCleanRequests == 0 && data.countCleanAccepted == 0 ? 0 : (data.countCleanAccepted/(data.countCleanRequests+data.countCleanAccepted)*100).toFixed(0));
-        
-    //     // setHrProg(data.countHRRequests == 0 && data.countHRAccepted == 0 ? 0 : (data.countHRAccepted/(data.countHRRequests+data.countHRAccepted)*100).toFixed(0));
-    },[props.change]);
+        getProg('hr').then(prog => setHrProg(prog));
+        getProg('mech').then(prog => setMechProg(prog));
+        getProg('chem').then(prog => setChemProg(prog));
+        getProg('work').then(prog => setWorkProg(prog));
+        getProg('sec').then(prog => setSecProg(prog));
+        getProg('clean').then(prog => setCleanProg(prog));
+},[props.change]);
 
     return <div className={styles.info}>
             <div className={styles.infoTitle}>Activity</div>
@@ -181,10 +171,13 @@ function Requests(props){
                 </div>
                 <ul className={styles.infoList}>{
                     props.infoRequests.length==0?<div className={styles.noActivity}>No Activity Yet</div>:props.infoRequests.map((item,index)=>{
-                        return <RequestItem change={props.change} setChange={props.setChange} infoRequests={props.infoRequests} setInfoRequests={props.setInfoRequests} infoAccepted={props.infoAccepted} setInfoAccepted={props.setInfoAccepted} item={item} index={index+1}/>
+                        return <RequestItem key={item.id} change={props.change} setChange={props.setChange} infoRequests={props.infoRequests} setInfoRequests={props.setInfoRequests} infoAccepted={props.infoAccepted} setInfoAccepted={props.setInfoAccepted} item={item} index={index+1}/>
                     })
                 }</ul>
             </div>
         </div>;
 }
+
+
+
 export default Requests;

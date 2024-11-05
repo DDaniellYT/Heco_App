@@ -73,14 +73,14 @@ async function getRequestsFromDB(params){
   return new Promise((resolve)=>{
     factory.all(getQuery,(err,rows)=>{
       console.log(rows);
-      console.log(getQuery);
+      // console.log(getQuery);
       resolve(rows);
     })
   })
 }
 async function deleteUserFromDB(name){
   return new Promise((resolve)=>{
-
+    //fix
   })
 }
 const app = express();

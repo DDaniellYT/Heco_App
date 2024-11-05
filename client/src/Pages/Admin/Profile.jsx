@@ -21,7 +21,7 @@ function Profile(props){
                                 case "Security": reciever = "SEC";break;
                                 case "Cleaning": reciever = "CLN";break;
                             }
-                            return <div className={styles.profileListItem}>
+                            return <div className={styles.profileListItem} key={item.id}>
                                 <div className={styles.profileItemId}>{item.id}</div>
                                 <div className={styles.profileItemReciever}>{reciever}</div>
                                 <div className={styles.profileItemSubject}>{item.subject==""?"Nothing":item.subject}</div>
