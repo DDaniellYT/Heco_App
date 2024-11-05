@@ -3,12 +3,6 @@ import styles from '../../Styles/AdminInfo.module.css'
 import axios from 'axios'
 
 function RequestItem(props){
-    useEffect(()=>{
-        axios.get('http://localhost:8080/lists').then((req,res)=>{
-            props.setInfoAccepted(req.data.accepted);
-            props.setInfoRequests(req.data.requests);
-        });
-    },[props.change]);
     const obj = {
         id: props.index,
         subject: props.item.subject,
@@ -30,7 +24,7 @@ function RequestItem(props){
             }}>Accept</div>
             <div className={styles.infoRemove} onClick={()=>{
                 obj.when = new Date().getHours() + ":" + new Date().getMinutes()
-                axios.post('http://localhost:8080/requestRemove',obj);
+                axios.delete('http://localhost:8080',{});
                 props.setChange(true);
             }}>Remove</div>
         </div>

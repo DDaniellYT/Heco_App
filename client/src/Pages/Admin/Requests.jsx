@@ -12,21 +12,36 @@ function Requests(props){
     const [secProg,setSecProg] = useState(43);
     const [cleanProg,setCleanProg] = useState(43);
     
+
     useEffect(()=>{
-        axios.get('http://localhost:8080/lists').then((req)=>{
-            const data = req.data;
-            props.setInfoAccepted(req.data.accepted);
-            props.setInfoRequests(req.data.requests);
 
-            console.log(data);
+        // TODO not returning all the requests and have to make the progress show up nicely
 
-            setHrProg(data.countHRRequests == 0 && data.countHRAccepted == 0 ? 0 : (data.countHRAccepted/(data.countHRRequests+data.countHRAccepted)*100).toFixed(0));
-            setMechProg(data.countMechRequests == 0 && data.countMechAccepted == 0 ? 0 : (data.countMechAccepted/(data.countMechRequests+data.countMechAccepted)*100).toFixed(0));
-            setChemProg(data.countChemRequests == 0 && data.countChemAccepted == 0 ? 0 : (data.countChemAccepted/(data.countChemRequests+data.countChemAccepted)*100).toFixed(0));
-            setWorkProg(data.countWorkRequests == 0 && data.countWorkAccepted == 0 ? 0 : (data.countWorkAccepted/(data.countWorkRequests+data.countWorkAccepted)*100).toFixed(0));
-            setSecProg(data.countSecRequests == 0 && data.countSecAccepted == 0 ? 0 : (data.countSecAccepted/(data.countSecRequests+data.countSecAccepted)*100).toFixed(0));
-            setCleanProg(data.countCleanRequests == 0 && data.countCleanAccepted == 0 ? 0 : (data.countCleanAccepted/(data.countCleanRequests+data.countCleanAccepted)*100).toFixed(0));
-        })
+        var tempHrAll;
+        axios.get('http://localhost:8080/requests',{params:{reciever:'hr'}}).then((req)=>{
+            tempHrAll = req.data;
+            console.log(req.data);
+        });
+        axios.get('http://localhost:8080/requests',{params:{reciever:'hr',accepted:'yes'}}).then((req)=>{
+            console.log(req.data);
+            setHrProg(tempHrAll.length==0?0:(req.data/tempHrAll.length).toFixed(0));
+        });
+
+    //     // axios.get('http://localhost:8080/requests').then((req)=>{
+    //     //     const data = req.data;
+    //     //     props.setInfoAccepted(req.data.accepted);
+    //     //     props.setInfoRequests(req.data.requests);
+
+    //     //     console.log(data);
+
+    //     //     })
+    //     // setMechProg(data.countMechRequests == 0 && data.countMechAccepted == 0 ? 0 : (data.countMechAccepted/(data.countMechRequests+data.countMechAccepted)*100).toFixed(0));
+    //     // setChemProg(data.countChemRequests == 0 && data.countChemAccepted == 0 ? 0 : (data.countChemAccepted/(data.countChemRequests+data.countChemAccepted)*100).toFixed(0));
+    //     // setWorkProg(data.countWorkRequests == 0 && data.countWorkAccepted == 0 ? 0 : (data.countWorkAccepted/(data.countWorkRequests+data.countWorkAccepted)*100).toFixed(0));
+    //     // setSecProg(data.countSecRequests == 0 && data.countSecAccepted == 0 ? 0 : (data.countSecAccepted/(data.countSecRequests+data.countSecAccepted)*100).toFixed(0));
+    //     // setCleanProg(data.countCleanRequests == 0 && data.countCleanAccepted == 0 ? 0 : (data.countCleanAccepted/(data.countCleanRequests+data.countCleanAccepted)*100).toFixed(0));
+        
+    //     // setHrProg(data.countHRRequests == 0 && data.countHRAccepted == 0 ? 0 : (data.countHRAccepted/(data.countHRRequests+data.countHRAccepted)*100).toFixed(0));
     },[props.change]);
 
     return <div className={styles.info}>

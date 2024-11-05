@@ -22,7 +22,7 @@ const createRequestsTable = `CREATE TABLE IF NOT EXISTS Requests(
   urgency TEXT,
   subject TEXT,
   message TEXT,
-  accepted INTEGER NOT NULL
+  accepted TEXT
 )`;
 await new Promise((resolve)=>{
   resolve(factory.run(createUsersTable).run(createRequestsTable));
@@ -39,13 +39,17 @@ await new Promise((resolve)=>{
 // factory.exec(`INSERT INTO Users(name,password,role,existance) VALUES("cleanTest","cleanpass","clean",1)`);
 
 // get test requests
-// factory.exec(`INSERT INTO Requests(sender,reciever,urgency,subject,message,accepted) VALUES('mech','hr','HIGH','subj','',0)`);
-// factory.exec(`INSERT INTO Requests(sender,reciever,urgency,subject,message,accepted) VALUES('hr','hr','HIGH','subj','',0)`);
-// factory.exec(`INSERT INTO Requests(sender,reciever,urgency,subject,message,accepted) VALUES('sec','clean','HIGH','subj','',0)`);
-// factory.exec(`INSERT INTO Requests(sender,reciever,urgency,subject,message,accepted) VALUES('work','clean','HIGH','subj','',0)`);
-// factory.exec(`INSERT INTO Requests(sender,reciever,urgency,subject,message,accepted) VALUES('clean','hr','HIGH','subj','',0)`);
-// factory.exec(`INSERT INTO Requests(sender,reciever,urgency,subject,message,accepted) VALUES('chem','mech','HIGH','subj','',0)`);
-// factory.exec(`INSERT INTO Requests(sender,reciever,urgency,subject,message,accepted) VALUES('chem','chem','HIGH','subj','',0)`);
+// factory.exec(`INSERT INTO Requests(sender,reciever,urgency,subject,message,accepted) VALUES('mech','hr','HIGH','subj','','no')`);
+// factory.exec(`INSERT INTO Requests(sender,reciever,urgency,subject,message,accepted) VALUES('hr','hr','HIGH','subj','','no')`);
+// factory.exec(`INSERT INTO Requests(sender,reciever,urgency,subject,message,accepted) VALUES('sec','clean','HIGH','subj','','no')`);
+// factory.exec(`INSERT INTO Requests(sender,reciever,urgency,subject,message,accepted) VALUES('work','clean','HIGH','subj','','no')`);
+// factory.exec(`INSERT INTO Requests(sender,reciever,urgency,subject,message,accepted) VALUES('clean','hr','HIGH','subj','','no')`);
+// factory.exec(`INSERT INTO Requests(sender,reciever,urgency,subject,message,accepted) VALUES('chem','mech','HIGH','subj','','no')`);
+// factory.exec(`INSERT INTO Requests(sender,reciever,urgency,subject,message,accepted) VALUES('chem','chem','HIGH','subj','','no')`);
+
+// factory.exec(`INSERT INTO Requests(sender,reciever,urgency,subject,message,accepted) VALUES('clean','hr','HIGH','subj','','yes')`);
+// factory.exec(`INSERT INTO Requests(sender,reciever,urgency,subject,message,accepted) VALUES('chem','hr','LOW','subj','','yes')`);
+// factory.exec(`INSERT INTO Requests(sender,reciever,urgency,subject,message,accepted) VALUES('chem','mech','MID','subj','','yes')`);
 return;
 });
 async function getUserFromDB(name){
@@ -58,19 +62,25 @@ async function getUserFromDB(name){
   });
 };
 async function getRequestsFromDB(params){
+  console.log(params);
   const getQuery = `SELECT * FROM Requests ${Object.keys(params).length==0?'':`WHERE(
     ${params.sender==null?'':`sender='${params.sender}' ${params.reciever!=null || params.urgency!=null || params.subject!=null || params.message!=null || params.accepted!=null?' AND ':' '}`} 
     ${params.reciever==null?'':`reciever='${params.reciever}' ${params.urgency!=null || params.subject!=null || params.message!=null || params.accepted!=null?' AND ':' '}`} 
     ${params.urgency==null?'':`urgency='${params.urgency}' ${params.subject!=null || params.message!=null || params.accepted!=null?' AND ':' '}`} 
     ${params.subject==null?'':`subject='${params.subject}' ${params.message!=null || params.accepted!=null?' AND ':' '}`} 
     ${params.message==null?'':`message='${params.message}' ${params.accepted!=null?' AND ':' '}`} 
-    ${params.accepted==null?'':`accepted=${params.accepted}`})`}`;
+    ${params.accepted==null?'':`accepted='${params.accepted}'`})`}`;
   return new Promise((resolve)=>{
     factory.all(getQuery,(err,rows)=>{
-      // console.log(rows);
-      // console.log(getQuery);
+      console.log(rows);
+      console.log(getQuery);
       resolve(rows);
     })
+  })
+}
+async function deleteUserFromDB(name){
+  return new Promise((resolve)=>{
+
   })
 }
 const app = express();
@@ -80,128 +90,33 @@ app.use(bodyParser.urlencoded({extended:true}));
 app.use(cors());
 app.use(express.json());
 
-app.post('/login',async (req,res)=>{
-  const user = await getUserFromDB(req.body.user.name);
+app.get('/login',async (req,res)=>{
+  const user = await getUserFromDB(req.query.user.name);
   res.send(user);
 });
+
+
+
 app.get('/requests',async (req,res)=>{
-  console.log(req.query);
+  // console.log(req.query);
   res.send(await getRequestsFromDB(req.query));
 })
 app.post('/requests',async (req,res)=>{
-  console.log(req.body);
-  factory.exec(`INSERT INTO Requests(sender,reciever,urgency,subject,message,accepted) VALUES('${req.body.sender}','${req.body.reciever}','${req.body.urgency}','${req.body.subject}','${req.body.message}',0)`,(err)=>{
+  // console.log(req.body);
+  const insertQuery = `INSERT INTO Requests(sender,reciever,urgency,subject,message,accepted) VALUES('${req.body.sender}','${req.body.reciever}','${req.body.urgency}','${req.body.subject}','${req.body.message}',0)`;
+  factory.exec(insertQuery,(err)=>{
     console.log(err);
     res.send(err);
   });
 })
-// app.get('/count',async (req,res)=>{
-//   console.log(req.query);
-//   // query for every role and count the requests
-//   // add into the requests endpoint a way to get the requests or number of requests for a certain role
-//   // or add another endpoint for getting all accepted requests and another one for counting each one, ukwim.
-//   res.send(await getCountOfRequest(req.query.reciever,req.query.accepted));
-// })
-
-
-var requests = [];
-var accepted = [];
-
-var countHRRequests = 0;
-var countMechRequests = 0;
-var countChemRequests = 0;
-var countWorkRequests = 0;
-var countSecRequests = 0;
-var countCleanRequests = 0;
-
-var countHRAccepted = 0;
-var countMechAccepted = 0;
-var countChemAccepted = 0;
-var countWorkAccepted = 0;
-var countSecAccepted = 0;
-var countCleanAccepted = 0;
-
-app.post('/requestAdd',(req,res)=>{
-  requests.push(req.body);
-  switch(req.body.reciever){
-    case 'HResources':countHRRequests++;break;
-    case 'Mechanics':countMechRequests++;break;
-    case 'Chemists':countChemRequests++;break;
-    case 'Workers':countWorkRequests++;break;
-    case 'Security':countSecRequests++;break;
-    case 'Cleaning':countCleanRequests++;break;
-  };
-  console.log('reqadd');
-
-  // console.log(countHRRequests, countMechRequests, countChemRequests, countWorkRequests, countSecRequests, countCleanRequests, countHRAccepted, countMechAccepted, countChemAccepted, countWorkAccepted, countSecAccepted, countCleanAccepted);
-  res.send("");
+app.delete('/requests',async (req,res)=>{
+  const deleteQuery = `DELETE FROM Requests WHERE(id = ${req.query.id})`;
+  // console.log(req.query);
+  factory.exec(deleteQuery,(err)=>{
+    console.log(err);
+    res.send(err);
+  })
 });
-app.post('/requestRemove',(req,res)=>{
-  requests.splice(req.body.index,1);
-  switch(req.body.reciever){
-    case 'HResources':countHRRequests--;break;
-    case 'Mechanics':countMechRequests--;break;
-    case 'Chemists':countChemRequests--;break;
-    case 'Workers':countWorkRequests--;break;
-    case 'Security':countSecRequests--;break;
-    case 'Cleaning':countCleanRequests--;break;
-  };
-  console.log('reqremove');
-
-  // console.log(countHRRequests, countMechRequests, countChemRequests, countWorkRequests, countSecRequests, countCleanRequests, countHRAccepted, countMechAccepted, countChemAccepted, countWorkAccepted, countSecAccepted, countCleanAccepted);
-  res.send("");
-});
-app.post('/acceptedAdd',(req,res)=>{
-  accepted.push(req.body);
-  switch(req.body.reciever){
-    case 'HResources':countHRAccepted++;break;
-    case 'Mechanics':countMechAccepted++;break;
-    case 'Chemists':countChemAccepted++;break;
-    case 'Workers':countWorkAccepted++;break;
-    case 'Security':countSecAccepted++;break;
-    case 'Cleaning':countCleanAccepted++;break;
-  };
-  console.log('accadd');
-
-  // console.log(countHRRequests, countMechRequests, countChemRequests, countWorkRequests, countSecRequests, countCleanRequests, countHRAccepted, countMechAccepted, countChemAccepted, countWorkAccepted, countSecAccepted, countCleanAccepted);
-  res.send("");
-});
-app.post('/acceptedRemove',(req,res)=>{
-  accepted.splice(req.body.index,1);
-  switch(req.body.reciever){
-    case 'HResources':countHRAccepted--;break;
-    case 'Mechanics':countMechAccepted--;break;
-    case 'Chemists':countChemAccepted--;break;
-    case 'Workers':countWorkAccepted--;break;
-    case 'Security':countSecAccepted--;break;
-    case 'Cleaning':countCleanAccepted--;break;
-  };
-  console.log('accremove');
-
-  // console.log(countHRRequests, countMechRequests, countChemRequests, countWorkRequests, countSecRequests, countCleanRequests, countHRAccepted, countMechAccepted, countChemAccepted, countWorkAccepted, countSecAccepted, countCleanAccepted);
-  res.send("");
-});
-app.get('/lists',(req,res)=>{
-  res.send({
-    requests,
-    accepted,
-    countHRAccepted,
-    countHRRequests,
-    countMechAccepted,
-    countMechRequests,
-    countChemAccepted,
-    countChemRequests,
-    countWorkAccepted,
-    countWorkRequests,
-    countSecAccepted,
-    countSecRequests,
-    countCleanAccepted,
-    countCleanRequests
-  });
-  console.log('lists');
-  // console.log(countHRRequests, countMechRequests, countChemRequests, countWorkRequests, countSecRequests, countCleanRequests, countHRAccepted, countMechAccepted, countChemAccepted, countWorkAccepted, countSecAccepted, countCleanAccepted);
-});
-
 app.listen(port, () => {
   console.log(`HecoServer Listening ${port}`)
 });

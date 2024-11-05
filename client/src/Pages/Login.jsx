@@ -24,7 +24,7 @@ function Login(){
     return <div className={styles.rootCopy} onKeyDown={(e)=>{
                 if(e.key === 'Enter'){
                     console.log('enter pressed');
-                    axios.post("http://localhost:8080/login",{user}).then((req,res)=>{
+                    axios.get("http://localhost:8080/login",{params:{user}}).then((req,res)=>{
                         console.log('inside the then of enter pressed');
                         if(req.data && req.data.constructor === Object && Object.keys(req.data).length !== 0){
                             if(req.data.name == user.name && req.data.password == user.pass){
@@ -57,7 +57,7 @@ function Login(){
                 }}/>
                 <button className={styles.button} onClick={()=>{
                     console.log('submit pressed');
-                    axios.post("http://localhost:8080/login",{user}).then((req,res)=>{
+                    axios.get("http://localhost:8080/login",{params:{user}}).then((req,res)=>{
                         console.log('inside the then of submit pressed');
                         if(req.data && req.data.constructor === Object && Object.keys(req.data).length !== 0){
                             if(req.data.name == user.name && req.data.password == user.pass){
@@ -73,7 +73,10 @@ function Login(){
                         else setCheckText('User or Password not found');
                     })
                 }}>Submit</button>
-                <div className={styles.carousel}>
+                <div className={styles.carousel} onClick={()=>{
+
+                    
+                }}>
                     <div>{checkText}</div>
                 </div>
                 <footer className={styles.footer}>@Copywright Daniel.Co && Heco.Schrauben {new Date().getFullYear()}-{new Date().getFullYear()+1}</footer>
