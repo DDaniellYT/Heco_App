@@ -18,14 +18,17 @@ function RequestItem(props){
             <div className={styles.infoMessage}>{props.item.message}</div>
             <div className={styles.infoAccept} onClick={()=>{
                 obj.when = new Date().getHours() + ":" + new Date().getMinutes();
-                axios.post('http://localhost:8080/acceptedAdd',obj)
-                axios.post('http://localhost:8080/requestRemove',obj);
-                props.setChange(true);
+                console.log(props.item);
+                axios.post('http://localhost:8080/requests',{id:props.item.id}).then((req)=>{
+                    props.setChange(!props.change);
+                })
             }}>Accept</div>
-            <div className={styles.infoRemove} onClick={()=>{
+            <div className={styles.infoRemove} onClick={async ()=>{
                 obj.when = new Date().getHours() + ":" + new Date().getMinutes()
-                axios.delete('http://localhost:8080',{});
-                props.setChange(true);
+                console.log(props.item);
+                await axios.delete('http://localhost:8080/requests',{params:{id:props.item.id}}).then((req)=>{
+                    props.setChange(!props.change);
+                });
             }}>Remove</div>
         </div>
 }

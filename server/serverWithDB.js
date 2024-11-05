@@ -28,35 +28,34 @@ await new Promise((resolve)=>{
   resolve(factory.run(createUsersTable).run(createRequestsTable));
   console.log('created tables');
 }).then(()=>{
-// get test users
-// factory.exec(`INSERT INTO Users(name,password,role,existance) VALUES("admin","adminpass","admin",1)`);
-// factory.exec(`INSERT INTO Users(name,password,role,existance) VALUES("hrTest","hrpass","hr",1)`);
-// factory.exec(`INSERT INTO Users(name,password,role,existance) VALUES("mechTest","mechpass","mech",1)`);
-// factory.exec(`INSERT INTO Users(name,password,role,existance) VALUES("admin2","adminpass2","admin",1)`);
-// factory.exec(`INSERT INTO Users(name,password,role,existance) VALUES("chemTest","chempass","chem",1)`);
-// factory.exec(`INSERT INTO Users(name,password,role,existance) VALUES("workTest","workpass","work",1)`);
-// factory.exec(`INSERT INTO Users(name,password,role,existance) VALUES("secTest","secpass","sec",1)`);
-// factory.exec(`INSERT INTO Users(name,password,role,existance) VALUES("cleanTest","cleanpass","clean",1)`);
+  // get test users
+  // factory.exec(`INSERT INTO Users(name,password,role,existance) VALUES("admin","adminpass","admin",1)`);
+  // factory.exec(`INSERT INTO Users(name,password,role,existance) VALUES("hrTest","hrpass","hr",1)`);
+  // factory.exec(`INSERT INTO Users(name,password,role,existance) VALUES("mechTest","mechpass","mech",1)`);
+  // factory.exec(`INSERT INTO Users(name,password,role,existance) VALUES("admin2","adminpass2","admin",1)`);
+  // factory.exec(`INSERT INTO Users(name,password,role,existance) VALUES("chemTest","chempass","chem",1)`);
+  // factory.exec(`INSERT INTO Users(name,password,role,existance) VALUES("workTest","workpass","work",1)`);
+  // factory.exec(`INSERT INTO Users(name,password,role,existance) VALUES("secTest","secpass","sec",1)`);
+  // factory.exec(`INSERT INTO Users(name,password,role,existance) VALUES("cleanTest","cleanpass","clean",1)`);
 
-// get test requests
-// factory.exec(`INSERT INTO Requests(sender,reciever,urgency,subject,message,accepted) VALUES('mech','hr','HIGH','subj','','no')`);
-// factory.exec(`INSERT INTO Requests(sender,reciever,urgency,subject,message,accepted) VALUES('hr','hr','HIGH','subj','','no')`);
-// factory.exec(`INSERT INTO Requests(sender,reciever,urgency,subject,message,accepted) VALUES('sec','clean','HIGH','subj','','no')`);
-// factory.exec(`INSERT INTO Requests(sender,reciever,urgency,subject,message,accepted) VALUES('work','clean','HIGH','subj','','no')`);
-// factory.exec(`INSERT INTO Requests(sender,reciever,urgency,subject,message,accepted) VALUES('clean','hr','HIGH','subj','','no')`);
-// factory.exec(`INSERT INTO Requests(sender,reciever,urgency,subject,message,accepted) VALUES('chem','mech','HIGH','subj','','no')`);
-// factory.exec(`INSERT INTO Requests(sender,reciever,urgency,subject,message,accepted) VALUES('chem','chem','HIGH','subj','','no')`);
+  // get test requests
+  // factory.exec(`INSERT INTO Requests(sender,reciever,urgency,subject,message,accepted) VALUES('mech','hr','HIGH','subj','','no')`);
+  // factory.exec(`INSERT INTO Requests(sender,reciever,urgency,subject,message,accepted) VALUES('hr','hr','HIGH','subj','','no')`);
+  // factory.exec(`INSERT INTO Requests(sender,reciever,urgency,subject,message,accepted) VALUES('sec','clean','HIGH','subj','','no')`);
+  // factory.exec(`INSERT INTO Requests(sender,reciever,urgency,subject,message,accepted) VALUES('work','clean','HIGH','subj','','no')`);
+  // factory.exec(`INSERT INTO Requests(sender,reciever,urgency,subject,message,accepted) VALUES('clean','hr','HIGH','subj','','no')`);
+  // factory.exec(`INSERT INTO Requests(sender,reciever,urgency,subject,message,accepted) VALUES('chem','mech','HIGH','subj','','no')`);
+  // factory.exec(`INSERT INTO Requests(sender,reciever,urgency,subject,message,accepted) VALUES('chem','chem','HIGH','subj','','no')`);
 
-// factory.exec(`INSERT INTO Requests(sender,reciever,urgency,subject,message,accepted) VALUES('clean','hr','HIGH','subj','','yes')`);
-// factory.exec(`INSERT INTO Requests(sender,reciever,urgency,subject,message,accepted) VALUES('chem','hr','LOW','subj','','yes')`);
-// factory.exec(`INSERT INTO Requests(sender,reciever,urgency,subject,message,accepted) VALUES('chem','mech','MID','subj','','yes')`);
+  // factory.exec(`INSERT INTO Requests(sender,reciever,urgency,subject,message,accepted) VALUES('clean','hr','HIGH','subj','','yes')`);
+  // factory.exec(`INSERT INTO Requests(sender,reciever,urgency,subject,message,accepted) VALUES('chem','hr','LOW','subj','','yes')`);
+  // factory.exec(`INSERT INTO Requests(sender,reciever,urgency,subject,message,accepted) VALUES('chem','mech','MID','subj','','yes')`);
 return;
 });
 async function getUserFromDB(name){
   const userQuery = `SELECT * FROM Users WHERE name = ?`;
   return new Promise((resolve)=>{
     factory.get(userQuery,name,(err,rows)=>{
-      // console.log(rows);
       resolve(rows);
     });
   });
@@ -72,17 +71,11 @@ async function getRequestsFromDB(params){
     ${params.accepted==null?'':`accepted='${params.accepted}'`})`}`;
   return new Promise((resolve)=>{
     factory.all(getQuery,(err,rows)=>{
-      console.log(rows);
-      // console.log(getQuery);
       resolve(rows);
     })
   })
-}
-async function deleteUserFromDB(name){
-  return new Promise((resolve)=>{
-    //fix
-  })
-}
+};
+
 const app = express();
 const port = 8080;
 
@@ -96,28 +89,32 @@ app.get('/login',async (req,res)=>{
 });
 
 
-
 app.get('/requests',async (req,res)=>{
   // console.log(req.query);
   res.send(await getRequestsFromDB(req.query));
-})
-app.post('/requests',async (req,res)=>{
-  // console.log(req.body);
-  const insertQuery = `INSERT INTO Requests(sender,reciever,urgency,subject,message,accepted) VALUES('${req.body.sender}','${req.body.reciever}','${req.body.urgency}','${req.body.subject}','${req.body.message}',0)`;
+});
+app.put('/requests',async (req,res)=>{
+  const insertQuery = `INSERT INTO Requests(sender,reciever,urgency,subject,message,accepted) VALUES('${req.body.sender}','${req.body.reciever}','${req.body.urgency}','${req.body.subject}','${req.body.message}','no')`;
   factory.exec(insertQuery,(err)=>{
-    console.log(err);
     res.send(err);
   });
+});
+app.post('/requests',async (req,res)=>{
+  const updateQuery = `UPDATE Requests SET accepted = 'yes' WHERE (id = ${req.body.id})`;
+  factory.exec(updateQuery,(err)=>{
+    res.send(err);
+  })
 })
 app.delete('/requests',async (req,res)=>{
   const deleteQuery = `DELETE FROM Requests WHERE(id = ${req.query.id})`;
   // console.log(req.query);
   factory.exec(deleteQuery,(err)=>{
-    console.log(err);
     res.send(err);
   })
 });
+
+
 app.listen(port, () => {
-  console.log(`HecoServer Listening ${port}`)
+  console.log(`HecoServer Listening ${port}`);
 });
 

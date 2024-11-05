@@ -20,6 +20,7 @@ import Profile from "./Profile";
 // axios.delete('http://localhost:8080/requests',{params:{id:1}}).then((res)=>{
 //     console.log(res.data);
 // });
+
 function AdminPortal(){
     const [requestPage,setRequestPage] = useState(false);
     const [infoRequests,setInfoRequests] = useState([]);
@@ -29,15 +30,8 @@ function AdminPortal(){
     document.getElementById("root").className=styles.root;
 
     useEffect(()=>{
-        axios.get('http://localhost:8080/requests',{params:{accepted:'no'}}).then((req)=>{
-            setInfoRequests(req.data);
-            // console.log(req.data);
-        })
-        axios.get('http://localhost:8080/requests',{params:{accepted:'yes'}}).then((req)=>{
-            setInfoAccepted(req.data);
-            // console.log(req.data);
-        })
-        setChange(false);
+        axios.get('http://localhost:8080/requests',{params:{accepted:'yes'}}).then(req => setInfoAccepted(req.data));
+        axios.get('http://localhost:8080/requests',{params:{accepted:'no'}}).then(req => setInfoRequests(req.data));
     },[change])
 
     return <div className={styles.container}>

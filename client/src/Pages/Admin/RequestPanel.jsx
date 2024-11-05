@@ -9,8 +9,8 @@ function RequestPanel(props){
     const [importanceDropdown,setImportanceDropdown] = useState(false);
 
     const [urgency,setUrgency] = useState("Lowest");
-    const [reciever,setReceiver] = useState(" Who");
-    const [sender,setSender] = useState(" Who");
+    const [reciever,setReceiver] = useState("HResources");
+    const [sender,setSender] = useState("HResources");
     const [subject,setSubject] = useState("");
     const [message,setMessage] = useState("");
 
@@ -141,26 +141,21 @@ function RequestPanel(props){
         </div>
         <div className={styles.requestSubmitButtonContainer}>
             <button className={styles.requestSubmitButton} onClick={()=>{
-                props.setChange(!props.change);
-                console.log({
-                    subject,
-                    message,
-                    reciever,
-                    sender,
-                    urgency});
-                axios.post('http://localhost:8080/requestAdd',{
-                    subject,
-                    message,
-                    reciever,
-                    sender,
-                    urgency}).then(()=>{
+                axios.put('http://localhost:8080/requests',{
+                    subject:`${subject}`,
+                    message:`${message}`,
+                    reciever:`${reciever}`,
+                    sender:`${sender}`,
+                    urgency:`${urgency}`
+                }).then(()=>{
+                        props.setChange(!props.change);
                         props.setRequestPage(false);
                         setSubject("");
                         setMessage("");
-                        setReceiver(" Who");
-                        setSender(" Who");
+                        setReceiver("HResources");
+                        setSender("HResources");
                         setUrgency("Lowest");
-                    })
+                })
             }}>Submit</button>
         </div>
     </div>

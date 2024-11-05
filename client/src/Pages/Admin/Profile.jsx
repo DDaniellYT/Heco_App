@@ -27,11 +27,9 @@ function Profile(props){
                                 <div className={styles.profileItemSubject}>{item.subject==""?"Nothing":item.subject}</div>
                                 <div className={styles.profileItemWhen}>{item.when}</div>
                                 <div className={styles.profileItemDone} onClick={()=>{
-                                    props.setChange(!props.change);
-                                    axios.post('http://localhost:8080/acceptedRemove',{
-                                        id : item.id,
-                                        reciever : item.reciever
-                                    })
+                                    axios.delete('http://localhost:8080/requests',{params:{id:item.id}}).then((req)=>{
+                                        props.setChange(!props.change);
+                                    });
                                 }}>Done</div>
                             </div>;
                         })}

@@ -14,7 +14,7 @@ async function getProg(rec){
         prog = tempAll.length==0?0:(tempYes.length/tempAll.length*100).toFixed(0);
         console.log(prog);
     });
-    return await prog;
+    return prog;
 }
 
 function Requests(props){
@@ -26,13 +26,13 @@ function Requests(props){
     const [cleanProg,setCleanProg] = useState(50);
     
     useEffect(()=>{
-        getProg('hr').then(prog => setHrProg(prog));
-        getProg('mech').then(prog => setMechProg(prog));
-        getProg('chem').then(prog => setChemProg(prog));
-        getProg('work').then(prog => setWorkProg(prog));
-        getProg('sec').then(prog => setSecProg(prog));
-        getProg('clean').then(prog => setCleanProg(prog));
-},[props.change]);
+        getProg('HResources').then(prog => setHrProg(prog));
+        getProg('Mechanics').then(prog => setMechProg(prog));
+        getProg('Chemists').then(prog => setChemProg(prog));
+        getProg('Workers').then(prog => setWorkProg(prog));
+        getProg('Security').then(prog => setSecProg(prog));
+        getProg('Cleaning').then(prog => setCleanProg(prog));
+    },[props.change]);
 
     return <div className={styles.info}>
             <div className={styles.infoTitle}>Activity</div>
@@ -171,13 +171,10 @@ function Requests(props){
                 </div>
                 <ul className={styles.infoList}>{
                     props.infoRequests.length==0?<div className={styles.noActivity}>No Activity Yet</div>:props.infoRequests.map((item,index)=>{
-                        return <RequestItem key={item.id} change={props.change} setChange={props.setChange} infoRequests={props.infoRequests} setInfoRequests={props.setInfoRequests} infoAccepted={props.infoAccepted} setInfoAccepted={props.setInfoAccepted} item={item} index={index+1}/>
+                        return <RequestItem key={item.id} change={props.change} setChange={props.setChange} infoRequests={props.infoRequests} setInfoRequests={props.setInfoRequests} infoAccepted={props.infoAccepted} setInfoAccepted={props.setInfoAccepted} item={item}/>
                     })
                 }</ul>
             </div>
         </div>;
 }
-
-
-
 export default Requests;
