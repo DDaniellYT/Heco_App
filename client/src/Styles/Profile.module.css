@@ -1,54 +1,39 @@
-
 .profileContainer{
     grid-column: 3/5;
     grid-row: 2/4;
 
     padding: 0px 15px 0px 15px;
-    border-left: 3px solid gray;
-    box-shadow: -2px 0px 2px gray;
-    background-color: rgb(255, 210, 150);
+    background-color: moccasin;
     display: grid;
     grid-template-columns: 10% auto 10%;
     grid-template-rows: 10% auto;
 }
-.profileTitle{
-    grid-column: 1/4;
-    grid-row: 1/2;
-
-    font-size: 40px;
-    font-weight: bold;
-
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
 .profileListContainer{
     grid-column: 1/4;
-    grid-row: 2/3;
+    grid-row: 1/3;
 
     display: grid;
-    grid-template-columns: 50% 50%;
-    grid-template-rows: 10% auto auto auto;
+    grid-template-columns: 60% 40%;
+    grid-template-rows: 10% auto auto auto auto;
     
-    height: 80vh;
+    margin: 20px 10px 20px 10px;
+    
     border-radius: 15px;
     background-color: beige;
 }
 .profileList{
     grid-column: 1/2;
-    grid-row: 2/4;
-
+    grid-row: 2/5;
     overflow-y: scroll;
-    max-height: 60%;
-    width: 100%;
 
     display: flex;
     flex-direction: column;
     align-items: center;
 
+    margin: 15px;
+
     border: 2px solid black;
     border-radius: 10px;
-    margin: 15px;
     background-color: orangered;
 }
 .profileList::-webkit-scrollbar{
@@ -133,30 +118,64 @@
 
 }
 .profilePicture{
-    margin: 15px;
-    margin-left: 30px;
-    padding: 10px;
+    grid-column: 2/3;
+    grid-row: 2/4;
+    margin-top: 15px;
+    margin-right: 15px;
+    padding: 30px;
     border-radius: 15px;
     border: 2px solid black;
-    width: 30vh;
-    height: 30vh;
-    grid-column: 2/3;
-    grid-row: 2/3;
     /* background-image: url('../../public/profileTest.png'); */
+}
+.profileName{
+    grid-column: 2/3;
+    grid-row: 4/5;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    font-weight: bold;
+    font-size: 1rem;
+
+    padding: 0px 0px 0px 10px;
+    margin: 15px 15px 15px 0px;
+    border: 3px solid black;
+    border-radius: 15px;
+    background-color:chocolate;
 }
 .profileClock{
     grid-column: 2/3;
-    grid-row: 3/4;
-    margin: 30px;
-    padding: 10px;
+    grid-row: 5/6;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+        
+    width: 80%;
+    height: 40%;
+
+    font-weight: bold;
+    font-size: 1.5rem;
+    margin: 30px 0px 0px 15px;
     border: 2px solid black;
+    border-radius: 15px;
+    background-color: orange;
 }
 .profileChat{
     grid-column: 1/2;
-    grid-row: 3/4;
-    border: 2px solid black;
+    grid-row: 5/6;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+    width: 80%;
+    height: 40%;
+
+    font-weight: bold;
+    font-size: 1.5rem;    
     margin: 30px;
-    padding: 10px;
+    border: 2px solid black;
+    border-radius: 15px;
+    background-color: orange;
 }
 .noTasks{
     width: 100%;

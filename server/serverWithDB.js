@@ -10,10 +10,12 @@ const factory = new sqlite3.Database('./db/Factory.db');
 
 const createUsersTable = `CREATE TABLE IF NOT EXISTS Users(
   id INTEGER PRIMARY KEY,
-  name TEXT,
+  userName TEXT,
+  firstName TEXT,
+  lastName TEXT,
   password TEXT,
   role TEXT,
-  existance INTEGER NOT NULL
+  existance TEXT
 )`;
 const createRequestsTable = `CREATE TABLE IF NOT EXISTS Requests(
   id INTEGER PRIMARY KEY,
@@ -29,16 +31,15 @@ await new Promise((resolve)=>{
   console.log('created tables');
 }).then(()=>{
   // get test users
-  // factory.exec(`INSERT INTO Users(name,password,role,existance) VALUES("admin","adminpass","admin",1)`);
-  // factory.exec(`INSERT INTO Users(name,password,role,existance) VALUES("hrTest","hrpass","hr",1)`);
-  // factory.exec(`INSERT INTO Users(name,password,role,existance) VALUES("mechTest","mechpass","mech",1)`);
-  // factory.exec(`INSERT INTO Users(name,password,role,existance) VALUES("admin2","adminpass2","admin",1)`);
-  // factory.exec(`INSERT INTO Users(name,password,role,existance) VALUES("chemTest","chempass","chem",1)`);
-  // factory.exec(`INSERT INTO Users(name,password,role,existance) VALUES("workTest","workpass","work",1)`);
-  // factory.exec(`INSERT INTO Users(name,password,role,existance) VALUES("secTest","secpass","sec",1)`);
-  // factory.exec(`INSERT INTO Users(name,password,role,existance) VALUES("cleanTest","cleanpass","clean",1)`);
+  // factory.exec(`INSERT INTO Users(firstName,lastName,userName,password,role,existance) VALUES("firstNameTestDb","lastNameTestDb","admin","adminpass","admin",1)`);
+  // factory.exec(`INSERT INTO Users(firstName,lastName,userName,password,role,existance) VALUES("firstNameTestDb","lastNameTestDb","hrTest","hrpass","hr",1)`);
+  // factory.exec(`INSERT INTO Users(firstName,lastName,userName,password,role,existance) VALUES("firstNameTestDb","lastNameTestDb","mechTest","mechpass","mech",1)`);
+  // factory.exec(`INSERT INTO Users(firstName,lastName,userName,password,role,existance) VALUES("firstNameTestDb","lastNameTestDb","admin2","adminpass2","admin",1)`);
+  // factory.exec(`INSERT INTO Users(firstName,lastName,userName,password,role,existance) VALUES("firstNameTestDb","lastNameTestDb","chemTest","chempass","chem",1)`);
+  // factory.exec(`INSERT INTO Users(firstName,lastName,userName,password,role,existance) VALUES("firstNameTestDb","lastNameTestDb","workTest","workpass","work",1)`);
+  // factory.exec(`INSERT INTO Users(firstName,lastName,userName,password,role,existance) VALUES("firstNameTestDb","lastNameTestDb","secTest","secpass","sec",1)`);
+  // factory.exec(`INSERT INTO Users(firstName,lastName,userName,password,role,existance) VALUES("firstNameTestDb","lastNameTestDb","cleanTest","cleanpass","clean",1)`);
 
-  // get test requests
   // factory.exec(`INSERT INTO Requests(sender,reciever,urgency,subject,message,accepted) VALUES('mech','hr','HIGH','subj','','no')`);
   // factory.exec(`INSERT INTO Requests(sender,reciever,urgency,subject,message,accepted) VALUES('hr','hr','HIGH','subj','','no')`);
   // factory.exec(`INSERT INTO Requests(sender,reciever,urgency,subject,message,accepted) VALUES('sec','clean','HIGH','subj','','no')`);
@@ -53,7 +54,7 @@ await new Promise((resolve)=>{
 return;
 });
 async function getUserFromDB(name){
-  const userQuery = `SELECT * FROM Users WHERE name = ?`;
+  const userQuery = `SELECT * FROM Users WHERE userName = ?`;
   return new Promise((resolve)=>{
     factory.get(userQuery,name,(err,rows)=>{
       resolve(rows);
@@ -61,7 +62,7 @@ async function getUserFromDB(name){
   });
 };
 async function getRequestsFromDB(params){
-  console.log(params);
+  // console.log(params);
   const getQuery = `SELECT * FROM Requests ${Object.keys(params).length==0?'':`WHERE(
     ${params.sender==null?'':`sender='${params.sender}' ${params.reciever!=null || params.urgency!=null || params.subject!=null || params.message!=null || params.accepted!=null?' AND ':' '}`} 
     ${params.reciever==null?'':`reciever='${params.reciever}' ${params.urgency!=null || params.subject!=null || params.message!=null || params.accepted!=null?' AND ':' '}`} 
@@ -83,10 +84,17 @@ app.use(bodyParser.urlencoded({extended:true}));
 app.use(cors());
 app.use(express.json());
 
-app.get('/login',async (req,res)=>{
-  const user = await getUserFromDB(req.query.user.name);
+app.get('/users',async (req,res)=>{
+  const user = await getUserFromDB(req.query.userName);
   res.send(user);
 });
+app.post('/users',async (req,res)=>{
+  const user = await getUserFromDB(req.body.userName);
+  const updateQuery = `UPDATE Users SET existance = '${user.existance=='IN'?'OUT':'IN'}' WHERE (userName = '${req.body.userName}')`;
+  factory.exec(updateQuery,(err)=>{
+    res.send(err);
+  })
+})
 
 
 app.get('/requests',async (req,res)=>{

@@ -24,18 +24,18 @@ function Login(){
     return <div className={styles.rootCopy} onKeyDown={(e)=>{
                 if(e.key === 'Enter'){
                     console.log('enter pressed');
-                    axios.get("http://localhost:8080/login",{params:{user}}).then((req,res)=>{
+                    axios.get("http://localhost:8080/users",{params:{userName:user.name}}).then((req,res)=>{
                         console.log('inside the then of enter pressed');
                         if(req.data && req.data.constructor === Object && Object.keys(req.data).length !== 0){
-                            if(req.data.name == user.name && req.data.password == user.pass){
+                            if(req.data.userName == user.name && req.data.password == user.pass){
                                 switch(req.data.role){
-                                    case 'admin': nav('/admin');break;
-                                    case 'hr': nav('/hr');break;
-                                    case 'mech': nav('/mech');break;
-                                    case 'chem': nav('/chem');break;
-                                    case 'sec': nav('/sec');break;
-                                    case 'work': nav('/work');break;
-                                    case 'clean': nav('/clean');break;
+                                    case 'admin': nav('/admin',{state:{user:req.data}});break;
+                                    case 'hr': nav('/hr',user);break;
+                                    case 'mech': nav('/mech',user);break;
+                                    case 'chem': nav('/chem',user);break;
+                                    case 'sec': nav('/sec',user);break;
+                                    case 'work': nav('/work',user);break;
+                                    case 'clean': nav('/clean',user);break;
                                 }}}
                         else setCheckText('User or Password not found');
                     })

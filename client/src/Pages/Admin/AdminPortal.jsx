@@ -1,10 +1,12 @@
 import React, { useEffect } from "react";
+import { useLocation } from "react-router-dom";
 import { useState } from "react";
-import styles from '../../Styles/AdminPortal.module.css'
+import styles from '../../Styles/AdminPortal.module.css';
+import photo from '../../profileImages/heco_slider_img3.jpg';
 import axios from "axios";
 
 import NavBar from "./NavBar";
-import Requests from "./Requests";
+import Activity from "./Activity";
 import Profile from "./Profile";
 
 // post request template
@@ -26,18 +28,30 @@ function AdminPortal(){
     const [infoRequests,setInfoRequests] = useState([]);
     const [infoAccepted,setInfoAccepted] = useState([]);
     const [change,setChange] = useState(false);
-
-    document.getElementById("root").className=styles.root;
+    const [user,setUser] = useState({});
+    const navState = useLocation();
 
     useEffect(()=>{
+        setUser(navState.state.user);
+    },[]);
+    useEffect(()=>{
+        document.getElementById("root").className = styles.root;
         axios.get('http://localhost:8080/requests',{params:{accepted:'yes'}}).then(req => setInfoAccepted(req.data));
         axios.get('http://localhost:8080/requests',{params:{accepted:'no'}}).then(req => setInfoRequests(req.data));
     },[change])
 
+    // const testUser = {
+    //     firstName:state.user.firstName,
+    //     lastName:state.user.lastName,
+    //     role:state.user.role,
+    //     existance:state.user.existance
+    // }
+
     return <div className={styles.container}>
-            <NavBar change={change} setChange={setChange} requestPage={requestPage} setRequestPage={setRequestPage}/>
-            <Requests change={change} setChange={setChange} requestPage={requestPage} infoRequests={infoRequests} setInfoRequests={setInfoRequests} infoAccepted={infoAccepted} setInfoAccepted={setInfoAccepted}/>
-            <Profile change={change} setChange={setChange} infoAccepted={infoAccepted}/>
+        <NavBar change={change} setChange={setChange} requestPage={requestPage} setRequestPage={setRequestPage}/>
+        <Activity change={change} setChange={setChange} requestPage={requestPage} infoRequests={infoRequests} setInfoRequests={setInfoRequests} infoAccepted={infoAccepted} setInfoAccepted={setInfoAccepted}/>
+        <Profile user={user} setUser={setUser} photoLink={photo} change={change} setChange={setChange} infoAccepted={infoAccepted}/>
         </div>
+
 }
 export default AdminPortal;
