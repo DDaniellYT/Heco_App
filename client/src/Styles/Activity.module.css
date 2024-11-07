@@ -1,45 +1,50 @@
 .info{
-    background-color: moccasin;
-    grid-column: 1/3;
+    grid-column: 2/3;
     grid-row: 2/4;
-    display: grid;
-    grid-template-columns: 3% auto 3%;
-    grid-template-rows: 10% auto;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: moccasin;
 }
 .infoTitle{
     width: 100%;
     height: 100%;
-    grid-column: 2/3;
+    grid-column: 1/2;
     grid-row: 1/2;
 
     display: flex;
     justify-content: center;
     align-items: center;
 
+    color: black;
+    text-shadow: 3px 3px 3px gray;
     font-weight: bold;
     font-size: 40px;
 }
 .infoListContainer{
-    grid-column: 2/3;
-    grid-row: 1/3;
-
+    width: 100%;
+    height: 100%;
+    
     display: grid;
-    grid-template-columns: 20% auto;
-    grid-template-rows: 30% auto;
+    align-items: center;
+    grid-template-columns: auto;
+    grid-template-rows: 10% auto 20%;
+
+    border-left: 3px solid black;
+    border-right: 3px solid black;
     background-color: beige;
-    border-radius: 20px;
-    margin: 20px 10px 20px 10px;
 }
 .infoListContainer ::-webkit-scrollbar{
     display: none;
 }
 .infoList{
-    grid-column: 2/3;
-    grid-row: 1/3;
+    grid-column: 1/2;
+    grid-row: 2/3;
     margin-top: 10px;
     padding: 20px;
-    width: 100%;
-    height: 72vh;
+
+    height: 70%;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -194,233 +199,36 @@
     border-bottom: 1px solid black;
     border-right: 1px solid black;
 }
-.infoQuick{
-    grid-column: 1/2;
-    grid-row: 1/3;
-
+.infoAddMessageContainer{
+    height: 80%;
     display: flex;
-    flex-direction: column;
     justify-content: center;
     align-items: center;
 
-    width: 100%;
-    height: 70%;
-    margin-top: 10px;
-    margin-left: 10px;
-    border-radius: 10px;
-    border: 2px solid black;
-    padding: 5px;
-    background-color: orangered;
+    grid-column: 1/2;
+    grid-row: 3/4;
 }
-.infoQuickStats{
-    display: grid;
-    grid-template-columns: 30% auto auto;
-    grid-template-rows: auto auto auto auto auto auto auto;
+.infoAddMessage{
+    width: 80%;
+    height: 100%;
 
-    border-radius: 5px;
-    width: 90%;
-    height: 80%;
-}
-.infoQuickTitle{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
     font-size: 25px;
     font-weight: bold;
-    width: 100%;
-    height: 5vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border-radius: 3px;
-    border-bottom: 2px solid beige;
-}
-.infoQuickStatsTitle{
-    font-size: 20px;
-    font-weight: bold;
-    grid-column: 1/4;
-    grid-row: 1/2;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    height: 70%;
-}
-.infoQuickHR{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: orange;
-    box-shadow: 1px 2px 2px gray;
-    border-radius: 5px;
-    font-size: 15px;
-    font-weight: bold;
-    border: 1px solid black;
-    width: 90%;
-    height: 90%;
-    grid-column: 1/2;
-    grid-row: 2/3;
-}
-.infoQuickClean{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: orange;
-    box-shadow: 1px 2px 2px gray;
-    border-radius: 5px;
-    font-size: 15px;
-    font-weight: bold;
-    border: 1px solid black;
-    width: 90%;
-    height: 90%;
-    grid-column: 1/2;
-    grid-row: 7/8;
-}
-.infoQuickMech{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: orange;
-    box-shadow: 1px 2px 2px gray;
-    border-radius: 5px;
-    font-size: 15px;
-    font-weight: bold;
-    border: 1px solid black;
-    width: 90%;
-    height: 90%;
-    grid-column: 1/2;
-    grid-row: 3/4;
-}
-.infoQuickChem{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: orange;
-    box-shadow: 1px 2px 2px gray;
-    border-radius: 5px;
-    font-size: 15px;
-    font-weight: bold;
-    border: 1px solid black;
-    width: 90%;
-    height: 90%;
-    grid-column: 1/2;
-    grid-row: 4/5;
-}
-.infoQuickWork{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: orange;
-    box-shadow: 1px 2px 2px gray;
-    border-radius: 5px;
-    font-size: 15px;
-    font-weight: bold;
-    border: 1px solid black;
-    width: 90%;
-    height: 90%;
-    grid-column: 1/2;
-    grid-row: 5/6;
-}
-.infoQuickSec{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: orange;
-    box-shadow: 1px 2px 2px gray;
-    border-radius: 5px;
-    font-size: 15px;
-    font-weight: bold;
-    border: 1px solid black;
-    width: 90%;
-    height: 90%;
-    grid-column: 1/2;
-    grid-row: 6/7;
-}
-.infoStatHR{
-    grid-column: 2/4;
-    grid-row: 2/3;
-    height: 90%;
-    width: 100%;
-    border-radius: 5px;
-    border: 2px solid black;
-    padding: 0px;
-    margin: 0px;
-    background-color:orange;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-.infoStatMech{
-    grid-column: 2/4;
-    grid-row: 3/4;
-    height: 90%;
-    width: 100%;
-    border-radius: 5px;
-    border: 2px solid black;
-    padding: 0px;
-    margin: 0px;
-    background-color:orange;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-.infoStatChem{
-    grid-column: 2/4;
-    grid-row: 4/5;
-    height: 90%;
-    width: 100%;
-    border-radius: 5px;
-    border: 2px solid black;
-    padding: 0px;
-    margin: 0px;
-    background-color:orange;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-.infoStatWork{
-    grid-column: 2/4;
-    grid-row: 5/6;
-    height: 90%;
-    width: 100%;
-    border-radius: 5px;
-    border: 2px solid black;
-    padding: 0px;
-    margin: 0px;
-    background-color:orange;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-.infoStatSec{
-    grid-column: 2/4;
-    grid-row: 6/7;
-    height: 90%;
-    width: 100%;
-    border-radius: 5px;
-    border: 2px solid black;
-    padding: 0px;
-    margin: 0px;
-    background-color:orange;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-.infoStatClean{
-    grid-column: 2/4;
-    grid-row: 7/8;
-    height: 90%;
-    width: 100%;
-    border-radius: 5px;
-    border: 2px solid black;
-    padding: 0px;
-    margin: 0px;
-    background-color:orange;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    border: 3px solid black;
+    border-radius: 10px 10px 50px 50px;
+
+    background-color: firebrick;
+    color: orangered;
+    text-shadow: 0px 0px 15px beige;
 }
 .noActivity{
-    width: 100%;
-    height: 70%;
+    grid-column: 1/2;
+    grid-row: 2/3;
+
     font-size: 50px;
     font-weight: bold;
     display: flex;

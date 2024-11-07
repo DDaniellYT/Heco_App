@@ -1,18 +1,19 @@
 import React from "react";
-import styles from "../../Styles/Activity.module.css";
+import styles from "../../Styles/Stats.module.css";
 
 const Stats = (props)=>{
-    return <div className={styles.infoQuick}>
-    <div className={styles.infoQuickTitle}>Quick Info</div>
-    <div className={styles.infoQuickStats}>
-        <div className={styles.infoQuickStatsTitle}>Stats</div>
-        <div className={styles.infoQuickHR}>HR:</div>  
-        <div className={styles.infoQuickMech}>Mech</div>
-        <div className={styles.infoQuickChem}>Chem</div>
-        <div className={styles.infoQuickWork}>Work</div>
-        <div className={styles.infoQuickSec}>Sec</div>
-        <div className={styles.infoQuickClean}>Clean</div>
-        <div className={styles.infoStatHR}>
+
+    return <div className={styles.quick}>
+    <div className={styles.quickTitle}>Quick Info</div>
+    <div className={styles.quickStats}>
+        <div className={styles.quickStatsTitle}>Stats</div>
+        <div className={styles.quickHR}>HR:</div>  
+        <div className={styles.quickMech}>Mech</div>
+        <div className={styles.quickChem}>Chem</div>
+        <div className={styles.quickWork}>Work</div>
+        <div className={styles.quickSec}>Sec</div>
+        <div className={styles.quickClean}>Clean</div>
+        <div className={styles.statHR}>
             <div style={{
                 width: props.hrProg+'%',
                 height:'100%',
@@ -32,7 +33,7 @@ const Stats = (props)=>{
                 alignItems:'center'
             }}>{100-props.hrProg<30?null:100-props.hrProg+'%'}</div>
         </div>
-        <div className={styles.infoStatMech}>
+        <div className={styles.statMech}>
         <div style={{
                 width: props.mechProg+'%',
                 height:'100%',
@@ -52,7 +53,7 @@ const Stats = (props)=>{
                 alignItems:'center'
             }}>{100-props.mechProg<30?null:100-props.mechProg+'%'}</div>
         </div>
-        <div className={styles.infoStatChem}>
+        <div className={styles.statChem}>
             <div style={{
                 width: props.chemProg+'%',
                 height:'100%',
@@ -72,7 +73,7 @@ const Stats = (props)=>{
                 alignItems:'center'
             }}>{100-props.chemProg<30?null:100-props.chemProg+'%'}</div>
         </div>
-        <div className={styles.infoStatWork}>
+        <div className={styles.statWork}>
             <div style={{
                 width: props.workProg+'%',
                 height:'100%',
@@ -92,7 +93,7 @@ const Stats = (props)=>{
                 alignItems:'center'
             }}>{100-props.workProg<30?null:100-props.workProg+'%'}</div>
         </div>
-        <div className={styles.infoStatSec}>
+        <div className={styles.statSec}>
             <div style={{
                 width: props.secProg+'%',
                 height:'100%',
@@ -112,7 +113,7 @@ const Stats = (props)=>{
                 alignItems:'center'
             }}>{100-props.secProg<30?null:100-props.secProg+'%'}</div>
         </div>
-        <div className={styles.infoStatClean}>
+        <div className={styles.statClean}>
             <div style={{
                 width: props.cleanProg+'%',
                 height:'100%',

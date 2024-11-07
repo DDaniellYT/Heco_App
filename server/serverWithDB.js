@@ -31,14 +31,14 @@ await new Promise((resolve)=>{
   console.log('created tables');
 }).then(()=>{
   // get test users
-  // factory.exec(`INSERT INTO Users(firstName,lastName,userName,password,role,existance) VALUES("firstNameTestDb","lastNameTestDb","admin","adminpass","admin",1)`);
-  // factory.exec(`INSERT INTO Users(firstName,lastName,userName,password,role,existance) VALUES("firstNameTestDb","lastNameTestDb","hrTest","hrpass","hr",1)`);
-  // factory.exec(`INSERT INTO Users(firstName,lastName,userName,password,role,existance) VALUES("firstNameTestDb","lastNameTestDb","mechTest","mechpass","mech",1)`);
-  // factory.exec(`INSERT INTO Users(firstName,lastName,userName,password,role,existance) VALUES("firstNameTestDb","lastNameTestDb","admin2","adminpass2","admin",1)`);
-  // factory.exec(`INSERT INTO Users(firstName,lastName,userName,password,role,existance) VALUES("firstNameTestDb","lastNameTestDb","chemTest","chempass","chem",1)`);
-  // factory.exec(`INSERT INTO Users(firstName,lastName,userName,password,role,existance) VALUES("firstNameTestDb","lastNameTestDb","workTest","workpass","work",1)`);
-  // factory.exec(`INSERT INTO Users(firstName,lastName,userName,password,role,existance) VALUES("firstNameTestDb","lastNameTestDb","secTest","secpass","sec",1)`);
-  // factory.exec(`INSERT INTO Users(firstName,lastName,userName,password,role,existance) VALUES("firstNameTestDb","lastNameTestDb","cleanTest","cleanpass","clean",1)`);
+  // factory.exec(`INSERT INTO Users(firstName,lastName,userName,password,role,existance) VALUES("firstNameTestDb","lastNameTestDb","admin","adminpass","admin",'OUT')`);
+  // factory.exec(`INSERT INTO Users(firstName,lastName,userName,password,role,existance) VALUES("firstNameTestDb","lastNameTestDb","hrTest","hrpass","hr",'OUT')`);
+  // factory.exec(`INSERT INTO Users(firstName,lastName,userName,password,role,existance) VALUES("firstNameTestDb","lastNameTestDb","mechTest","mechpass","mech",'OUT')`);
+  // factory.exec(`INSERT INTO Users(firstName,lastName,userName,password,role,existance) VALUES("firstNameTestDb","lastNameTestDb","admin2","adminpass2","admin",'OUT')`);
+  // factory.exec(`INSERT INTO Users(firstName,lastName,userName,password,role,existance) VALUES("firstNameTestDb","lastNameTestDb","chemTest","chempass","chem",'OUT')`);
+  // factory.exec(`INSERT INTO Users(firstName,lastName,userName,password,role,existance) VALUES("firstNameTestDb","lastNameTestDb","workTest","workpass","work",'OUT')`);
+  // factory.exec(`INSERT INTO Users(firstName,lastName,userName,password,role,existance) VALUES("firstNameTestDb","lastNameTestDb","secTest","secpass","sec",'OUT')`);
+  // factory.exec(`INSERT INTO Users(firstName,lastName,userName,password,role,existance) VALUES("firstNameTestDb","lastNameTestDb","cleanTest","cleanpass","clean",'OUT')`);
 
   // factory.exec(`INSERT INTO Requests(sender,reciever,urgency,subject,message,accepted) VALUES('mech','hr','HIGH','subj','','no')`);
   // factory.exec(`INSERT INTO Requests(sender,reciever,urgency,subject,message,accepted) VALUES('hr','hr','HIGH','subj','','no')`);

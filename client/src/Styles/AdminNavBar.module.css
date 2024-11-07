@@ -1,7 +1,6 @@
-
-/* navBar css */
 .navBar{
-    grid-column: 1/5;
+    grid-column: 1/4;
+    grid-row: 1/2;
     display: flex;
     justify-content: space-around;
     align-items: center;
@@ -86,7 +85,7 @@
     justify-content: space-around;
     align-items: center;
 
-    top: 10%;
+    top: 9.72%;
     width: inherit;
     height: 30vh;
     border-radius: 0px 0px 10px 10px;

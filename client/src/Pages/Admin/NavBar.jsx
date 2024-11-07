@@ -17,7 +17,7 @@ function NavBar(props){
             setDepartmentDropDown(false);
         }}> Departments
         {departmentDropDown ? <div className={styles.DepartmentDropdown}>
-            <div onClick={()=>{nav('/DEP_HumanResources')}}>Human Resources</div>
+            <div onClick={()=>{nav('/DEP_HR')}}>Human Resources</div>
             <div onClick={()=>{nav('/DEP_Mechanics')}}>Mechanics</div>
             <div onClick={()=>{nav('/DEP_Chemists')}}>Chemists</div>
             <div onClick={()=>{nav('/DEP_Workers')}}>Workers</div>

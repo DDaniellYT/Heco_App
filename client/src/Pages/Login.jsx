@@ -17,10 +17,6 @@ function Login(){
         document.getElementById('root').className = styles.root;  
     });
     
-    // const images = [
-    //     'https://www.heco-schrauben.de/Karriere/Ferien-und-Aushilfsjobs'
-    //     ];
-
     return <div className={styles.rootCopy} onKeyDown={(e)=>{
                 if(e.key === 'Enter'){
                     console.log('enter pressed');
