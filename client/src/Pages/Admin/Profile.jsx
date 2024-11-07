@@ -3,14 +3,6 @@ import styles from '../../Styles/Profile.module.css'
 import axios from "axios";
 
 function Profile(props){
-    const [user,setUser] = useState({});
-
-    useEffect(()=>{
-        axios.get('http://localhost:8080/users',{params:{userName:props.user.userName}}).then((req)=>{
-            // setUser(req.data);
-        });
-        console.log(user);
-    },[props.change])
 
     return <div className={styles.profileContainer}>
         <div className={styles.profileListContainer}>
@@ -26,11 +18,11 @@ function Profile(props){
                 <div>Role : {props.user.role}</div>
             </div>
             <div className={styles.profileClock} onClick={()=>{
-                axios.post('http://localhost:8080/users',{userName:user.userName}).then((req)=>{
+                axios.post('http://localhost:8080/users',{userName:props.user.userName}).then((req)=>{
                     props.setChange(!props.change);
                 });
             }}>{
-                user.existance == 'IN'?'Clock OUT':'Clock IN'
+                props.user.existance == 'IN'?'Clock OUT':'Clock IN'
             }</div>
             <div className={styles.profileChat}>Chat</div>
             <div className={styles.profileAccepted}>Accepted Tasks</div>

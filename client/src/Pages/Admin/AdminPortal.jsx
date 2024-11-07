@@ -24,28 +24,19 @@ import Profile from "./Profile";
 // });
 
 function AdminPortal(){
+    const navState= useLocation();
     const [requestPage,setRequestPage] = useState(false);
     const [infoRequests,setInfoRequests] = useState([]);
     const [infoAccepted,setInfoAccepted] = useState([]);
     const [change,setChange] = useState(false);
-    const [user,setUser] = useState({});
-    const navState = useLocation();
+    const [user,setUser] = useState({userName:navState.state.userName});
 
-    useEffect(()=>{
-        setUser(navState.state.user);
-    },[]);
     useEffect(()=>{
         document.getElementById("root").className = styles.root;
         axios.get('http://localhost:8080/requests',{params:{accepted:'yes'}}).then(req => setInfoAccepted(req.data));
         axios.get('http://localhost:8080/requests',{params:{accepted:'no'}}).then(req => setInfoRequests(req.data));
+        axios.get('http://localhost:8080/users',{params:{userName:user.userName}}).then(req => setUser(req.data));
     },[change])
-
-    // const testUser = {
-    //     firstName:state.user.firstName,
-    //     lastName:state.user.lastName,
-    //     role:state.user.role,
-    //     existance:state.user.existance
-    // }
 
     return <div className={styles.container}>
         <NavBar change={change} setChange={setChange} requestPage={requestPage} setRequestPage={setRequestPage}/>

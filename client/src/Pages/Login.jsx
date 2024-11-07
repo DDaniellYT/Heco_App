@@ -15,7 +15,7 @@ function Login(){
     const [checkText,setCheckText] = useState('Waiting . . .');
     useEffect(()=>{
         document.getElementById('root').className = styles.root;  
-    })
+    });
     
     // const images = [
     //     'https://www.heco-schrauben.de/Karriere/Ferien-und-Aushilfsjobs'
@@ -29,13 +29,13 @@ function Login(){
                         if(req.data && req.data.constructor === Object && Object.keys(req.data).length !== 0){
                             if(req.data.userName == user.name && req.data.password == user.pass){
                                 switch(req.data.role){
-                                    case 'admin': nav('/admin',{state:{user:req.data}});break;
-                                    case 'hr': nav('/hr',user);break;
-                                    case 'mech': nav('/mech',user);break;
-                                    case 'chem': nav('/chem',user);break;
-                                    case 'sec': nav('/sec',user);break;
-                                    case 'work': nav('/work',user);break;
-                                    case 'clean': nav('/clean',user);break;
+                                    case 'admin': nav('/admin',{state:req.data});break;
+                                    case 'hr': nav('/hr',{state:req.data});break;
+                                    case 'mech': nav('/mech',{state:req.data});break;
+                                    case 'chem': nav('/chem',{state:req.data});break;
+                                    case 'sec': nav('/sec',{state:req.data});break;
+                                    case 'work': nav('/work',{state:req.data});break;
+                                    case 'clean': nav('/clean',{state:req.data});break;
                                 }}}
                         else setCheckText('User or Password not found');
                     })
@@ -44,19 +44,12 @@ function Login(){
             <div className={styles.container}>
                 <div className={styles.fieldName}>Login</div>
                 <input className={styles.input} value = {user.name} onChange={(event)=>{
-                    setUser({...user,
-                        name: event.target.value
-                    })
-                    console.log(user);
+                    setUser({...user, name: event.target.value});
                 }}/>
                 <input className={styles.input} value = {user.pass} onChange={(event)=>{
-                    setUser({...user,
-                        pass: event.target.value
-                    })
-                    console.log(user);
+                    setUser({...user, pass: event.target.value});
                 }}/>
                 <button className={styles.button} onClick={()=>{
-                    console.log('submit pressed');
                     axios.get("http://localhost:8080/login",{params:{user}}).then((req,res)=>{
                         console.log('inside the then of submit pressed');
                         if(req.data && req.data.constructor === Object && Object.keys(req.data).length !== 0){
@@ -73,16 +66,11 @@ function Login(){
                         else setCheckText('User or Password not found');
                     })
                 }}>Submit</button>
-                <div className={styles.carousel} onClick={()=>{
-
-                    
-                }}>
+                <div className={styles.carousel}>
                     <div>{checkText}</div>
                 </div>
                 <footer className={styles.footer}>@Copywright Daniel.Co && Heco.Schrauben {new Date().getFullYear()}-{new Date().getFullYear()+1}</footer>
             </div>
         </div>
 }
-
-
 export default Login;

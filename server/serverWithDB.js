@@ -85,6 +85,8 @@ app.use(cors());
 app.use(express.json());
 
 app.get('/users',async (req,res)=>{
+  console.log(req.query);
+  console.log(req.body);
   const user = await getUserFromDB(req.query.userName);
   res.send(user);
 });
