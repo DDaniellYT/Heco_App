@@ -3,5 +3,85 @@
     grid-row: 1/2;
     width: 100%;
     height: 100%;
+    background-color: moccasin;
+
+    display: grid;
+    grid-template-columns: 10% auto 10%;
+    grid-template-rows: 15% 85%;
+    
+}
+.userProfileTitle{
+    background-color: yellow;
+    grid-column: 1/4;
+    grid-row: 1/2;
+
+    width: 100%;
+    height: 100%;
+
+    font-size: 20px;
+    font-weight: bold;
+}
+.userProfileList{
+    grid-column: 1/4;
+    grid-row: 2/3;
+
+    padding: 0px;
+    margin: 0px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    width: 100%;
+    height: 100%;
+    background-color: orangered;
+}
+.userProfileContainer{
+    grid-column: 2/3;
+    width: 90%;
+    height: 15%;
+
+    margin: 20px;
+
+    display: grid;
+    grid-template-columns: 15% 40% auto 10% 10%;
+    grid-template-rows: auto;
+
+    border-radius: 10px;
+    outline: 2px solid black;
+
+    background-color: blue;
+}
+.userProfilePic{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 10px 0px 0px 10px;
     background-color: red;
+}
+.userProfileName{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: gray;
+}
+.userProfileExistance{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: brown;
+}
+.userProfileClockHour{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: cyan;
+}
+.userProfileChange{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 0px 10px 10px 0px;
+
+    background-color: green;
 }

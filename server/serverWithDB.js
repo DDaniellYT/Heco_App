@@ -15,6 +15,7 @@ const createUsersTable = `CREATE TABLE IF NOT EXISTS Users(
   lastName TEXT,
   password TEXT,
   role TEXT,
+  time DATE,
   existance TEXT
 )`;
 const createRequestsTable = `CREATE TABLE IF NOT EXISTS Requests(
@@ -31,14 +32,14 @@ await new Promise((resolve)=>{
   console.log('created tables');
 }).then(()=>{
   // get test users
-  // factory.exec(`INSERT INTO Users(firstName,lastName,userName,password,role,existance) VALUES("firstNameTestDb","lastNameTestDb","admin","adminpass","admin",'OUT')`);
-  // factory.exec(`INSERT INTO Users(firstName,lastName,userName,password,role,existance) VALUES("firstNameTestDb","lastNameTestDb","hrTest","hrpass","hr",'OUT')`);
-  // factory.exec(`INSERT INTO Users(firstName,lastName,userName,password,role,existance) VALUES("firstNameTestDb","lastNameTestDb","mechTest","mechpass","mech",'OUT')`);
-  // factory.exec(`INSERT INTO Users(firstName,lastName,userName,password,role,existance) VALUES("firstNameTestDb","lastNameTestDb","admin2","adminpass2","admin",'OUT')`);
-  // factory.exec(`INSERT INTO Users(firstName,lastName,userName,password,role,existance) VALUES("firstNameTestDb","lastNameTestDb","chemTest","chempass","chem",'OUT')`);
-  // factory.exec(`INSERT INTO Users(firstName,lastName,userName,password,role,existance) VALUES("firstNameTestDb","lastNameTestDb","workTest","workpass","work",'OUT')`);
-  // factory.exec(`INSERT INTO Users(firstName,lastName,userName,password,role,existance) VALUES("firstNameTestDb","lastNameTestDb","secTest","secpass","sec",'OUT')`);
-  // factory.exec(`INSERT INTO Users(firstName,lastName,userName,password,role,existance) VALUES("firstNameTestDb","lastNameTestDb","cleanTest","cleanpass","clean",'OUT')`);
+  factory.exec(`INSERT INTO Users(firstName,lastName,userName,password,role,existance,time) VALUES("firstNameTestDb","lastNameTestDb","admin","adminpass","admin",'OUT',0)`);
+  factory.exec(`INSERT INTO Users(firstName,lastName,userName,password,role,existance,time) VALUES("firstNameTestDb2","lastNameTestDb2","hrTest2","hrpass2","hr",'OUT',0)`);
+  factory.exec(`INSERT INTO Users(firstName,lastName,userName,password,role,existance,time) VALUES("firstNameTestDb","lastNameTestDb","mechTest","mechpass","mech",'OUT',0)`);
+  factory.exec(`INSERT INTO Users(firstName,lastName,userName,password,role,existance,time) VALUES("firstNameTestDb","lastNameTestDb","admin2","adminpass2","admin",'OUT',0)`);
+  factory.exec(`INSERT INTO Users(firstName,lastName,userName,password,role,existance,time) VALUES("firstNameTestDb","lastNameTestDb","chemTest","chempass","chem",'OUT',0)`);
+  factory.exec(`INSERT INTO Users(firstName,lastName,userName,password,role,existance,time) VALUES("firstNameTestDb","lastNameTestDb","workTest","workpass","work",'OUT',0)`);
+  factory.exec(`INSERT INTO Users(firstName,lastName,userName,password,role,existance,time) VALUES("firstNameTestDb","lastNameTestDb","secTest","secpass","sec",'OUT',0)`);
+  factory.exec(`INSERT INTO Users(firstName,lastName,userName,password,role,existance,time) VALUES("firstNameTestDb","lastNameTestDb","cleanTest","cleanpass","clean",'OUT',0)`);
 
   // factory.exec(`INSERT INTO Requests(sender,reciever,urgency,subject,message,accepted) VALUES('mech','hr','HIGH','subj','','no')`);
   // factory.exec(`INSERT INTO Requests(sender,reciever,urgency,subject,message,accepted) VALUES('hr','hr','HIGH','subj','','no')`);
@@ -53,10 +54,17 @@ await new Promise((resolve)=>{
   // factory.exec(`INSERT INTO Requests(sender,reciever,urgency,subject,message,accepted) VALUES('chem','mech','MID','subj','','yes')`);
 return;
 });
-async function getUserFromDB(name){
-  const userQuery = `SELECT * FROM Users WHERE userName = ?`;
+async function getUserFromDB(name,role){
+  const userQuery = `SELECT * FROM Users 
+  ${name != undefined && role == undefined? 
+    ` WHERE userName = '${name}'`: 
+    name == undefined && role != undefined ? 
+    ` WHERE role = '${role}'`:''}`;
+    console.log(userQuery);
   return new Promise((resolve)=>{
-    factory.get(userQuery,name,(err,rows)=>{
+    factory.all(userQuery,(err,rows)=>{
+      console.log(name,role);
+      console.log(rows);
       resolve(rows);
     });
   });
@@ -85,12 +93,12 @@ app.use(cors());
 app.use(express.json());
 
 app.get('/users',async (req,res)=>{
-  console.log(req.query);
-  console.log(req.body);
-  const user = await getUserFromDB(req.query.userName);
-  res.send(user);
+  const users = await getUserFromDB(req.query.userName,req.query.role);
+  if(req.query.userName != undefined) res.send(users[0]);
+  else res.send(users);
 });
 app.post('/users',async (req,res)=>{
+  console.log(req.body);
   const user = await getUserFromDB(req.body.userName);
   const updateQuery = `UPDATE Users SET existance = '${user.existance=='IN'?'OUT':'IN'}' WHERE (userName = '${req.body.userName}')`;
   factory.exec(updateQuery,(err)=>{

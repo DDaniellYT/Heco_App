@@ -17,7 +17,7 @@ function Profile(props){
             <div>Role : {props.user.role}</div>
         </div>
         <div className={styles.profileClock} onClick={()=>{
-            axios.post('http://localhost:8080/users',{userName:props.user.userName}).then(req => props.setChange(!props.change))
+            axios.post(`http://${props.ipOfServer}:8080/users`,{userName:props.user.userName}).then(req => props.setChange(!props.change))
         }}>{props.user.existance == 'IN'?'Clock OUT':'Clock IN'}
         </div>
         <div className={styles.profileChat}>Chat</div>
@@ -39,7 +39,7 @@ function Profile(props){
                     <div className={styles.profileItemSubject}>{item.subject==""?"Nothing":item.subject}</div>
                     <div className={styles.profileItemWhen}>{item.when}</div>
                     <div className={styles.profileItemDone} onClick={()=>{
-                        axios.delete('http://localhost:8080/requests',{params:{id:item.id}}).then((req)=>{
+                        axios.delete(`http://${props.ipOfServer}:8080/requests`,{params:{id:item.id}}).then((req)=>{
                             props.setChange(!props.change);
                         });
                     }}>Done</div>

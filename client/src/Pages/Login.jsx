@@ -7,6 +7,7 @@ import {useNavigate} from "react-router-dom"
 
 
 function Login(){
+    const ipOfServer = '192.168.0.104';
     const nav = useNavigate();
     const [user, setUser] = useState({
         name:'',
@@ -20,7 +21,7 @@ function Login(){
     return <div className={styles.rootCopy} onKeyDown={(e)=>{
                 if(e.key === 'Enter'){
                     console.log('enter pressed');
-                    axios.get("http://localhost:8080/users",{params:{userName:user.name}}).then((req,res)=>{
+                    axios.get(`http://${ipOfServer}:8080/users`,{params:{userName:user.name}}).then((req,res)=>{
                         console.log('inside the then of enter pressed');
                         if(req.data && req.data.constructor === Object && Object.keys(req.data).length !== 0){
                             if(req.data.userName == user.name && req.data.password == user.pass){
@@ -46,7 +47,7 @@ function Login(){
                     setUser({...user, pass: event.target.value});
                 }}/>
                 <button className={styles.button} onClick={()=>{
-                    axios.get("http://localhost:8080/login",{params:{user}}).then((req,res)=>{
+                    axios.get(`http://${ipOfServer}:8080/login`,{params:{user}}).then((req,res)=>{
                         console.log('inside the then of submit pressed');
                         if(req.data && req.data.constructor === Object && Object.keys(req.data).length !== 0){
                             if(req.data.name == user.name && req.data.password == user.pass){

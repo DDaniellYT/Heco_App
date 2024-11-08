@@ -27,7 +27,7 @@ function NavBar(props){
     <div className={styles.arrow}>⌄</div></div>
     <div className={styles.request} onClick={()=>{ if(!props.requestPage)props.setRequestPage(true) }}>Request
     <div className={styles.arrow}>⌄</div>{
-        props.requestPage ? <RequestPanel change={props.change} setChange={props.setChange} requestPage={props.requestPage} setRequestPage={props.setRequestPage}/> :null
+        props.requestPage ? <RequestPanel ipOfServer={props.ipOfServer} change={props.change} setChange={props.setChange} requestPage={props.requestPage} setRequestPage={props.setRequestPage}/> :null
     }</div>
     <div className={styles.response} onClick={()=>{nav('/response')}}>Respond<div className={styles.arrow}>⌄</div></div> 
     <div className={styles.inventory} onClick={()=>{nav('/inventory')}}>Inventory<div className={styles.arrow}>⌄</div></div>
