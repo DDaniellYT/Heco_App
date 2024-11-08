@@ -10,8 +10,21 @@ import stats from "../Styles/Stats.module.css";
 import NavBar from "./Admin/NavBar";
 import Activity from "./Admin/Activity";
 import Profile from "./Admin/Profile";
-import Stats from "./Admin/Stats";
+import ProfileList from "./ProfileList"
+import Stats from "./Stats";
 
+async function getProg(rec){
+    var prog = 0;
+    await axios.get('http://localhost:8080/requests',{params:{reciever:`${rec}`}}).then(async (req,res)=>{
+        const tempAll = req.data;
+        const tempYes = tempAll.filter((item)=>{
+            if(item.accepted == 'yes')return item;
+        })
+        prog = tempAll.length==0?0:(tempYes.length/tempAll.length*100).toFixed(0);
+        console.log(prog);
+    });
+    return prog;
+}
 const DEP_HR = () => {
     const [requestPage,setRequestPage] = useState(false);
     const [infoRequests,setInfoRequests] = useState([]);
@@ -22,24 +35,25 @@ const DEP_HR = () => {
 
     useEffect(()=>{
         document.getElementById("root").className = styles.root;
-        axios.get('http://localhost:8080/requests',{params:{reciever:'hr',accepted:'yes'}}).then(req => setInfoAccepted(req.data));
-        axios.get('http://localhost:8080/requests',{params:{reciever:'hr',accepted:'no'}}).then(req => setInfoRequests(req.data));
+        axios.get('http://localhost:8080/requests',{params:{reciever:'HResources',accepted:'yes'}}).then(req => setInfoAccepted(req.data));
+        axios.get('http://localhost:8080/requests',{params:{reciever:'HResources',accepted:'no'}}).then(req => setInfoRequests(req.data));
+        getProg('HResources').then(prog => setHrProg(prog));
     },[change]);
 
     return <div className={styles.container}>
         <NavBar change={change} setChange={setChange} requestPage={requestPage} setRequestPage={setRequestPage}/>
-        <div className={activity.info}>
-            <Activity change={change} setChange={setChange} requestPage={requestPage} infoRequests={infoRequests} setInfoRequests={setInfoRequests} infoAccepted={infoAccepted} setInfoAccepted={setInfoAccepted}/>    
-        </div>
-        <div className={profile.profileContainer}>
-            {/* <ProfileList change={change} setChange={setChange}/> */}
-        </div>
-        <div className={stats.quickContainer}>
-            <Stats hrProg={hrProg}/>
-        </div>
-        
-        </div>
-
+        <div className={styles.interface}>
+            <div className={activity.info}>
+                <Activity change={change} setChange={setChange} requestPage={requestPage} infoRequests={infoRequests} setInfoRequests={setInfoRequests} infoAccepted={infoAccepted} setInfoAccepted={setInfoAccepted}/>    
+            </div>
+            {/* <div className={profileList.}>
+            </div> */}
+            <ProfileList change={change} setChange={setChange}/>
+            <div className={stats.quickContainer}>
+                <Stats hrProg={hrProg}/>
+            </div>
+        </div>    
+    </div>
 }
 
 export default DEP_HR;

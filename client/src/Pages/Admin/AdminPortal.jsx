@@ -13,7 +13,7 @@ import photo from '../../profileImages/heco_slider_img3.jpg';
 import NavBar from "./NavBar";
 import Activity from "./Activity";
 import Profile from "./Profile";
-import Stats from "./Stats";
+import Stats from "../Stats";
 
 async function getProg(rec){
     var prog = 0;
@@ -58,14 +58,16 @@ function AdminPortal(){
 
     return <div className={styles.container}>
         <NavBar change={change} setChange={setChange} requestPage={requestPage} setRequestPage={setRequestPage}/>
-        <div className={activity.info}>
-            <Activity change={change} setChange={setChange} requestPage={requestPage} infoRequests={infoRequests} setInfoRequests={setInfoRequests} infoAccepted={infoAccepted} setInfoAccepted={setInfoAccepted}/> 
-        </div>
-        <div className={profile.profileContainer}>
-            <Profile user={user} setUser={setUser} photoLink={photo} change={change} setChange={setChange} infoAccepted={infoAccepted}/>
-        </div>
-        <div className={stats.quickContainer}>
-            <Stats hrProg={hrProg} mechProg={mechProg} chemProg={chemProg} workProg={workProg} secProg={secProg} cleanProg={cleanProg}/>
+        <div className={styles.interface}>
+            <div className={activity.info}>
+                <Activity change={change} setChange={setChange} requestPage={requestPage} infoRequests={infoRequests} setInfoRequests={setInfoRequests} infoAccepted={infoAccepted} setInfoAccepted={setInfoAccepted}/> 
+            </div>
+            <div className={profile.profileContainer}>
+                <Profile user={user} setUser={setUser} photoLink={photo} change={change} setChange={setChange} infoAccepted={infoAccepted}/>
+            </div>
+            <div className={stats.quickContainer}>
+                <Stats hrProg={hrProg} mechProg={mechProg} chemProg={chemProg} workProg={workProg} secProg={secProg} cleanProg={cleanProg}/>
+            </div>
         </div>
     </div>;
 
