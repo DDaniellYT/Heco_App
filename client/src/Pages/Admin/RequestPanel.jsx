@@ -5,12 +5,12 @@ import axios from "axios";
 
 function RequestPanel(props){
     const [recieverDropdown,setReceiverDropdown] = useState(false);
-    const [senderDropdown,setSenderDropdown] = useState(false);
+    // const [senderDropdown,setSenderDropdown] = useState(false);
     const [importanceDropdown,setImportanceDropdown] = useState(false);
 
     const [urgency,setUrgency] = useState("Lowest");
     const [reciever,setReceiver] = useState("HResources");
-    const [sender,setSender] = useState("HResources");
+    // const [sender,setSender] = useState("Someone");
     const [subject,setSubject] = useState("");
     const [message,setMessage] = useState("");
 
@@ -60,7 +60,7 @@ function RequestPanel(props){
                     setReceiverDropdown(false);
                 }}>Security</div>
             </div>:null}</div>
-            <div className={styles.requestSenderDropdown_Menu} onClick={()=>{
+            {/* <div className={styles.requestSenderDropdown_Menu} onClick={()=>{
                 setSenderDropdown(true);
             }} onMouseLeave={()=>{
                 setSenderDropdown(false);
@@ -97,7 +97,8 @@ function RequestPanel(props){
                     setSenderDropdown(false);
                 }}>Security</div>
             </div>:null}
-            </div>
+            </div> */}
+            <div className={styles.requestSender}>Sender : {props.user.userName}</div> 
             <div className={styles.requestImportanceDropdown_Menu} onClick={()=>{
                 setImportanceDropdown(true);
             }} onMouseLeave={()=>{
@@ -150,10 +151,11 @@ function RequestPanel(props){
             <div className={styles.requestSubmitButtonContainer}>
                 <button className={styles.requestSubmitButton} onClick={()=>{
                     axios.put(`http://${props.ipOfServer}:8080/requests`,{
+                        id:`${props.user.id}`,
                         subject:`${subject}`,
                         message:`${message}`,
                         reciever:`${reciever}`,
-                        sender:`${sender}`,
+                        sender:`${props.user.userName}`,
                         urgency:`${urgency}`
                     }).then(()=>{
                             props.setChange(!props.change);
@@ -161,7 +163,7 @@ function RequestPanel(props){
                             setSubject("");
                             setMessage("");
                             setReceiver("HResources");
-                            setSender("HResources");
+                            // setSender("HResources");
                             setUrgency("Lowest");
                     })
                 }}>Submit</button>

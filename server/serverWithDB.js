@@ -139,11 +139,19 @@ app.get('/requests',async (req,res)=>{
   // console.log(req.query);
   res.send(await getRequestsFromDB(req.query));
 });
+
+/// almost works as intended, just the data doesnt get inside the db but no error
 app.put('/requests',async (req,res)=>{
-  const insertQuery = `INSERT INTO Requests(sender,reciever,urgency,subject,message,accepted) VALUES('${req.body.sender}','${req.body.reciever}','${req.body.urgency}','${req.body.subject}','${req.body.message}','no')`;
-  factory.exec(insertQuery,(err)=>{
-    res.send(err);
-  });
+  const insertQueryAll = `INSERT INTO Requests(sender,reciever,urgency,subject,message,accepted) VALUES('${req.body.sender}','${req.body.reciever}','${req.body.urgency}','${req.body.subject}','${req.body.message}','no')`;
+  const insertQuerySpecific = `INSERT INTO ${req.body.sender}${req.body.id}(task) VALUES('${JSON.stringify(req.body)}')`;
+  res.send(new Promise((resolve)=>{
+    factory.exec(insertQueryAll,(err)=>{
+      resolve(err);
+    });
+    factory.exec(insertQuerySpecific,(err)=>{
+      resolve(err);
+    })
+  }))
 });
 app.post('/requests',async (req,res)=>{
   const updateQuery = `UPDATE Requests SET accepted = 'yes' WHERE (id = ${req.body.id})`;
