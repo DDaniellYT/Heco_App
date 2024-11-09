@@ -11,16 +11,15 @@ const ProfileList = (props)=>{
 
     useEffect(()=>{
         axios.get(`http://${props.ipOfServer}:8080/users`,{params:{role:'hr'}}).then(req => {
-            console.log(req);
             setUsers(req.data);
         });
         console.log(users);
     },[props.change]);
 
     return <div className={styles.container}>
-        <div className={styles.userProfileTitle}>tutle</div>
+        <div className={styles.userProfileTitle}>User List</div>
         <ul className={styles.userProfileList}>{users.map((item,index)=>{
-            return <UserProfile key={index} item={item}/>
+            return <UserProfile ipOfServer={props.ipOfServer} key={index} item={item}/>
         })}
         </ul>
     </div>

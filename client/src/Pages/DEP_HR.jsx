@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { useEffect } from "react";
+import { useLocation } from "react-router-dom";
+
 import axios from "axios";
 
 import styles from "../Styles/DEP_HR.module.css";
@@ -31,9 +33,11 @@ const DEP_HR = () => {
     const [infoRequests,setInfoRequests] = useState([]);
     const [infoAccepted,setInfoAccepted] = useState([]);
     const [change,setChange] = useState(false);
+    const navState = useLocation();
 
     const [hrProg,setHrProg] = useState(50);
 
+    console.log(navState.state);
     useEffect(()=>{
         document.getElementById("root").className = styles.root;
         axios.get(`http://${ipOfServer}:8080/requests`,{params:{reciever:'HResources',accepted:'yes'}}).then(req => setInfoAccepted(req.data));
@@ -42,7 +46,7 @@ const DEP_HR = () => {
     },[change]);
 
     return <div className={styles.container}>
-        <NavBar ipOfServer={ipOfServer} change={change} setChange={setChange} requestPage={requestPage} setRequestPage={setRequestPage}/>
+        <NavBar user={navState.state} ipOfServer={ipOfServer} change={change} setChange={setChange} requestPage={requestPage} setRequestPage={setRequestPage}/>
         <div className={styles.interface}>
             <div className={activity.info}>
                 <Activity ipOfServer={ipOfServer} change={change} setChange={setChange} requestPage={requestPage} infoRequests={infoRequests} setInfoRequests={setInfoRequests} infoAccepted={infoAccepted} setInfoAccepted={setInfoAccepted}/>    

@@ -31,7 +31,7 @@ async function getProg(rec,ip){
 function AdminPortal(){
     const ipOfServer = '192.168.0.104';
 
-    const navState= useLocation();
+    const navState = useLocation();
     const [requestPage,setRequestPage] = useState(false);
     const [infoRequests,setInfoRequests] = useState([]);
     const [infoAccepted,setInfoAccepted] = useState([]);
@@ -59,7 +59,7 @@ function AdminPortal(){
     },[change]);
 
     return <div className={styles.container}>
-        <NavBar ipOfServer={ipOfServer} change={change} setChange={setChange} requestPage={requestPage} setRequestPage={setRequestPage}/>
+        <NavBar user={user} ipOfServer={ipOfServer} change={change} setChange={setChange} requestPage={requestPage} setRequestPage={setRequestPage}/>
         <div className={styles.interface}>
             <div className={activity.info}>
                 <Activity ipOfServer={ipOfServer} change={change} setChange={setChange} requestPage={requestPage} infoRequests={infoRequests} setInfoRequests={setInfoRequests} infoAccepted={infoAccepted} setInfoAccepted={setInfoAccepted}/> 

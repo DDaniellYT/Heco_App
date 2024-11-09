@@ -15,7 +15,7 @@ const createUsersTable = `CREATE TABLE IF NOT EXISTS Users(
   lastName TEXT,
   password TEXT,
   role TEXT,
-  time DATE,
+  time INTEGER,
   existance TEXT
 )`;
 const createRequestsTable = `CREATE TABLE IF NOT EXISTS Requests(
@@ -27,19 +27,40 @@ const createRequestsTable = `CREATE TABLE IF NOT EXISTS Requests(
   message TEXT,
   accepted TEXT
 )`;
+
+
 await new Promise((resolve)=>{
   resolve(factory.run(createUsersTable).run(createRequestsTable));
   console.log('created tables');
+}).then(async ()=>{
+  const allUsers = await getUserFromDB();
+  console.log(allUsers);
+  allUsers.map(async (item)=>{
+    const createUserActivity = `CREATE TABLE IF NOT EXISTS '${item.userName}${item.id}'(
+      id INTEGER PRIMARY KEY,
+      task TEXT
+    )`
+    console.log(createUserActivity);
+    await new Promise((resolve)=>{
+      resolve(factory.run(createUserActivity));
+    });
+  })
 }).then(()=>{
+  
+  const timeHours = new Date().getHours()*3600;
+  const timeMinutes = new Date().getMinutes()*60;
+  const timeSeconds = new Date().getSeconds();
+
+  const time = timeHours + timeMinutes + timeSeconds;
   // get test users
-  factory.exec(`INSERT INTO Users(firstName,lastName,userName,password,role,existance,time) VALUES("firstNameTestDb","lastNameTestDb","admin","adminpass","admin",'OUT',0)`);
-  factory.exec(`INSERT INTO Users(firstName,lastName,userName,password,role,existance,time) VALUES("firstNameTestDb2","lastNameTestDb2","hrTest2","hrpass2","hr",'OUT',0)`);
-  factory.exec(`INSERT INTO Users(firstName,lastName,userName,password,role,existance,time) VALUES("firstNameTestDb","lastNameTestDb","mechTest","mechpass","mech",'OUT',0)`);
-  factory.exec(`INSERT INTO Users(firstName,lastName,userName,password,role,existance,time) VALUES("firstNameTestDb","lastNameTestDb","admin2","adminpass2","admin",'OUT',0)`);
-  factory.exec(`INSERT INTO Users(firstName,lastName,userName,password,role,existance,time) VALUES("firstNameTestDb","lastNameTestDb","chemTest","chempass","chem",'OUT',0)`);
-  factory.exec(`INSERT INTO Users(firstName,lastName,userName,password,role,existance,time) VALUES("firstNameTestDb","lastNameTestDb","workTest","workpass","work",'OUT',0)`);
-  factory.exec(`INSERT INTO Users(firstName,lastName,userName,password,role,existance,time) VALUES("firstNameTestDb","lastNameTestDb","secTest","secpass","sec",'OUT',0)`);
-  factory.exec(`INSERT INTO Users(firstName,lastName,userName,password,role,existance,time) VALUES("firstNameTestDb","lastNameTestDb","cleanTest","cleanpass","clean",'OUT',0)`);
+  // factory.exec(`INSERT INTO Users(firstName,lastName,userName,password,role,existance,time) VALUES("firstNameTestDb","lastNameTestDb","admin","adminpass","admin",'OUT',${time})`);
+  // factory.exec(`INSERT INTO Users(firstName,lastName,userName,password,role,existance,time) VALUES("firstNameTestDb2","lastNameTestDb2","hrTest2","hrpass2","hr",'OUT',${time})`);
+  // factory.exec(`INSERT INTO Users(firstName,lastName,userName,password,role,existance,time) VALUES("firstNameTestDb","lastNameTestDb","mechTest","mechpass","mech",'OUT',${time})`);
+  // factory.exec(`INSERT INTO Users(firstName,lastName,userName,password,role,existance,time) VALUES("firstNameTestDb","lastNameTestDb","admin2","adminpass2","admin",'OUT',${time})`);
+  // factory.exec(`INSERT INTO Users(firstName,lastName,userName,password,role,existance,time) VALUES("firstNameTestDb","lastNameTestDb","chemTest","chempass","chem",'OUT',${time})`);
+  // factory.exec(`INSERT INTO Users(firstName,lastName,userName,password,role,existance,time) VALUES("firstNameTestDb","lastNameTestDb","workTest","workpass","work",'OUT',${time})`);
+  // factory.exec(`INSERT INTO Users(firstName,lastName,userName,password,role,existance,time) VALUES("firstNameTestDb","lastNameTestDb","secTest","secpass","sec",'OUT',${time})`);
+  // factory.exec(`INSERT INTO Users(firstName,lastName,userName,password,role,existance,time) VALUES("firstNameTestDb","lastNameTestDb","cleanTest","cleanpass","clean",'OUT',${time})`);
 
   // factory.exec(`INSERT INTO Requests(sender,reciever,urgency,subject,message,accepted) VALUES('mech','hr','HIGH','subj','','no')`);
   // factory.exec(`INSERT INTO Requests(sender,reciever,urgency,subject,message,accepted) VALUES('hr','hr','HIGH','subj','','no')`);
@@ -60,11 +81,16 @@ async function getUserFromDB(name,role){
     ` WHERE userName = '${name}'`: 
     name == undefined && role != undefined ? 
     ` WHERE role = '${role}'`:''}`;
-    console.log(userQuery);
   return new Promise((resolve)=>{
     factory.all(userQuery,(err,rows)=>{
-      console.log(name,role);
-      console.log(rows);
+      resolve(rows);
+    });
+  });
+};
+async function getUserActivity(user){
+  const activityQuery = `SELECT * FROM ${user.userName}${user.id}`;
+  return new Promise((resolve)=>{
+    factory.all(activityQuery,(err,rows)=>{
       resolve(rows);
     });
   });
@@ -98,14 +124,16 @@ app.get('/users',async (req,res)=>{
   else res.send(users);
 });
 app.post('/users',async (req,res)=>{
-  console.log(req.body);
+  // console.log(req.body);
   const user = await getUserFromDB(req.body.userName);
   const updateQuery = `UPDATE Users SET existance = '${user.existance=='IN'?'OUT':'IN'}' WHERE (userName = '${req.body.userName}')`;
   factory.exec(updateQuery,(err)=>{
     res.send(err);
-  })
+  });
+});
+app.get('/usersTable',async (req,res)=>{
+  res.send(await getUserActivity(req.query));
 })
-
 
 app.get('/requests',async (req,res)=>{
   // console.log(req.query);
