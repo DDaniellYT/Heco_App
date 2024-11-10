@@ -2,11 +2,11 @@ import express, { query } from "express";
 import cors from "cors";
 import bodyParser from "body-parser";
 
-
 import sqlite3 from "sqlite3";
 
 sqlite3.verbose();
 const factory = new sqlite3.Database('./db/Factory.db');
+
 
 const createUsersTable = `CREATE TABLE IF NOT EXISTS Users(
   id INTEGER PRIMARY KEY,
@@ -28,19 +28,21 @@ const createRequestsTable = `CREATE TABLE IF NOT EXISTS Requests(
   accepted TEXT
 )`;
 
+var factoryBusy = false;
+
 
 await new Promise((resolve)=>{
   resolve(factory.run(createUsersTable).run(createRequestsTable));
   console.log('created tables');
 }).then(async ()=>{
   const allUsers = await getUserFromDB();
-  console.log(allUsers);
+  // console.log(allUsers);
   allUsers.map(async (item)=>{
     const createUserActivity = `CREATE TABLE IF NOT EXISTS '${item.userName}${item.id}'(
       id INTEGER PRIMARY KEY,
       task TEXT
     )`
-    console.log(createUserActivity);
+    // console.log(createUserActivity);
     await new Promise((resolve)=>{
       resolve(factory.run(createUserActivity));
     });
@@ -110,6 +112,13 @@ async function getRequestsFromDB(params){
     })
   })
 };
+async function insertQuery(params){
+  const insertQuery = params;
+  return new Promise((resolve)=>{
+    resolve(factory.exec(insertQuery));
+  });
+}
+
 
 const app = express();
 const port = 8080;
@@ -117,6 +126,24 @@ const port = 8080;
 app.use(bodyParser.urlencoded({extended:true}));
 app.use(cors());
 app.use(express.json());
+
+
+// let dbLocked = false;
+// app.use(async (req,res,next)=>{
+//   while(dbLocked){
+//     await new Promise((res) => setTimeout(res,50));
+//     console.log('still locked');
+//   }
+//   dbLocked = true;
+//   try{
+//     console.log('unlocked');
+//     next();
+//   }
+//   finally{  
+//     console.log('locked again');
+//     dbLocked = false;
+//   }
+// })
 
 app.get('/users',async (req,res)=>{
   const users = await getUserFromDB(req.query.userName,req.query.role);
@@ -133,7 +160,7 @@ app.post('/users',async (req,res)=>{
 });
 app.get('/usersTable',async (req,res)=>{
   res.send(await getUserActivity(req.query));
-})
+});
 
 app.get('/requests',async (req,res)=>{
   // console.log(req.query);
@@ -141,24 +168,19 @@ app.get('/requests',async (req,res)=>{
 });
 
 /// almost works as intended, just the data doesnt get inside the db but no error
-app.put('/requests',async (req,res)=>{
+app.put('/requests',async (req,res)=>{          
   const insertQueryAll = `INSERT INTO Requests(sender,reciever,urgency,subject,message,accepted) VALUES('${req.body.sender}','${req.body.reciever}','${req.body.urgency}','${req.body.subject}','${req.body.message}','no')`;
   const insertQuerySpecific = `INSERT INTO ${req.body.sender}${req.body.id}(task) VALUES('${JSON.stringify(req.body)}')`;
-  res.send(new Promise((resolve)=>{
-    factory.exec(insertQueryAll,(err)=>{
-      resolve(err);
-    });
-    factory.exec(insertQuerySpecific,(err)=>{
-      resolve(err);
-    })
-  }))
+  await insertQuery(insertQueryAll);
+  await insertQuery(insertQuerySpecific);
+  res.send('');
 });
 app.post('/requests',async (req,res)=>{
   const updateQuery = `UPDATE Requests SET accepted = 'yes' WHERE (id = ${req.body.id})`;
   factory.exec(updateQuery,(err)=>{
     res.send(err);
   })
-})
+});
 app.delete('/requests',async (req,res)=>{
   const deleteQuery = `DELETE FROM Requests WHERE(id = ${req.query.id})`;
   // console.log(req.query);
