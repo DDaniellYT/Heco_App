@@ -18,9 +18,9 @@ function RequestItem(props){
         <div className={styles.infoMessage}>{props.item.message}</div>
         <div className={styles.infoAccept} onClick={()=>{
             obj.when = new Date().getHours() + ":" + new Date().getMinutes();
-            axios.post(`http://${props.ipOfServer}:8080/requests`,{id:props.item.id}).then((req)=>{
+            axios.post(`http://${props.ipOfServer}:8080/requests`,{reciever:props.user.userName,id:props.item.id,accepted:'YES'}).then((req)=>{
                 props.setChange(!props.change);
-            })
+            });
         }}>Accept</div>
         <div className={styles.infoRemove} onClick={async ()=>{
             obj.when = new Date().getHours() + ":" + new Date().getMinutes()

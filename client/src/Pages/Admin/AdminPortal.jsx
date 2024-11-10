@@ -17,7 +17,7 @@ import Stats from "../Stats";
 
 async function getProg(rec,ip){
     var prog = 0;
-    await axios.get(`http://${ip}:8080/requests`,{params:{reciever:`${rec}`}}).then(async (req,res)=>{
+    await axios.get(`http://${ip}:8080/requests`,{params:{reciever_role:`${rec}`}}).then(async (req,res)=>{
         const tempAll = req.data;
         const tempYes = tempAll.filter((item)=>{
             if(item.accepted == 'yes')return item;
@@ -47,9 +47,9 @@ function AdminPortal(){
 
     useEffect(()=>{
         document.getElementById("root").className = styles.root;
-        axios.get(`http://${ipOfServer}:8080/requests`,{params:{accepted:'yes'}}).then(req => setInfoAccepted(req.data));
-        axios.get(`http://${ipOfServer}:8080/requests`,{params:{accepted:'no'}}).then(req => setInfoRequests(req.data));
-        axios.get(`http://${ipOfServer}:8080/users`,{params:{userName:user.userName}}).then(req => setUser(req.data));
+        axios.get(`http://${ipOfServer}:8080/requests`,{params:{accepted:'YES'}}).then(req => setInfoAccepted(req.data));
+        axios.get(`http://${ipOfServer}:8080/requests`,{params:{accepted:'NO'}}).then(req => setInfoRequests(req.data));
+        axios.get(`http://${ipOfServer}:8080/user`,{params:{userName:user.userName}}).then(req => setUser(req.data));
         getProg('HResources',ipOfServer).then(prog => setHrProg(prog));
         getProg('Mechanics',ipOfServer).then(prog => setMechProg(prog));
         getProg('Chemists',ipOfServer).then(prog => setChemProg(prog));
@@ -57,12 +57,11 @@ function AdminPortal(){
         getProg('Security',ipOfServer).then(prog => setSecProg(prog));
         getProg('Cleaning',ipOfServer).then(prog => setCleanProg(prog));
     },[change]);
-
     return <div className={styles.container}>
         <NavBar user={user} ipOfServer={ipOfServer} change={change} setChange={setChange} requestPage={requestPage} setRequestPage={setRequestPage}/>
         <div className={styles.interface}>
             <div className={activity.info}>
-                <Activity ipOfServer={ipOfServer} change={change} setChange={setChange} requestPage={requestPage} infoRequests={infoRequests} setInfoRequests={setInfoRequests} infoAccepted={infoAccepted} setInfoAccepted={setInfoAccepted}/> 
+                <Activity user={user} ipOfServer={ipOfServer} change={change} setChange={setChange} requestPage={requestPage} infoRequests={infoRequests} setInfoRequests={setInfoRequests} infoAccepted={infoAccepted} setInfoAccepted={setInfoAccepted}/> 
             </div>
             <div className={profile.profileContainer}>
                 <Profile ipOfServer={ipOfServer} user={user} setUser={setUser} photoLink={photo} change={change} setChange={setChange} infoAccepted={infoAccepted}/>

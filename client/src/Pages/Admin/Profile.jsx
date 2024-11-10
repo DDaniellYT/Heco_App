@@ -23,7 +23,7 @@ function Profile(props){
         <div className={styles.profileChat}>Chat</div>
         <div className={styles.profileAccepted}>Accepted Tasks</div>
             <div className={styles.profileList}>{
-            props.infoAccepted.length==0?<div className={styles.noTasks}>No Tasks</div>:props.infoAccepted.map((item)=>{
+            props.infoAccepted.length==0?<div className={styles.noTasks}>No Tasks</div>:props.infoAccepted.map((item,index)=>{
                 var reciever = "NO1";
                 switch(item.reciever){
                     case "HResources": reciever = "HR";break;
@@ -34,12 +34,12 @@ function Profile(props){
                     case "Cleaning": reciever = "CLN";break;
                 }
                 return <div className={styles.profileListItem} key={item.id}>
-                    <div className={styles.profileItemId}>{item.id}</div>
+                    <div className={styles.profileItemId}>{index}</div>
                     <div className={styles.profileItemReciever}>{reciever}</div>
                     <div className={styles.profileItemSubject}>{item.subject==""?"Nothing":item.subject}</div>
                     <div className={styles.profileItemWhen}>{item.when}</div>
                     <div className={styles.profileItemDone} onClick={()=>{
-                        axios.delete(`http://${props.ipOfServer}:8080/requests`,{params:{id:item.id}}).then((req)=>{
+                        axios.post(`http://${props.ipOfServer}:8080/requests`,{reciever:props.user.userName,id:item.id,accepted:'DONE'}).then((req)=>{
                             props.setChange(!props.change);
                         });
                     }}>Done</div>
