@@ -19,10 +19,13 @@ async function getProg(rec,ip){
     var prog = 0;
     await axios.get(`http://${ip}:8080/requests`,{params:{reciever_role:`${rec}`}}).then(async (req,res)=>{
         const tempAll = req.data;
-        const tempYes = tempAll.filter((item)=>{
-            if(item.accepted == 'yes')return item;
+        const tempNo = tempAll.filter((item)=>{
+            if(item.accepted == 'NO')return item;
         })
-        prog = tempAll.length==0?0:(tempYes.length/tempAll.length*100).toFixed(0);
+        const tempYes = tempAll.filter((item)=>{
+            if(item.accepted == 'YES')return item;
+        })
+        prog = (tempYes.length+tempNo.length)==0?0:(tempYes.length/(tempYes.length+tempNo.length)*100).toFixed(0);
         console.log(prog);
     });
     return prog;
@@ -36,7 +39,7 @@ function AdminPortal(){
     const [infoRequests,setInfoRequests] = useState([]);
     const [infoAccepted,setInfoAccepted] = useState([]);
     const [change,setChange] = useState(false);
-    const [user,setUser] = useState({userName:navState.state.userName});
+    const [user,setUser] = useState({...navState.state});
 
     const [hrProg,setHrProg] = useState(50);
     const [mechProg,setMechProg] = useState(50);
@@ -49,7 +52,6 @@ function AdminPortal(){
         document.getElementById("root").className = styles.root;
         axios.get(`http://${ipOfServer}:8080/requests`,{params:{accepted:'YES'}}).then(req => setInfoAccepted(req.data));
         axios.get(`http://${ipOfServer}:8080/requests`,{params:{accepted:'NO'}}).then(req => setInfoRequests(req.data));
-        axios.get(`http://${ipOfServer}:8080/user`,{params:{userName:user.userName}}).then(req => setUser(req.data));
         getProg('HResources',ipOfServer).then(prog => setHrProg(prog));
         getProg('Mechanics',ipOfServer).then(prog => setMechProg(prog));
         getProg('Chemists',ipOfServer).then(prog => setChemProg(prog));

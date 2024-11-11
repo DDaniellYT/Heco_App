@@ -2,13 +2,16 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 
 import styles from "../Styles/ProfileList.module.css";
+import RequestItem from "./Admin/RequestItem"
+
 
 const UserProfile = props => {
     const hours = Math.floor(props.item.time/3600);
     const minutes = Math.floor((props.item.time-hours*3600)/60);
     const seconds = props.item.time-hours*3600-minutes*60;
 
-    const [changePanel,setChangePanel] = useState(false);
+    const [changePanel, setChangePanel] = useState(false);
+    const [userActivity, setUserActivity] = useState([]);
     const [user, setUser] = useState({});
     const [sure, setSure] = useState(false);
 
@@ -42,7 +45,11 @@ const UserProfile = props => {
                         setSure(false);
                     }}>NO</div>
                 </div>:null}
-                <div className={styles.changePanelActivity}>activity</div>
+                <div className={styles.changePanelActivity}>
+                    {userActivity.map((item,index)=>{
+                        return <RequestItem user={user} ipOfServer={props.ipOfServer} key={index} change={props.change} setChange={props.setChange} item={item} index={index+1}/>
+                    })}
+                </div>
             </div>
         </div>:null}
         <div className={styles.userProfilePic} style={{
@@ -56,10 +63,13 @@ const UserProfile = props => {
             {seconds.toString().length<2?`0${seconds}`:seconds}
         </div>
         <div className={styles.userProfileChange} onClick={()=>{
-            axios.get(`http://${props.ipOfServer}:8080/usersTable`,{params:{userName:props.item.userName,id:props.item.id}}).then((req)=>{
-                console.log(req.data);
-                setChangePanel(true);
+            axios.get(`http://${props.ipOfServer}:8080/user`,{params:{userName:props.item.userName}}).then((req)=>{
                 setUser(req.data);
+            }).then(()=>{
+                axios.get(`http://${props.ipOfServer}:8080/requests`,{params:{reciever:user.userName,accepted:'YES'}}).then((req)=>{
+                    setUserActivity(req.data);
+                    setChangePanel(true);
+                })
             });
         }}>CHANGE</div>
     </div>;

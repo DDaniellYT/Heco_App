@@ -151,11 +151,11 @@ function RequestPanel(props){
             <div className={styles.requestSubmitButtonContainer}>
                 <button className={styles.requestSubmitButton} onClick={()=>{
                     axios.put(`http://${props.ipOfServer}:8080/requests`,{
-                        id:`${props.user.id}`,
                         subject:`${subject}`,
                         message:`${message}`,
-                        reciever:`${reciever}`,
+                        reciever_role:`${reciever}`,
                         sender:`${props.user.userName}`,
+                        sender_role:`${props.user.role}`,
                         urgency:`${urgency}`
                     }).then(()=>{
                             props.setChange(!props.change);

@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import styles from '../../Styles/Activity.module.css'
 import axios from 'axios'
 
@@ -12,7 +12,7 @@ function RequestItem(props){
     return <div className={styles.infoItemContainer}>
         <div className={styles.infoId}>{props.index}</div>
         <div className={styles.infoSender}>{props.item.sender}</div>
-        <div className={styles.infoReceiver}>{props.item.reciever}</div>
+        <div className={styles.infoReceiver}>{props.item.reciever_role}</div>
         <div className={styles.infoUrgency}>{props.item.urgency}</div>
         <div className={styles.infoSubject}>{props.item.subject}</div>
         <div className={styles.infoMessage}>{props.item.message}</div>

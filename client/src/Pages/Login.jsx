@@ -21,20 +21,23 @@ function Login(){
     return <div className={styles.rootCopy} onKeyDown={(e)=>{
                 if(e.key === 'Enter'){
                     console.log('enter pressed');
-                    axios.get(`http://${ipOfServer}:8080/user`,{params:{userName:user.name}}).then((req,res)=>{
-                        if(req.status == 200){
-                            if(req.data.userName == user.name && req.data.password == user.pass){
-                                switch(req.data.role){
-                                    case 'admin': nav('/admin',{state:req.data});break;
-                                    case 'hr': nav('/hr',{state:req.data});break;
-                                    case 'mech': nav('/mech',{state:req.data});break;
-                                    case 'chem': nav('/chem',{state:req.data});break;
-                                    case 'sec': nav('/sec',{state:req.data});break;
-                                    case 'work': nav('/work',{state:req.data});break;
-                                    case 'clean': nav('/clean',{state:req.data});break;
-                                }}}
-                        else setCheckText('User or Password not found');
-                    })
+                    if(user.name == '' || user.pass == '')setCheckText('User or Password cannot be empty!');
+                    else{
+                        axios.get(`http://${ipOfServer}:8080/user`,{params:{userName:user.name}}).then((req,res)=>{
+                            if(req.status == 200){
+                                if(req.data.userName == user.name && req.data.password == user.pass){
+                                    switch(req.data.department){
+                                        case 'admin': nav('/admin',{state:req.data});break;
+                                        case 'hr': nav('/admin',{state:req.data});break;
+                                        case 'mech': nav('/admin',{state:req.data});break;
+                                        case 'chem': nav('/admin',{state:req.data});break;
+                                        case 'sec': nav('/admin',{state:req.data});break;
+                                        case 'work': nav('/admin',{state:req.data});break;
+                                        case 'clean': nav('/admin',{state:req.data});break;
+                                    }}}
+                            else setCheckText('User or Password not found');
+                        })
+                    }
                 }
             }}>
             <div className={styles.container}>
@@ -46,29 +49,26 @@ function Login(){
                     setUser({...user, pass: event.target.value});
                 }}/>
                 <button className={styles.button} onClick={()=>{
-                    axios.get(`http://${ipOfServer}:8080/user`,{params:{userName:user.name}}).then((req,res)=>{
-                        if(req.status == 200){
-                            if(req.data.userName == user.name && req.data.password == user.pass){
-                                switch(req.data.role){
-                                    case 'admin': nav('/admin',{state:req.data});break;
-                                    case 'hr': nav('/hr',{state:req.data});break;
-                                    case 'mech': nav('/mech',{state:req.data});break;
-                                    case 'chem': nav('/chem',{state:req.data});break;
-                                    case 'sec': nav('/sec',{state:req.data});break;
-                                    case 'work': nav('/work',{state:req.data});break;
-                                    case 'clean': nav('/clean',{state:req.data});break;
-                                }}}
-                        else setCheckText('User or Password not found');
-                    })
+                    if(user.name == '' || user.pass == '')setCheckText('User or Password cannot be empty!');
+                    else{
+                        axios.get(`http://${ipOfServer}:8080/user`,{params:{userName:user.name}}).then((req,res)=>{
+                            if(req.status == 200){
+                                if(req.data.userName == user.name && req.data.password == user.pass){
+                                    switch(req.data.department){
+                                        case 'admin': nav('/admin',{state:req.data});break;
+                                        case 'hr': nav('/admin',{state:req.data});break;
+                                        case 'mech': nav('/admin',{state:req.data});break;
+                                        case 'chem': nav('/admin',{state:req.data});break;
+                                        case 'sec': nav('/admin',{state:req.data});break;
+                                        case 'work': nav('/admin',{state:req.data});break;
+                                        case 'clean': nav('/admin',{state:req.data});break;
+                                    }}}
+                            else setCheckText('User or Password not found');
+                        })
+                    }
                 }}>Submit</button>
                 <div className={styles.carousel}>
-                    <div style={{
-                        backgroundColor:'red'
-                    }} onClick={()=>{
-                    axios.get(`http://${ipOfServer}:8080/requests`,{params:{reciever_role:'hr'}}).then(req=>{
-                        console.log(req.data);
-                    })
-                }}>{checkText}</div>
+                    <div>{checkText}</div>
                 </div>
                 <footer className={styles.footer}>@Copywright Daniel.Co && Heco.Schrauben {new Date().getFullYear()}-{new Date().getFullYear()+1}</footer>
             </div>

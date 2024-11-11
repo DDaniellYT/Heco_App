@@ -46,7 +46,6 @@ const requestedStyleVert = (prog)=>{
     }
 };
 
-
 const Stats = (props)=>{
     const statBarOne = {
         display: 'flex',
