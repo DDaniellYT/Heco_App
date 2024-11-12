@@ -6,6 +6,7 @@ import styles from "../Styles/ProfileList.module.css";
 
 const AddUserPanel = (props)=>{
     const [role, setRole] = useState('');
+    const [picture, setPicture] = useState();
     const [userName, setUserName] = useState('');
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
@@ -15,9 +16,12 @@ const AddUserPanel = (props)=>{
 
     return <div className={styles.userPanelBackground}>
         <div className={styles.userPanel}>
-            <div className={styles.userPic} onClick={()=>{
-                console.log('open folder and upload');
-            }}>Press me to upload picture</div>
+            <div className={styles.userProfilePicContainer}>
+                <input id='getFile' type="file" accept="image/png, image/gif, image/jpeg" className={styles.userProfileInput}/>
+                <div type='file' className={styles.userProfilePic} onClick={()=>{
+                    document.getElementById('getFile').click();
+                }}>{picture?null:'Press me to upload Picture!'}</div>
+            </div>
             <div className={styles.userUserName}>
                 <label>UserName:</label> 
                 <input maxLength={10} value={userName} onChange={(e)=>{

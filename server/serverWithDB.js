@@ -17,6 +17,7 @@ app.use(express.json());
 const createUsersTable = async (database) => {
   const createUsersQuery = `CREATE TABLE IF NOT EXISTS Users(
     id INTEGER PRIMARY KEY,
+    profilePic TEXT,
     userName TEXT NOT NULL UNIQUE,
     password TEXT NOT NULL,
     firstName TEXT NOT NULL,
