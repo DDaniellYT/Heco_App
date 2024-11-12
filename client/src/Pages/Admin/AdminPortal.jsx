@@ -7,9 +7,6 @@ import activity from '../../Styles/Activity.module.css'
 import profile from '../../Styles/Profile.module.css'
 import stats from "../../Styles/Stats.module.css";
 
-
-import photo from '../../profileImages/heco_slider_img3.jpg';
-
 import NavBar from "./NavBar";
 import Activity from "./Activity";
 import Profile from "./Profile";
@@ -39,6 +36,7 @@ function AdminPortal(){
     const [infoRequests,setInfoRequests] = useState([]);
     const [infoAccepted,setInfoAccepted] = useState([]);
     const [change,setChange] = useState(false);
+    const [photo,setPhoto] = useState(null);
 
     const user = {...navState.state};
 
@@ -67,7 +65,7 @@ function AdminPortal(){
                 <Activity user={user} ipOfServer={ipOfServer} change={change} setChange={setChange} requestPage={requestPage} infoRequests={infoRequests} setInfoRequests={setInfoRequests} infoAccepted={infoAccepted} setInfoAccepted={setInfoAccepted}/> 
             </div>
             <div className={profile.profileContainer}>
-                <Profile ipOfServer={ipOfServer} user={user} photoLink={photo} change={change} setChange={setChange} infoAccepted={infoAccepted}/>
+                <Profile ipOfServer={ipOfServer} user={user} photo={photo} change={change} setChange={setChange} infoAccepted={infoAccepted}/>
             </div>
             <div className={stats.quickContainer}>
                 <Stats hrProg={hrProg} mechProg={mechProg} chemProg={chemProg} workProg={workProg} secProg={secProg} cleanProg={cleanProg}/>

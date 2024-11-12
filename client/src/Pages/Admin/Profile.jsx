@@ -6,11 +6,11 @@ function Profile(props){
 
     return <div className={styles.profileListContainer}>
         <div className={styles.profilePicture} style={{
-            backgroundImage:`url(${props.photoLink})`,
+            backgroundImage:props.photo,
             backgroundPosition: 'center',
             backgroundSize: 'cover',
             backgroundRepeat: 'no-repeat'
-        }}></div>
+        }}>{props.photo?null:'get a picture man'}</div>
         <div className={styles.profileName}>
             <div>First : {props.user.firstName}</div>
             <div>Last : {props.user.lastName}</div>

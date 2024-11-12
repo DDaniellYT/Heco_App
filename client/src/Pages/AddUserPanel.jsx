@@ -6,7 +6,6 @@ import styles from "../Styles/ProfileList.module.css";
 
 const AddUserPanel = (props)=>{
     const [role, setRole] = useState('');
-    const [picture, setPicture] = useState();
     const [userName, setUserName] = useState('');
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
@@ -14,13 +13,20 @@ const AddUserPanel = (props)=>{
 
     const [statusMessage, setStatusMessage] = useState('');
 
+
     return <div className={styles.userPanelBackground}>
         <div className={styles.userPanel}>
             <div className={styles.userProfilePicContainer}>
-                <input id='getFile' type="file" accept="image/png, image/gif, image/jpeg" className={styles.userProfileInput}/>
-                <div type='file' className={styles.userProfilePic} onClick={()=>{
+                <input id='getFile' type="file" accept="image/png, image/gif, image/jpeg" className={styles.userProfileInput} onChange={(e)=>{
+                    const reader = new FileReader();       
+                    reader.onload = (e) => {
+                        props.setImage(e.target.result);
+                    };
+                    reader.readAsDataURL(e.target.files[0]);    
+                }}/>
+                <img src={props.image?props.image:null} alt="Press me to upload pic" onClick={()=>{
                     document.getElementById('getFile').click();
-                }}>{picture?null:'Press me to upload Picture!'}</div>
+                }} className={styles.userProfilePic}/>
             </div>
             <div className={styles.userUserName}>
                 <label>UserName:</label> 
@@ -91,6 +97,7 @@ const AddUserPanel = (props)=>{
             <div className={styles.statusMessage}>{statusMessage}</div>
             <div className={styles.userSubmit} onClick={()=>{
                 const user = {
+                    profilePic: props.image,
                     userName: userName,
                     password: password,
                     firstName: firstName,
@@ -98,11 +105,12 @@ const AddUserPanel = (props)=>{
                     department: props.department,
                     role: role,
                 }
-                if(user.userName == '' || user.firstName == '' || user.lastName == '' || user.password == '' || user.role == '')setStatusMessage('No empty spaces allowed!');
+                if(user.profilePic == null || user.userName == '' || user.firstName == '' || user.lastName == '' || user.password == '' || user.role == '')setStatusMessage('No empty spaces allowed!');
                 else {
                     axios.put(`http://${props.ipOfServer}:8080/user`,{user:user}).then((req)=>{
                         if(req.status == 208) setStatusMessage('User already exists!');
                         if(req.status == 200) props.setUserPanel(false);
+                        props.setImage(null);
                         props.setChange(!props.change);
                     });
                 }

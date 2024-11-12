@@ -1,6 +1,7 @@
 import express, { query } from "express";
 import cors from "cors";
 import bodyParser from "body-parser";
+import fs from 'fs';
 
 import sqlite3 from "sqlite3";
 
@@ -12,12 +13,12 @@ const port = 8080;
 
 app.use(bodyParser.urlencoded({extended:true}));
 app.use(cors());
-app.use(express.json());
+app.use(express.json({ limit: '10mb', extended: true }));
 
 const createUsersTable = async (database) => {
   const createUsersQuery = `CREATE TABLE IF NOT EXISTS Users(
     id INTEGER PRIMARY KEY,
-    profilePic TEXT,
+    profilePic BLOB,
     userName TEXT NOT NULL UNIQUE,
     password TEXT NOT NULL,
     firstName TEXT NOT NULL,
@@ -112,12 +113,21 @@ const doesUserExist = async (database,user)=>{
     });
   });
 };
+
+// try to make images be able to be uploaded
 const createUser = async (database,user) => {
-  const insertUserQuery = `INSERT INTO Users(userName,password,firstName,lastName,department,role,time,existance) VALUES('${user.userName}','${user.password}','${user.firstName}','${user.lastName}','${user.department}','${user.role}',${new Date().getTime()},'OUT')`;
+  const insertUserQuery = `INSERT INTO Users(userName,profilePic,password,firstName,lastName,department,role,time,existance) VALUES('${user.userName}',?,'${user.password}','${user.firstName}','${user.lastName}','${user.department}','${user.role}',${new Date().getTime()},'OUT')`;
   return new Promise(async (resolve)=>{
+    let data;
+    fs.readFile(user.profilePic,(err, tempData)=>{
+      console.log(err);
+      if(err)resolve(503);
+      data = tempData;
+    });
     if(await doesUserExist(database,user) == 200)resolve(208);
     else {
-      database.run(insertUserQuery,(err)=>{
+      database.run(insertUserQuery,data,(err)=>{
+        console.log(err);
         if(err)resolve(503);
         else resolve(200); 
       });
@@ -210,9 +220,9 @@ const updateTask = (database,reciever,id,accepted)=>{
   });
 };
 
-
 const user = {
   userName:'admin3',
+  profilePic:null,
   password:'adminpass3',
   firstName:'admin3FirstName',
   lastName:'admin3LastName',
@@ -239,9 +249,9 @@ const task = {
 console.log(await createUsersTable(factory));
 console.log(await createTaskTable(factory));
 
-// console.log(await createUserEntry(factory,user));
-// console.log('=====');
+// console.log(await createUser(factory,user));
 console.log(await createTask(factory,task));
+
 // console.log('=====');
 // console.log(await createUserActivityTable(factory,user));
 // console.log(await createUserActivityEntry(factory,user,task));
@@ -252,15 +262,9 @@ console.log(await createTask(factory,task));
 //not working yet
 
 
-// /// almost works as intended, just the data doesnt get inside the db but no error
-// app.put('/requests',async (req,res)=>{          
-  //   const insertQueryAll = `INSERT INTO Requests(sender,reciever,urgency,subject,message,accepted) VALUES('${req.body.sender}','${req.body.reciever}','${req.body.urgency}','${req.body.subject}','${req.body.message}','no')`;
-  //   const insertQuerySpecific = `INSERT INTO ${req.body.sender}${req.body.id}(task) VALUES('${JSON.stringify(req.body)}')`;
-  //   await insertQuery(insertQueryAll);
-  //   await insertQuery(insertQuerySpecific);
-//   res.send('');
-// });
+
 //working
+
 
 
 // CREATE
@@ -302,11 +306,11 @@ app.get('/user',async (req,res)=>{
   else 
     res.status(200).send(user[0]);
 });
+// UPDATE /// maybe not wokring, to be tested
 app.post('/user', async (req,res)=>{
   const status = await updateUser(factory,req.body);
   res.sendStatus(status);
-})
-
+});
 
 
 

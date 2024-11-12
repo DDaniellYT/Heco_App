@@ -11,6 +11,7 @@ const ProfileList = (props)=>{
     const [users,setUsers] = useState([{userName:'sada'}]);
     const [department,setDepartment] = useState(props.department);
     const [userPanel,setUserPanel] = useState(false);
+    const [image,setImage] = useState(null);
     
     useEffect(()=>{
         axios.get(`http://${props.ipOfServer}:8080/user`,{params:{department:props.department}}).then(req => {
@@ -22,7 +23,7 @@ const ProfileList = (props)=>{
     },[props.change]);
 
     return <div className={styles.container}>
-        {userPanel?<AddUserPanel setChange={props.setChange} change={props.change} ipOfServer={props.ipOfServer} userPanel={userPanel} setUserPanel={setUserPanel} department={department} setDepartment={setDepartment}/>:null}
+        {userPanel?<AddUserPanel image={image} setImage={setImage} setChange={props.setChange} change={props.change} ipOfServer={props.ipOfServer} userPanel={userPanel} setUserPanel={setUserPanel} department={department} setDepartment={setDepartment}/>:null}
         <div className={styles.userProfileTitle}>User List</div>
         <div className={styles.addUserProfile} onClick={()=>{
             setUserPanel(true);
