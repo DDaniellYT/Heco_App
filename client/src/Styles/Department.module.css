@@ -17,6 +17,6 @@
     height: 100%;
 
     display: grid;
-    grid-template-columns: 10% 40% auto;
-    grid-template-rows: 50% 50%;
+    grid-template-columns: 12% 45% auto;
+    grid-template-rows: 60% 40%;
 }

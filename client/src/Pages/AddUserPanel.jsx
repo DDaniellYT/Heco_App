@@ -20,7 +20,7 @@ const AddUserPanel = (props)=>{
             }}>Press me to upload picture</div>
             <div className={styles.userUserName}>
                 <label>UserName:</label> 
-                <input maxLength={20} value={userName} onChange={(e)=>{
+                <input maxLength={10} value={userName} onChange={(e)=>{
                     setUserName(e.target.value);
                     console.log(e.target.value);
                 }}/>
@@ -49,22 +49,22 @@ const AddUserPanel = (props)=>{
             {props.department=='admin'?<div className={styles.userDepartment}>
                 <label>DEPARTMENT</label>
                 <div onClick={()=>{
-                    props.setDepartment('hr');
+                    props.setDepartment('HResources');
                 }}>HResources</div>
                 <div onClick={()=>{
-                    props.setDepartment('mech');
+                    props.setDepartment('Mechanics');
                 }}>Mechanics</div>
                 <div onClick={()=>{
-                    props.setDepartment('chem');
+                    props.setDepartment('Chemists');
                 }}>Chemists</div>
                 <div onClick={()=>{
-                    props.setDepartment('work');
+                    props.setDepartment('Workers');
                 }}>Workers</div>
                 <div onClick={()=>{
-                    props.setDepartment('sec');
+                    props.setDepartment('Security');
                 }}>Security</div>
                 <div onClick={()=>{
-                    props.setDepartment('clean');
+                    props.setDepartment('Cleaning');
                 }}>Cleaning</div>
             </div>:null}
             <div style={props.department=='admin'?{
@@ -72,16 +72,16 @@ const AddUserPanel = (props)=>{
             }:null} className={styles.userRole}>
                 <label>ROLE</label>
                 <div onClick={()=>{
-                    setRole('admin');
+                    setRole('Admin');
                 }}>Admin</div>
                 <div onClick={()=>{
-                    setRole('manager');
+                    setRole('Manager');
                 }}>Manager</div>
                 <div onClick={()=>{
-                    setRole('office');
+                    setRole('Office');
                 }}>Office</div>
                 <div onClick={()=>{
-                    setRole('worker');
+                    setRole('Worker');
                 }}>Worker</div>
             </div>
             <div className={styles.statusMessage}>{statusMessage}</div>
@@ -94,12 +94,12 @@ const AddUserPanel = (props)=>{
                     department: props.department,
                     role: role,
                 }
-                
                 if(user.userName == '' || user.firstName == '' || user.lastName == '' || user.password == '' || user.role == '')setStatusMessage('No empty spaces allowed!');
                 else {
                     axios.put(`http://${props.ipOfServer}:8080/user`,{user:user}).then((req)=>{
                         if(req.status == 208) setStatusMessage('User already exists!');
                         if(req.status == 200) props.setUserPanel(false);
+                        props.setChange(!props.change);
                     });
                 }
             }}>Submit</div>

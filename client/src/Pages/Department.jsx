@@ -4,7 +4,7 @@ import { useLocation } from "react-router-dom";
 
 import axios from "axios";
 
-import styles from "../Styles/DEP_HR.module.css";
+import styles from "../Styles/Department.module.css";
 import activity from "../Styles/Activity.module.css";
 import profile from "../Styles/Profile.module.css";
 import stats from "../Styles/Stats.module.css";
@@ -29,11 +29,11 @@ async function getProg(rec,ip){
     });
     return prog;
 }
-const DEP_HR = () => {
-    const ipOfServer = '192.168.0.104';
-    const department = 'hr';
+const Department = (props) => {
+    const ipOfServer = props.ipOfServer;
 
     const user = useLocation().state;
+
     const [requestPage,setRequestPage] = useState(false);
     const [infoRequests,setInfoRequests] = useState([]);
     const [infoAccepted,setInfoAccepted] = useState([]);
@@ -57,7 +57,7 @@ const DEP_HR = () => {
             </div>
             {/* <div className={profileList.}>
             </div> */}
-            <ProfileList department={department} ipOfServer={ipOfServer} change={change} setChange={setChange}/>
+            <ProfileList department={props.department} ipOfServer={ipOfServer} change={change} setChange={setChange}/>
             <div className={stats.quickContainer}>
                 <Stats hrProg={hrProg}/>
             </div>
@@ -65,4 +65,4 @@ const DEP_HR = () => {
     </div>
 }
 
-export default DEP_HR;
+export default Department;

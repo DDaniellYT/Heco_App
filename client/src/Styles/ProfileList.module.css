@@ -3,14 +3,14 @@
 }
 .container{
     grid-column: 3/4;
-    grid-row: 1/2;
+    grid-row: 1/3;
     width: 100%;
     height: 100%;
     background-color: moccasin;
 
     display: grid;
     grid-template-columns: 10% auto 15%;
-    grid-template-rows: 17% 85%;
+    grid-template-rows: 12% 85%;
     
 }
 .userProfileTitle{
@@ -24,27 +24,26 @@
     justify-content: center;
     align-items: center;
 
-    font-size: 25px;
+    font-size: 35px;
     font-weight: bold;
 }
 .userProfileList{
     grid-column: 1/4;
     grid-row: 2/3;
-
-    padding: 0px;
-    margin: 0px;
-
+    
     display: flex;
     flex-direction: column;
     align-items: center;
+    align-self: center;
+    justify-self: center;
     
     outline: 2px solid black;
-    border-bottom: 3px solid black;
 
     overflow-x: hidden;
-    width: 100%;
-    height: 100%;
-    background-color: orangered;
+    width: 90%;
+    height: 90%;
+    background-color: beige;
+    border-radius: 15px;
 }
 .userProfileList *{
     flex-shrink: 0;
@@ -52,43 +51,65 @@
 .userProfileContainer{
     grid-column: 2/3;
     width: 90%;
-    height: 18%;
+    height: 13%;
+    align-self: center;
+    justify-self: center;
 
-    margin: 20px;
-
+    margin: 10px;
     display: grid;
-    grid-template-columns: 15% 40% auto 12% 15%;
+    grid-template-columns: 15% auto 15% 10% 18%;
     grid-template-rows: auto;
+
+    background-color:orangered;
 
     border-radius: 10px;
     outline: 2px solid black;
 }
 .userProfilePic{
+    grid-column: 1/2;
+    grid-row: 1/2;
     display: flex;
     justify-content: center;
     align-items: center;
     border-radius: 10px 0px 0px 10px;
-    background-color: red;
+    outline: 2px solid black;
+    background-color: blue;
 }
 .userProfileName{
+    grid-column: 2/3;
+    grid-row: 1/2;
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
-    background-color: gray;
+    padding-left: 2%;
+    padding-right: 2%;
+    outline: 2px solid black;
+    background-color: bisque;
 }
-.userProfileExistance{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: brown;
+.userProfileName *{
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+.userProfileName label{
+    font-weight: normal;
 }
 .userProfileClockHour{
+    grid-column: 3/4;
+    grid-row: 1/2;
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: cyan;
 }
-.userProfileChange{
+.userProfileExistance{
+    grid-column: 4/5;
+    grid-row: 1/2;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: bisque;
+    outline: 2px solid black;
+}
+.userProfileDetails{
     display: flex;
     justify-content: center;
     align-items: center;
@@ -97,9 +118,8 @@
     font-size: 15px;
     font-weight: bold;
     text-shadow: 0px 0px 5px white;
-    background-color: green;
 }
-.userProfileChange:hover{
+.userProfileDetails:hover{
     font-size: 20px;
     text-shadow: 0px 0px 5px yellow;
 }
@@ -114,7 +134,7 @@
     margin-right: 20px;
 
     width: 100%;
-    height: 70%;
+    height: 60%;
     align-self: center;
     justify-self: center;
 
@@ -344,7 +364,7 @@
     text-shadow: 2px 2px 2px red;
 }
 
-.changePanelContainer{
+.detailsPanelContainer{
     position: absolute;
     top: 0px;
     left: 0px;
@@ -358,7 +378,7 @@
     
     background-color: rgb(0,0,0,0.1);
 }
-.changePanel{
+.detailsPanel{
     position: absolute;
     display: grid;
     grid-template-columns: 25% 5% auto 10%;
@@ -372,7 +392,7 @@
     box-shadow: 0px 0px 10px 15px rgb(255, 83, 21);
     padding: 10px;
 }
-.changePanelPic{
+.detailsPanelPic{
     grid-column: 1/2;
     grid-row: 1/5;
 
@@ -385,7 +405,7 @@
     background-size: cover;
     background-position: center;
 }
-.changePanelName{
+.detailsPanelName{
     grid-row: 5/6;
     grid-column: 1/2;
 
@@ -401,7 +421,7 @@
     font-size: 1.5rem;
     font-weight: bold;
 }
-.changePanelRole{
+.detailsPanelRole{
     grid-row: 6/7;
     grid-column: 1/2;
 
@@ -416,7 +436,7 @@
     font-size: 1.5rem;
     font-weight: bold;
 }
-.changePanelTime{
+.detailsPanelTime{
     grid-row: 7/8;
     grid-column: 1/2;
 
@@ -432,7 +452,7 @@
     font-size: 1.5rem;
     font-weight: bold;
 }
-.changePanelDepartment{
+.detailsPanelDepartment{
     grid-column: 3/4;
     grid-row: 1/2;
     
@@ -443,7 +463,7 @@
     font-size: 3rem;
     font-weight: bold;
 }
-.changePanelExit{
+.detailsPanelExit{
     display: flex;
     justify-content: center;
     align-items: center;
@@ -454,11 +474,11 @@
     grid-column: 4/5;
     grid-row: 1/2;
 }
-.changePanelExit:hover{
+.detailsPanelExit:hover{
     color: white;
     text-shadow: 3px 3px 3px gray;
 }
-.changePanelActivity{
+.detailsPanelActivity{
     grid-column: 3/5;
     grid-row: 2/7;
 
@@ -469,11 +489,11 @@
 
     overflow: hidden;
 }
-.changePanelActivity *{
+.detailsPanelActivity *{
     flex-shrink: 0;
 }
 
-.changePanelSure{
+.detailsPanelSure{
     background-color: beige;
     position: absolute;
     

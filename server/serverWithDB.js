@@ -79,17 +79,12 @@ const createTaskTable = async (database)=>{
 };
 
 const getUser = async (database,user) =>{
-  console.log('====');
-  console.log(user);
-  console.log('====');
   const getUserQuery = `SELECT * FROM Users ${user.userName || user.department?`WHERE(
     ${user.userName?`userName = '${user.userName}'`:` `}
     ${user.userName && user.department ?` AND `:``}
     ${user.department?`department = '${user.department}'`:``}
     )`:``}`;
-
-  console.log(getUserQuery);
-
+    console.log(getUserQuery);
   return new Promise((resolve)=>{
     database.all(getUserQuery,(err,rows)=>{
       if(err)resolve(503);
@@ -97,12 +92,12 @@ const getUser = async (database,user) =>{
     });
   });
 };
-const getAllUsers = async (database) => {
-  const getAllUsersQuery = `SELECT * FROM Users`;
+const getUserById = async (database,id) =>{
+  const getUserQuery = `SELECT * FROM Users WHERE id = ${id}}`;
   return new Promise((resolve)=>{
-    database.all(getAllUsersQuery,(err,rows)=>{
+    database.all(getUserQuery,(err,rows)=>{
       if(err)resolve(503);
-      else resolve(rows);
+      else resolve(rows[0]);
     });
   });
 };
@@ -117,14 +112,9 @@ const doesUserExist = async (database,user)=>{
   });
 };
 const createUser = async (database,user) => {
-  const timeHours = new Date().getHours()*3600;
-  const timeMinutes = new Date().getMinutes()*60;
-  const timeSeconds = new Date().getSeconds();
-  const time = timeHours+timeMinutes+timeSeconds;
-
-  const insertUserQuery = `INSERT INTO Users(userName,password,firstName,lastName,department,role,time,existance) VALUES('${user.userName}','${user.password}','${user.firstName}','${user.lastName}','${user.department}','${user.role}',${time},'OUT')`;
+  const insertUserQuery = `INSERT INTO Users(userName,password,firstName,lastName,department,role,time,existance) VALUES('${user.userName}','${user.password}','${user.firstName}','${user.lastName}','${user.department}','${user.role}',${new Date().getTime()},'OUT')`;
   return new Promise(async (resolve)=>{
-    if(await doesUserExist(factory,user) == 200)resolve(208);
+    if(await doesUserExist(database,user) == 200)resolve(208);
     else {
       database.run(insertUserQuery,(err)=>{
         if(err)resolve(503);
@@ -133,6 +123,29 @@ const createUser = async (database,user) => {
     };
   });
 };
+const updateUser = async (database,user,userId)=>{
+  const tempUser = await getUserById(database,userId)
+  const updateQuery = `UPDATE Users SET(
+      userName = '${user.userName}',
+      password = '${user.password}',
+      firstName = '${user.firstName}',
+      lastName = '${user.lastName}',
+      department = '${user.department}',
+      role = '${user.role}',
+      time = '${user.time}',
+      existance = '${user.existance}')
+      WHERE (id = ${user.id})`;
+  return new Promise(async (resolve)=>{
+    if(await doesUserExist(database,tempUser) == 204)resolve(204);
+    else {
+      database.run(updateQuery,(err)=>{
+        if(err)resolve(503);
+        else resolve(200);
+      })
+    }
+  })
+}
+
 
 /*
 id INTEGER PRIMARY KEY,
@@ -150,6 +163,7 @@ accepted TEXT NOT NULL
 */
 
 const readTasks = (database,reciever_role,reciever,accepted)=>{
+  if(reciever_role == 'all')reciever_role = undefined;
   const getAllQuery = `SELECT * FROM Tasks ${reciever_role || reciever || accepted ? `WHERE(
       ${reciever_role ? `reciever_role = '${reciever_role}'`:' '}
       ${reciever_role && reciever?` AND `:''}
@@ -157,10 +171,10 @@ const readTasks = (database,reciever_role,reciever,accepted)=>{
       ${reciever_role && reciever || reciever_role && accepted || reciever && accepted?` AND `:''}
       ${accepted ? `accepted = '${accepted}'`:' '}
     )`:''}`;
-    console.log(getAllQuery)
+    // console.log(getAllQuery)
   return new Promise((resolve)=>{
     database.all(getAllQuery,(err,rows)=>{
-      console.log(err);
+      // console.log(err);
       if(err)resolve(503);
       else resolve(rows);
     })
@@ -287,6 +301,13 @@ app.get('/user',async (req,res)=>{
   else 
     res.status(200).send(user[0]);
 });
+app.post('/user', async (req,res)=>{
+  const status = await updateUser(factory,req.body);
+  res.sendStatus(status);
+})
+
+
+
 
 
 app.listen(port, () => {

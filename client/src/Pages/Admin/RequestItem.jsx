@@ -9,6 +9,7 @@ function RequestItem(props){
         reciever: props.item.reciever,
         when: 0
     }
+    // console.log()
     return <div className={styles.infoItemContainer}>
         <div className={styles.infoId}>{props.index}</div>
         <div className={styles.infoSender}>{props.item.sender}</div>

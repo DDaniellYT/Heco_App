@@ -39,7 +39,8 @@ function AdminPortal(){
     const [infoRequests,setInfoRequests] = useState([]);
     const [infoAccepted,setInfoAccepted] = useState([]);
     const [change,setChange] = useState(false);
-    const [user,setUser] = useState({...navState.state});
+
+    const user = {...navState.state};
 
     const [hrProg,setHrProg] = useState(50);
     const [mechProg,setMechProg] = useState(50);
@@ -50,8 +51,8 @@ function AdminPortal(){
 
     useEffect(()=>{
         document.getElementById("root").className = styles.root;
-        axios.get(`http://${ipOfServer}:8080/requests`,{params:{accepted:'YES'}}).then(req => setInfoAccepted(req.data));
-        axios.get(`http://${ipOfServer}:8080/requests`,{params:{accepted:'NO'}}).then(req => setInfoRequests(req.data));
+        axios.get(`http://${ipOfServer}:8080/requests`,{params:{reciever:user.userName, accepted:'YES'}}).then(req => setInfoAccepted(req.data));
+        axios.get(`http://${ipOfServer}:8080/requests`,{params:{reciever_role:user.department,accepted:'NO'}}).then(req => setInfoRequests(req.data));
         getProg('HResources',ipOfServer).then(prog => setHrProg(prog));
         getProg('Mechanics',ipOfServer).then(prog => setMechProg(prog));
         getProg('Chemists',ipOfServer).then(prog => setChemProg(prog));
@@ -66,7 +67,7 @@ function AdminPortal(){
                 <Activity user={user} ipOfServer={ipOfServer} change={change} setChange={setChange} requestPage={requestPage} infoRequests={infoRequests} setInfoRequests={setInfoRequests} infoAccepted={infoAccepted} setInfoAccepted={setInfoAccepted}/> 
             </div>
             <div className={profile.profileContainer}>
-                <Profile ipOfServer={ipOfServer} user={user} setUser={setUser} photoLink={photo} change={change} setChange={setChange} infoAccepted={infoAccepted}/>
+                <Profile ipOfServer={ipOfServer} user={user} photoLink={photo} change={change} setChange={setChange} infoAccepted={infoAccepted}/>
             </div>
             <div className={stats.quickContainer}>
                 <Stats hrProg={hrProg} mechProg={mechProg} chemProg={chemProg} workProg={workProg} secProg={secProg} cleanProg={cleanProg}/>

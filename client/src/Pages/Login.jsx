@@ -6,8 +6,7 @@ import { useEffect } from 'react'
 import {useNavigate} from "react-router-dom"
 
 
-function Login(){
-    const ipOfServer = '192.168.0.104';
+function Login(props){
     const nav = useNavigate();
     const [user, setUser] = useState({
         name:'',
@@ -23,11 +22,12 @@ function Login(){
                     console.log('enter pressed');
                     if(user.name == '' || user.pass == '')setCheckText('User or Password cannot be empty!');
                     else{
-                        axios.get(`http://${ipOfServer}:8080/user`,{params:{userName:user.name}}).then((req,res)=>{
+                        axios.get(`http://${props.ipOfServer}:8080/user`,{params:{userName:user.name}}).then((req,res)=>{
                             if(req.status == 200){
+                                console.log(req.data);
                                 if(req.data.userName == user.name && req.data.password == user.pass){
                                     switch(req.data.department){
-                                        case 'admin': nav('/admin',{state:req.data});break;
+                                        case 'all': nav('/admin',{state:req.data});break;
                                         case 'hr': nav('/admin',{state:req.data});break;
                                         case 'mech': nav('/admin',{state:req.data});break;
                                         case 'chem': nav('/admin',{state:req.data});break;
@@ -51,11 +51,11 @@ function Login(){
                 <button className={styles.button} onClick={()=>{
                     if(user.name == '' || user.pass == '')setCheckText('User or Password cannot be empty!');
                     else{
-                        axios.get(`http://${ipOfServer}:8080/user`,{params:{userName:user.name}}).then((req,res)=>{
+                        axios.get(`http://${props.ipOfServer}:8080/user`,{params:{userName:user.name}}).then((req,res)=>{
                             if(req.status == 200){
                                 if(req.data.userName == user.name && req.data.password == user.pass){
                                     switch(req.data.department){
-                                        case 'admin': nav('/admin',{state:req.data});break;
+                                        case 'all': nav('/admin',{state:req.data});break;
                                         case 'hr': nav('/admin',{state:req.data});break;
                                         case 'mech': nav('/admin',{state:req.data});break;
                                         case 'chem': nav('/admin',{state:req.data});break;
