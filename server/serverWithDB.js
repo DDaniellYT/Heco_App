@@ -4,12 +4,14 @@ import bodyParser from "body-parser";
 import fs from 'fs';
 
 import sqlite3 from "sqlite3";
+import multer from "multer";
 
 sqlite3.verbose();
 const factory = new sqlite3.Database('./db/Factory.db');
 
 const app = express();
 const port = 8080;
+// const upload = multer({dest: 'profilePics/'});
 
 app.use(bodyParser.urlencoded({extended:true}));
 app.use(cors());
@@ -18,7 +20,6 @@ app.use(express.json({ limit: '10mb', extended: true }));
 const createUsersTable = async (database) => {
   const createUsersQuery = `CREATE TABLE IF NOT EXISTS Users(
     id INTEGER PRIMARY KEY,
-    profilePic BLOB,
     userName TEXT NOT NULL UNIQUE,
     password TEXT NOT NULL,
     firstName TEXT NOT NULL,
@@ -116,18 +117,11 @@ const doesUserExist = async (database,user)=>{
 
 // try to make images be able to be uploaded
 const createUser = async (database,user) => {
-  const insertUserQuery = `INSERT INTO Users(userName,profilePic,password,firstName,lastName,department,role,time,existance) VALUES('${user.userName}',?,'${user.password}','${user.firstName}','${user.lastName}','${user.department}','${user.role}',${new Date().getTime()},'OUT')`;
+  const insertUserQuery = `INSERT INTO Users(userName,password,firstName,lastName,department,role,time,existance) VALUES('${user.userName}','${user.password}','${user.firstName}','${user.lastName}','${user.department}','${user.role}',${new Date().getTime()},'OUT')`;
   return new Promise(async (resolve)=>{
-    let data;
-    fs.readFile(user.profilePic,(err, tempData)=>{
-      console.log(err);
-      if(err)resolve(503);
-      data = tempData;
-    });
     if(await doesUserExist(database,user) == 200)resolve(208);
     else {
-      database.run(insertUserQuery,data,(err)=>{
-        console.log(err);
+      database.run(insertUserQuery,(err)=>{
         if(err)resolve(503);
         else resolve(200); 
       });
@@ -249,7 +243,7 @@ const task = {
 console.log(await createUsersTable(factory));
 console.log(await createTaskTable(factory));
 
-// console.log(await createUser(factory,user));
+console.log(await createUser(factory,user));
 console.log(await createTask(factory,task));
 
 // console.log('=====');

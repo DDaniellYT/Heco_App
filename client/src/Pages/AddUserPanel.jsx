@@ -24,7 +24,7 @@ const AddUserPanel = (props)=>{
                     };
                     reader.readAsDataURL(e.target.files[0]);    
                 }}/>
-                <img src={props.image?props.image:null} alt="Press me to upload pic" onClick={()=>{
+                <img src={props.image?props.image:null} alt="Press me to upload pic (not yet working)" onClick={()=>{
                     document.getElementById('getFile').click();
                 }} className={styles.userProfilePic}/>
             </div>
@@ -56,7 +56,7 @@ const AddUserPanel = (props)=>{
                     console.log(e.target.value);
                 }}/>
             </div>
-            {props.department=='admin'?<div className={styles.userDepartment}>
+            {/* {props.department=='admin'?<div className={styles.userDepartment}>
                 <label>DEPARTMENT</label>
                 <div onClick={()=>{
                     props.setDepartment('HResources');
@@ -76,7 +76,7 @@ const AddUserPanel = (props)=>{
                 <div onClick={()=>{
                     props.setDepartment('Cleaning');
                 }}>Cleaning</div>
-            </div>:null}
+            </div>:null} */}
             <div style={props.department=='admin'?{
                 gridColumn : '3/4'
             }:null} className={styles.userRole}>
@@ -96,8 +96,12 @@ const AddUserPanel = (props)=>{
             </div>
             <div className={styles.statusMessage}>{statusMessage}</div>
             <div className={styles.userSubmit} onClick={()=>{
+                
+                // TODO :
+                // implement formData to send everything including an image
+                // 
+
                 const user = {
-                    profilePic: props.image,
                     userName: userName,
                     password: password,
                     firstName: firstName,
@@ -105,7 +109,7 @@ const AddUserPanel = (props)=>{
                     department: props.department,
                     role: role,
                 }
-                if(user.profilePic == null || user.userName == '' || user.firstName == '' || user.lastName == '' || user.password == '' || user.role == '')setStatusMessage('No empty spaces allowed!');
+                if(user.userName == '' || user.firstName == '' || user.lastName == '' || user.password == '' || user.role == '')setStatusMessage('No empty spaces allowed!');
                 else {
                     axios.put(`http://${props.ipOfServer}:8080/user`,{user:user}).then((req)=>{
                         if(req.status == 208) setStatusMessage('User already exists!');

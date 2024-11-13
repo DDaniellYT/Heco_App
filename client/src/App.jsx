@@ -22,9 +22,12 @@ function App(){
             <Route path = "/admin" element = {<AdminPortal/>}/>
             <Route path = "/request" element = {<RequestPage/>}/>
             <Route path = "/response" element = {<ResponsePage/>}/>
-            <Route path = "/DEP_HR" element = {<Department department='hr' ipOfServer={ipOfServer}/>}/>
-            {/* <Route path = "/DEP_General" element = {<DEP_General/>}/>
-            <Route path = "/DEP_HumanResources" element = {<DEP_HumanResources/>}/> */}
+            <Route path = "/DEP_HR" element = {<Department department='HResources' ipOfServer={ipOfServer} key='HResources'/>}/>
+            <Route path = "/DEP_Mechanics" element = {<Department department='Mechanics' ipOfServer={ipOfServer} key='Mechanics'/>}/>
+            <Route path = "/DEP_Chemists" element = {<Department department='Chemists' ipOfServer={ipOfServer} key='Chemists'/>}/>
+            <Route path = "/DEP_Security" element = {<Department department='Security' ipOfServer={ipOfServer} key='Security'/>}/>
+            <Route path = "/DEP_Workers" element = {<Department department='Workers' ipOfServer={ipOfServer} key='Workers'/>}/>
+            <Route path = "/DEP_Cleaning" element = {<Department department='Cleaning' ipOfServer={ipOfServer} key='Cleaning'/>}/>
         </Routes>
     </Router>
 }
