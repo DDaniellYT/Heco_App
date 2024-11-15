@@ -87,9 +87,199 @@
 
     justify-self: center;
     align-self: center;
+    display: grid;
+    grid-template-columns: 85% 15%;
+    grid-template-rows: 15% auto;
+
     width: 100%;
     height: 95%;
 
     border-radius: 15px;
     outline: 2px solid black;
+}
+.addItem{
+    grid-column: 2/3;
+    grid-row: 1/2;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+    margin-right: 20px;
+
+    width: 100%;
+    height: 60%;
+    align-self: center;
+    justify-self: center;
+
+    font-size: 1.3rem;
+    font-weight: bold;
+
+    outline: 2px solid black;
+    border-radius: 20px;
+    background-color: white;
+}
+.addItem:hover{
+    font-size: 1.5rem;
+    text-shadow: 2px 2px 5px green;
+    outline: 3px solid black;
+}
+
+
+.addItemPanelContainer{
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    height: 100%;
+    
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    background-color: rgba(100, 20, 20, 0.5);
+}
+.addItemPanel{
+    background-color: orangered;
+    width: 60%;
+    height: 80%;
+
+    display: grid;
+    grid-template-columns: 25% 25% 25% 25%;
+    grid-template-rows: 15% 15% 15% 15% 15% 15% 10%;
+
+    border-radius: 30px;
+    outline: 3px solid black;
+}
+.addItemTitle{
+    grid-column: 1/5;
+    grid-row: 1/2;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    border-radius: 30px;
+    padding: 0% 5% 0% 5%;
+}
+.addItemExit{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    font-size: 2.5rem;
+    font-weight: bold;
+
+    grid-column: 4/5;
+    grid-row: 1/2;
+}
+.addItemExit:hover{
+    color: white;
+    text-shadow: 3px 3px 3px gray;
+}
+.itemName{
+    background-color: white;
+    grid-column: 1/2;
+    grid-row: 2/3;
+    border: 0px;
+    padding: 0% 5% 0% 5%;
+    border-radius: 15px;
+    outline: 2px solid black;
+    font-size: 1.2rem;
+    font-weight: bold;
+    width: 80%;
+    height: 50%;
+    justify-self: center;
+    align-self: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.itemPlace{
+    background-color: white;
+    grid-column: 1/2;
+    grid-row: 3/4;
+    border: 0px;
+    padding: 0% 5% 0% 5%;
+    border-radius: 15px;
+    outline: 2px solid black;
+    font-size: 1.2rem;
+    font-weight: bold;
+    width: 80%;
+    height: 50%;
+    justify-self: center;
+    align-self: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.itemState{
+    background-color: white;
+    grid-column: 1/2;
+    grid-row: 4/5;
+    border: 0px;
+    padding: 0% 5% 0% 5%;
+    border-radius: 15px;
+    outline: 2px solid black;
+    font-size: 1.2rem;
+    font-weight: bold;
+    width: 80%;
+    height: 50%;
+    justify-self: center;
+    align-self: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.itemExistance{
+    background-color: white;
+    grid-column: 1/2;
+    grid-row: 5/6;
+    border: 0px;
+    padding: 0% 5% 0% 5%;
+    border-radius: 15px;
+    outline: 2px solid black;
+    font-size: 1.2rem;
+    font-weight: bold;
+    width: 80%;
+    height: 50%;
+    justify-self: center;
+    align-self: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.itemLast{
+    background-color: white;
+    grid-column: 1/2;
+    grid-row: 6/7;
+    border: 0px;
+    padding: 0% 5% 0% 5%;
+    border-radius: 15px;
+    outline: 2px solid black;
+    font-size: 1.2rem;
+    font-weight: bold;
+    width: 80%;
+    height: 50%;
+    justify-self: center;
+    align-self: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.itemPic{
+    grid-column: 3/5;
+    grid-row: 2/6;
+
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+
+    width: 80%;
+    height: 80%;
+    
+    border: 0px;
+    outline: 2px solid black;
+    border-radius: 20px;
+    background-color: blue;
 }

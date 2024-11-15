@@ -45,7 +45,7 @@ const Inventory = (props)=>{
         <NavBar user={user} ipOfServer={props.ipOfServer} change={change} setChange={setChange} requestPage={requestPage} setRequestPage={setRequestPage}/>
         <div className={styles.inventoryContainer}>
             <Menu  setStorage1={setStorage1} setStorage2={setStorage2} setStorage3={setStorage3} setStorage4={setStorage4}/>
-            <StorageSpace storage1={storage1} storage2={storage2} storage3={storage3} storage4={storage4}/>
+            <StorageSpace storage1={storage1} storage2={storage2} storage3={storage3} storage4={storage4} change={change} setChange={setChange}/>
         </div>
     </div>;
 }

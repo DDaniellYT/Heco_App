@@ -166,6 +166,7 @@
     background-color: white;
 }
 .addUserProfile:hover{
+    font-size: 1.5rem;
     text-shadow: 2px 2px 5px green;
     outline: 3px solid black;
 }
