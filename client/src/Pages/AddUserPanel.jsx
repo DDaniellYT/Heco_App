@@ -26,7 +26,7 @@ const AddUserPanel = (props)=>{
                 }}/>
                 <img src={props.image?props.image:null} alt="Press me to upload pic (not yet working)" onClick={()=>{
                     document.getElementById('getFile').click();
-                }} className={styles.userProfilePic}/>
+                }} className={styles.userPic}/>
             </div>
             <div className={styles.userUserName}>
                 <label>UserName:</label> 

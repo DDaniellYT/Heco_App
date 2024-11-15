@@ -28,7 +28,7 @@ async function getProg(rec,ip){
     return prog;
 }
 
-function AdminPortal(){
+function HomePage(){
     const ipOfServer = '192.168.0.104';
 
     const navState = useLocation();
@@ -58,6 +58,7 @@ function AdminPortal(){
         getProg('Security',ipOfServer).then(prog => setSecProg(prog));
         getProg('Cleaning',ipOfServer).then(prog => setCleanProg(prog));
     },[change]);
+    
     return <div className={styles.container}>
         <NavBar user={user} ipOfServer={ipOfServer} change={change} setChange={setChange} requestPage={requestPage} setRequestPage={setRequestPage}/>
         <div className={styles.interface}>
@@ -74,4 +75,4 @@ function AdminPortal(){
     </div>;
 
 }
-export default AdminPortal;
+export default HomePage;

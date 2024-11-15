@@ -17,7 +17,7 @@ function NavBar(props){
             setDepartmentDropDown(false);
         }}> Departments
         {departmentDropDown ? <div className={styles.DepartmentDropdown}>
-            <div onClick={()=>{nav('/admin',{state:props.user})}}>Admin</div>
+            <div onClick={()=>{nav('/home',{state:props.user})}}>Home</div>
             <div onClick={()=>{nav('/DEP_HR',{state:props.user})}}>Human Resources</div>
             <div onClick={()=>{nav('/DEP_Mechanics',{state:props.user})}}>Mechanics</div>
             <div onClick={()=>{nav('/DEP_Chemists',{state:props.user})}}>Chemists</div>
@@ -30,13 +30,12 @@ function NavBar(props){
     <div className={styles.arrow}>⌄</div>{
         props.requestPage ? <RequestPanel user={props.user} ipOfServer={props.ipOfServer} change={props.change} setChange={props.setChange} requestPage={props.requestPage} setRequestPage={props.setRequestPage}/> :null
     }</div>
-    <div className={styles.response} onClick={()=>{nav('/response')}}>Respond<div className={styles.arrow}>⌄</div></div> 
-    <div className={styles.inventory} onClick={()=>{nav('/inventory')}}>Inventory<div className={styles.arrow}>⌄</div></div>
+    <div className={styles.inventory} onClick={()=>{nav('/inventory',{state:props.user})}}>Inventory<div className={styles.arrow}>⌄</div></div>
     <div className={styles.contact} onClick={()=>{nav('/contact')}}>Contact<div className={styles.arrow}>⌄</div></div>
     <div className={styles.input}>
         <input className={styles.searchInput}/>
         <div className={styles.searchButton} onClick={()=>{
-            //search for the thing
+            //search for the thing ?
         }}>?</div>
         </div>
     </div>

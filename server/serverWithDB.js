@@ -1,7 +1,6 @@
 import express, { query } from "express";
 import cors from "cors";
 import bodyParser from "body-parser";
-import fs from 'fs';
 
 import sqlite3 from "sqlite3";
 import multer from "multer";
@@ -51,7 +50,7 @@ const createUserActivityTable = async (database,user)=>{ /// not needed anymore
     dateAccepted INTEGER,
     dateFinished INTEGER 
   )`;
-  return new Promise(async (resolve)=>{
+  return await new Promise(async (resolve)=>{
     database.run(createUserActivityTableQuery,(err)=>{
       if(err)resolve(503);
       else resolve(200);
@@ -73,13 +72,31 @@ const createTaskTable = async (database)=>{
     dateFinished INTEGER,
     accepted TEXT NOT NULL
   )`;
-  return new Promise(async (resolve)=>{
+  return await new Promise(async (resolve)=>{
     database.run(createActivityTableQuery,(err)=>{
       if(err)resolve(503);
       else resolve(200);
     });
   });
 };
+const createInventoryTable = async (database)=>{
+  const createInventoryQuery = `CREATE TABLE IF NOT EXISTS Inventory(
+    name TEXT NOT NULL,
+    department TEXT,
+    state TEXT NOT NULL,
+    place TEXT,
+    existance TEXT,
+    last TEXT NOT NULL
+  )`;
+  return await new Promise((resolve)=>{
+    database.run(createInventoryQuery,(err)=>{
+      if(err)resolve(503);
+      else resolve(200);
+    })
+  })
+}
+
+
 
 const getUser = async (database,user) =>{
   const getUserQuery = `SELECT * FROM Users ${user.userName || user.department?`WHERE(
@@ -87,7 +104,7 @@ const getUser = async (database,user) =>{
     ${user.userName && user.department ?` AND `:``}
     ${user.department?`department = '${user.department}'`:``}
     )`:``}`;
-    console.log(getUserQuery);
+    // console.log(getUserQuery);
   return new Promise((resolve)=>{
     database.all(getUserQuery,(err,rows)=>{
       if(err)resolve(503);
@@ -150,23 +167,20 @@ const updateUser = async (database,user,userId)=>{
     }
   })
 }
-
-
-/*
-id INTEGER PRIMARY KEY,
-reciever TEXT,
-reciever_role TEXT NOT NULL,
-sender TEXT NOT NULL,
-sender_role TEXT NOT NULL,
-subject TEXT NOT NULL,
-message TEXT NOT NULL,
-urgency TEXT NOT NULL,
-dateRequested INTEGER NOT NULL,
-dateAccepted INTEGER,
-dateFinished INTEGER,
-accepted TEXT NOT NULL
-*/
-
+const deleteUser = (database, user)=>{
+  const deleteQuery = `DELETE FROM Users WHERE userName='${user.userName}'`;
+  // console.log(deleteQuery);
+  // console.log(user);
+  return new Promise(async (resolve)=>{
+    if(await doesUserExist(database,user) != 200)resolve(204);
+    else{
+      database.run(deleteQuery,(err)=>{
+        if(err)resolve(503);
+        else resolve(200);
+      })
+    }
+  })
+}
 const readTasks = (database,reciever_role,reciever,accepted)=>{
   if(reciever_role == 'all')reciever_role = undefined;
   const getAllQuery = `SELECT * FROM Tasks ${reciever_role || reciever || accepted ? `WHERE(
@@ -214,6 +228,44 @@ const updateTask = (database,reciever,id,accepted)=>{
   });
 };
 
+
+
+const getItems = async (database,query)=>{
+  let getItemsQuery = `SELECT * FROM Inventory`;
+  let queryItems = [];
+  let values = [];
+
+  for(let key in query){
+    if(query.hasOwnProperty(key)){
+      if(['name','department','state','place','existance','last'].includes(key)){
+        queryItems.push(`${key} = ?`);
+        values.push(query[key]);
+      }
+    }
+  }
+  if(queryItems.length > 0)
+    getItemsQuery += ` WHERE ` + queryItems.join(' AND ');
+  console.log(getItemsQuery);
+  return await new Promise((resolve)=>{
+    database.all(getItemsQuery,values,(err,rows)=>{
+      if(err){
+        console.log(err);
+        resolve(503);
+      }
+      else resolve(rows);
+    })
+  })
+}
+const createItem = async (database,item)=>{
+  const createItemQuery = `INSERT INTO Inventory(name,department,state,place,existance,last) VALUES('${item.name}','${item.department}','${item.state}','${item.place}','${item.existance}','${item.last}')`;
+  return await new Promise((resolve)=>{
+    database.run(createItemQuery,(err)=>{
+      if(err)resolve(503);
+      else resolve(200);
+    })
+  })
+}
+
 const user = {
   userName:'admin3',
   profilePic:null,
@@ -237,14 +289,23 @@ const task = {
   dateFinished: '0',
   accepted: 'NO'
 };
+const item = {
+  name:'testComputer',
+  department:'HResources', // whos it is
+  state:'Working', // if broken, working , in reparation
+  place:'storage1', // where its supposed to be
+  existance:'yes', // if its there
+  last:'admin3' // who last used it
+}
 
 
+console.log(await createUsersTable(factory) + ' -> usersTabel');
+console.log(await createTaskTable(factory) + ' -> tasksTable');
+console.log(await createInventoryTable(factory) + ' -> inventoryTable');
 
-console.log(await createUsersTable(factory));
-console.log(await createTaskTable(factory));
-
-console.log(await createUser(factory,user));
-console.log(await createTask(factory,task));
+console.log(await createUser(factory,user) + ' -> createUser');
+console.log(await createTask(factory,task) + ' -> createTask');
+console.log(await createItem(factory,item) + ' -> createItem');
 
 // console.log('=====');
 // console.log(await createUserActivityTable(factory,user));
@@ -253,13 +314,30 @@ console.log(await createTask(factory,task));
 // console.log(await getAllUsers(factory));
 
 
-//not working yet
 
 
+// NOT WORKING YET
+//// TODO: do like for getItems for all the other get functions for better flexibility and safety because of the values replacing only "?"
 
-//working
+// UD FOR INVENTORY NOT MADE YET
 
 
+// TO BE TESTED
+
+
+// WORKING : 
+
+// CREATE
+app.put('/inventory',async (req,res)=>{
+  const status = await createItem(factory,req.body);
+  res.sendStatus(status);
+})
+// READ
+app.get('/inventory', async (req,res)=>{
+  const items = await getItems(factory,req.query);
+  if(items != 204) res.status(200).send(items);
+  else res.sendStatus(204);
+})
 
 // CREATE
 app.put('/requests', async (req,res)=>{
@@ -268,7 +346,6 @@ app.put('/requests', async (req,res)=>{
 });
 // READ
 app.get('/requests',async (req,res)=>{
-  console.log(req.body);
   const requests = await readTasks(factory,req.query.reciever_role,req.query.reciever,req.query.accepted);
   res.send(requests);
 });
@@ -305,6 +382,11 @@ app.post('/user', async (req,res)=>{
   const status = await updateUser(factory,req.body);
   res.sendStatus(status);
 });
+// DELETE
+app.delete('/user', async (req,res)=>{
+  const status = await deleteUser(factory,req.query.user);
+  res.sendStatus(status);
+})
 
 
 

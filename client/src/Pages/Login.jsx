@@ -23,18 +23,9 @@ function Login(props){
                     if(user.name == '' || user.pass == '')setCheckText('User or Password cannot be empty!');
                     else{
                         axios.get(`http://${props.ipOfServer}:8080/user`,{params:{userName:user.name}}).then((req,res)=>{
-                            if(req.status == 200){
-                                console.log(req.data);
-                                if(req.data.userName == user.name && req.data.password == user.pass){
-                                    switch(req.data.department){
-                                        case 'all': nav('/admin',{state:req.data});break;
-                                        case 'hr': nav('/admin',{state:req.data});break;
-                                        case 'mech': nav('/admin',{state:req.data});break;
-                                        case 'chem': nav('/admin',{state:req.data});break;
-                                        case 'sec': nav('/admin',{state:req.data});break;
-                                        case 'work': nav('/admin',{state:req.data});break;
-                                        case 'clean': nav('/admin',{state:req.data});break;
-                                    }}}
+                            if(req.status == 200)
+                                if(req.data.userName == user.name && req.data.password == user.pass)
+                                    nav('/home',{state:req.data});
                             else setCheckText('User or Password not found');
                         })
                     }
@@ -52,17 +43,9 @@ function Login(props){
                     if(user.name == '' || user.pass == '')setCheckText('User or Password cannot be empty!');
                     else{
                         axios.get(`http://${props.ipOfServer}:8080/user`,{params:{userName:user.name}}).then((req,res)=>{
-                            if(req.status == 200){
-                                if(req.data.userName == user.name && req.data.password == user.pass){
-                                    switch(req.data.department){
-                                        case 'all': nav('/admin',{state:req.data});break;
-                                        case 'hr': nav('/admin',{state:req.data});break;
-                                        case 'mech': nav('/admin',{state:req.data});break;
-                                        case 'chem': nav('/admin',{state:req.data});break;
-                                        case 'sec': nav('/admin',{state:req.data});break;
-                                        case 'work': nav('/admin',{state:req.data});break;
-                                        case 'clean': nav('/admin',{state:req.data});break;
-                                    }}}
+                            if(req.status == 200)
+                                if(req.data.userName == user.name && req.data.password == user.pass)
+                                    nav('/home',{state:req.data});
                             else setCheckText('User or Password not found');
                         })
                     }
