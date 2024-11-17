@@ -28,8 +28,7 @@ async function getProg(rec,ip){
     return prog;
 }
 
-function HomePage(){
-    const ipOfServer = '192.168.0.104';
+function HomePage(props){
 
     const navState = useLocation();
     const [requestPage,setRequestPage] = useState(false);
@@ -49,24 +48,24 @@ function HomePage(){
 
     useEffect(()=>{
         document.getElementById("root").className = styles.root;
-        axios.get(`http://${ipOfServer}:8080/requests`,{params:{reciever:user.userName, accepted:'YES'}}).then(req => setInfoAccepted(req.data));
-        axios.get(`http://${ipOfServer}:8080/requests`,{params:{reciever_role:user.department,accepted:'NO'}}).then(req => setInfoRequests(req.data));
-        getProg('HResources',ipOfServer).then(prog => setHrProg(prog));
-        getProg('Mechanics',ipOfServer).then(prog => setMechProg(prog));
-        getProg('Chemists',ipOfServer).then(prog => setChemProg(prog));
-        getProg('Workers',ipOfServer).then(prog => setWorkProg(prog));
-        getProg('Security',ipOfServer).then(prog => setSecProg(prog));
-        getProg('Cleaning',ipOfServer).then(prog => setCleanProg(prog));
+        axios.get(`http://${props.ipOfServer}:8080/requests`,{params:{reciever:user.userName, accepted:'YES'}}).then(req => setInfoAccepted(req.data));
+        axios.get(`http://${props.ipOfServer}:8080/requests`,{params:{reciever_role:user.department,accepted:'NO'}}).then(req => setInfoRequests(req.data));
+        getProg('HResources',props.ipOfServer).then(prog => setHrProg(prog));
+        getProg('Mechanics',props.ipOfServer).then(prog => setMechProg(prog));
+        getProg('Chemists',props.ipOfServer).then(prog => setChemProg(prog));
+        getProg('Workers',props.ipOfServer).then(prog => setWorkProg(prog));
+        getProg('Security',props.ipOfServer).then(prog => setSecProg(prog));
+        getProg('Cleaning',props.ipOfServer).then(prog => setCleanProg(prog));
     },[change]);
     
     return <div className={styles.container}>
-        <NavBar user={user} ipOfServer={ipOfServer} change={change} setChange={setChange} requestPage={requestPage} setRequestPage={setRequestPage}/>
+        <NavBar user={user} ipOfServer={props.ipOfServer} change={change} setChange={setChange} requestPage={requestPage} setRequestPage={setRequestPage}/>
         <div className={styles.interface}>
             <div className={activity.info}>
-                <Activity user={user} ipOfServer={ipOfServer} change={change} setChange={setChange} requestPage={requestPage} infoRequests={infoRequests} setInfoRequests={setInfoRequests} infoAccepted={infoAccepted} setInfoAccepted={setInfoAccepted}/> 
+                <Activity user={user} ipOfServer={props.ipOfServer} change={change} setChange={setChange} requestPage={requestPage} infoRequests={infoRequests} setInfoRequests={setInfoRequests} infoAccepted={infoAccepted} setInfoAccepted={setInfoAccepted}/> 
             </div>
             <div className={profile.profileContainer}>
-                <Profile ipOfServer={ipOfServer} user={user} photo={photo} change={change} setChange={setChange} infoAccepted={infoAccepted}/>
+                <Profile ipOfServer={props.ipOfServer} user={user} photo={photo} change={change} setChange={setChange} infoAccepted={infoAccepted}/>
             </div>
             <div className={stats.quickContainer}>
                 <Stats hrProg={hrProg} mechProg={mechProg} chemProg={chemProg} workProg={workProg} secProg={secProg} cleanProg={cleanProg}/>

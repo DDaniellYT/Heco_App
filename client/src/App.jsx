@@ -11,12 +11,13 @@ import Inventory from "./Pages/Inventory";
 
 
 function App(){
-    const ipOfServer = '192.168.0.104';
+    // const ipOfServer = '192.168.0.104';
+    const ipOfServer = 'localhost';
     return <Router>
         <Routes>
             <Route exact path = "/" element = {<Login ipOfServer={ipOfServer}/>}/>
             <Route path = "/error" element = {<ErrorPage/>}/>
-            <Route path = "/home" element = {<HomePage/>}/>
+            <Route path = "/home" element = {<HomePage ipOfServer={ipOfServer}/>}/>
             <Route path = "/inventory" element = {<Inventory ipOfServer={ipOfServer}/>}/>
             <Route path = "/request" element = {<RequestPage/>}/>
             <Route path = "/response" element = {<ResponsePage/>}/>

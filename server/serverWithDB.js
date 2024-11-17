@@ -329,7 +329,7 @@ console.log(await createItem(factory,item) + ' -> createItem');
 
 // CREATE
 app.put('/inventory',async (req,res)=>{
-  const status = await createItem(factory,req.body);
+  const status = await createItem(factory,req.body.item);
   res.sendStatus(status);
 })
 // READ
@@ -338,6 +338,8 @@ app.get('/inventory', async (req,res)=>{
   if(items != 204) res.status(200).send(items);
   else res.sendStatus(204);
 })
+
+
 
 // CREATE
 app.put('/requests', async (req,res)=>{
