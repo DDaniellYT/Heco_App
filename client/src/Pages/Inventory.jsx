@@ -13,6 +13,8 @@ const Inventory = (props)=>{
     const navState = useLocation();
     const user = {...navState.state};
 
+    const [items,setItems] = useState([]);
+
     const [storage1,setStorage1] = useState(false);
     const [storage2,setStorage2] = useState(false);
     const [storage3,setStorage3] = useState(false);
@@ -31,21 +33,17 @@ const Inventory = (props)=>{
     };
 
     useEffect(()=>{
-        // update inv
-        // axios.put(`http://${props.ipOfServer}:8080/inventory`,{...testItem}).then((req)=>{
-        //     console.log(req.data);
-        // })
-        // axios.get(`http://${props.ipOfServer}:8080/inventory`,{params:{place:'storage1'}}).then((req)=>{
-        //     console.log(req.data);
-        // });
-
+        axios.get(`http://${props.ipOfServer}:8080/inventory`).then((req)=>{
+            setItems(req.data);
+            console.log(req.data);
+        });
     },[change]);
 
     return <div className={styles.container}>
         <NavBar user={user} ipOfServer={props.ipOfServer} change={change} setChange={setChange} requestPage={requestPage} setRequestPage={setRequestPage}/>
         <div className={styles.inventoryContainer}>
             <Menu  setStorage1={setStorage1} setStorage2={setStorage2} setStorage3={setStorage3} setStorage4={setStorage4}/>
-            <StorageSpace ipOfServer={props.ipOfServer} storage1={storage1} storage2={storage2} storage3={storage3} storage4={storage4} change={change} setChange={setChange}/>
+            <StorageSpace ipOfServer={props.ipOfServer} items={items} storage1={storage1} storage2={storage2} storage3={storage3} storage4={storage4} change={change} setChange={setChange}/>
         </div>
     </div>;
 }

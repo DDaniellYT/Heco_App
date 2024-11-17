@@ -9,7 +9,7 @@
     display: grid;
     grid-template-columns: 23% auto 35%;
     grid-template-rows: 10vh auto 10vh;
-    background-image: linear-gradient(165deg, white 50%, orange, orangered);
+    /* background-image: linear-gradient(165deg, white 50%, orange, orangered); */
 }
 .inventoryContainer{
     grid-column: 1/4;
@@ -21,7 +21,7 @@
 
     width: 100%;
     height: 100%;
-    background-color: red;
+    background-color: moccasin;
 }
 
 
@@ -41,7 +41,7 @@
 
     outline: 3px solid black;
     border-radius: 15px;
-    background-color: moccasin;
+    background-color: beige;
 }
 .menuContainer *{
     flex-shrink: 0;
@@ -81,7 +81,7 @@
 
 
 .storageSpaceContainer{
-    background-color: violet;
+    background-color: beige;
     grid-column: 2/3;
     grid-row: 1/3;
 
@@ -125,6 +125,61 @@
     outline: 3px solid black;
 }
 
+.storageShelfContainer{
+    grid-column: 1/3;
+    grid-row: 2/3;
+
+    width: 90%;
+    height: 90%;
+
+    justify-self: center;
+    align-self: center;
+    
+    display: grid;
+    grid-template-columns: 100%;
+    grid-template-rows: 20% 20% 20% 20% 20%;
+    border-radius: 0px;
+    outline: 2px solid darkslategray;
+    border-left: 3px solid darkslategray;
+    border-right: 3px solid darkslategray;
+    border-radius: 5%;
+    grid-auto-rows: 20%;
+    background-color: lightgray;
+    overflow-y: scroll;
+}
+.storageShelf{
+    background-color: gray;
+
+    outline: 2px solid black;
+
+    grid-row: auto;
+    width: 90%;
+    height: 80%;
+    justify-self: center;
+    align-self: center;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+}
+.storageItemSpace{    
+    width: 25%;
+    height: 100%;
+    
+    margin: 0px 2% 0px 2%;
+
+    border: 2px solid black;
+    background-color: darkslategray;
+}
+.storageItemList{
+    margin: 0px;
+    padding: 0px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
 
 .addItemPanelContainer{
     position: absolute;

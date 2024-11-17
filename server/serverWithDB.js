@@ -81,6 +81,7 @@ const createTaskTable = async (database)=>{
 };
 const createInventoryTable = async (database)=>{
   const createInventoryQuery = `CREATE TABLE IF NOT EXISTS Inventory(
+    id INTEGER PRIMARY KEY,
     name TEXT NOT NULL,
     department TEXT,
     state TEXT NOT NULL,
@@ -243,6 +244,7 @@ const getItems = async (database,query)=>{
       }
     }
   }
+  console.log(values);
   if(queryItems.length > 0)
     getItemsQuery += ` WHERE ` + queryItems.join(' AND ');
   console.log(getItemsQuery);
@@ -257,9 +259,30 @@ const getItems = async (database,query)=>{
   })
 }
 const createItem = async (database,item)=>{
-  const createItemQuery = `INSERT INTO Inventory(name,department,state,place,existance,last) VALUES('${item.name}','${item.department}','${item.state}','${item.place}','${item.existance}','${item.last}')`;
+  const createItemQuery = `INSERT INTO Inventory(name,department,state,place,existance,last) VALUES('${item.name}','${item.department}','${item.state}','${JSON.stringify(item.place)}','${item.existance}','${item.last}')`;
   return await new Promise((resolve)=>{
     database.run(createItemQuery,(err)=>{
+      if(err)resolve(503);
+      else resolve(200);
+    })
+  })
+}
+const updateItem = async (database,item)=>{
+  let updateItemQuery = `UPDATE Inventory SET `;
+  let queryItems = [];
+  let values = [];
+
+  for(let key in item){
+    if(item.hasOwnProperty(key)){
+      if(['name','department','state','place','existance','last'].includes(key)){
+        queryItems.push(`${key} = ?`);
+        values.push(item[key]);
+      }
+    }
+  }
+  updateItemQuery += queryItems.join(',') + `WHERE id = ${item.id}`;
+  return await new Promise((resolve)=>{
+    database.run(updateItemQuery,values,(err)=>{
       if(err)resolve(503);
       else resolve(200);
     })
@@ -293,7 +316,7 @@ const item = {
   name:'testComputer',
   department:'HResources', // whos it is
   state:'Working', // if broken, working , in reparation
-  place:'storage1', // where its supposed to be
+  place:[1,1], // where its supposed to be
   existance:'yes', // if its there
   last:'admin3' // who last used it
 }
@@ -303,17 +326,10 @@ console.log(await createUsersTable(factory) + ' -> usersTabel');
 console.log(await createTaskTable(factory) + ' -> tasksTable');
 console.log(await createInventoryTable(factory) + ' -> inventoryTable');
 
+// TEST DATA 
 console.log(await createUser(factory,user) + ' -> createUser');
 console.log(await createTask(factory,task) + ' -> createTask');
 console.log(await createItem(factory,item) + ' -> createItem');
-
-// console.log('=====');
-// console.log(await createUserActivityTable(factory,user));
-// console.log(await createUserActivityEntry(factory,user,task));
-// console.log('=====');
-// console.log(await getAllUsers(factory));
-
-
 
 
 // NOT WORKING YET
@@ -322,6 +338,12 @@ console.log(await createItem(factory,item) + ' -> createItem');
 // UD FOR INVENTORY NOT MADE YET
 
 
+// UPDATE
+// app.post('/inventory', async (req,res)=>{
+//   const status = await updateItem(factory,req.body.item);
+//   res.sendStatus(status);
+// })
+
 // TO BE TESTED
 
 
@@ -329,11 +351,13 @@ console.log(await createItem(factory,item) + ' -> createItem');
 
 // CREATE
 app.put('/inventory',async (req,res)=>{
+  console.log(req.body,' <- put endpoint');
   const status = await createItem(factory,req.body.item);
   res.sendStatus(status);
 })
 // READ
 app.get('/inventory', async (req,res)=>{
+  console.log(req.query);
   const items = await getItems(factory,req.query);
   if(items != 204) res.status(200).send(items);
   else res.sendStatus(204);

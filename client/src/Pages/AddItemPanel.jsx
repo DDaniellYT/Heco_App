@@ -185,9 +185,9 @@ const AddItemPanel = (props)=>{
                 })
             }}/>
             <div className={styles.submit} onClick={()=>{
-                console.log(item);
                 axios.put(`http://${props.ipOfServer}:8080/inventory`,{item:item}).then((req)=>{
                     props.setAddItem(false);
+                    props.setChange(!props.change);
                 })
             }}>SUBMIT</div>
             <div className={styles.cancel} onClick={()=>{
