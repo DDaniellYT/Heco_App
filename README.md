@@ -3,9 +3,9 @@ A demo web app for Heco Schrauben Screw factory in Romania.
 Intended to fix and or remove dead times that show up in the factory.
 Like slow information propagation and inneficient commutes.
 
-Current attributions:
+*Current attributions:
 
-Client-Side:
+*Client-Side:
     Pages/AvailableRoutes:
         Error           // the error page you are redirected to if you go to a endpoint that doesnt exist
         Login           // the first page someone sees when entering the site
