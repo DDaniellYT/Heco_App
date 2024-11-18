@@ -75,10 +75,14 @@
     border-radius: 15px;
     outline: 2px solid black;
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
 }
-
+.menuPlace:hover{
+    outline: 3px solid black;
+    text-shadow: 2px 2px orange;
+    font-size: 1.2rem;
+}
 
 .storageSpaceContainer{
     background-color: beige;
@@ -137,13 +141,13 @@
     
     display: grid;
     grid-template-columns: 100%;
-    grid-template-rows: 20% 20% 20% 20% 20%;
+    grid-template-rows: 30%;
     border-radius: 0px;
     outline: 2px solid darkslategray;
     border-left: 3px solid darkslategray;
     border-right: 3px solid darkslategray;
     border-radius: 5%;
-    grid-auto-rows: 20%;
+    grid-auto-rows: 30%;
     background-color: lightgray;
     overflow-y: scroll;
 }
@@ -168,19 +172,39 @@
     height: 100%;
     
     margin: 0px 2% 0px 2%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 
     border: 2px solid black;
     background-color: darkslategray;
 }
 .storageItemList{
+    width: 100%;
+    height: 100%;
     margin: 0px;
     padding: 0px;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    overflow: scroll;
 }
+.storageItem{
+    width: 80%;
+    height: 30%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.storageSpace{
+    font-size: 3rem;
+    font-weight: bold;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 
+}
 .addItemPanelContainer{
     position: absolute;
     top: 0px;
@@ -250,7 +274,7 @@
     justify-content: center;
     align-items: center;
 }
-input:hover{
+.inventoryContainer input:hover{
     font-size: 1.3rem;
 }
 .itemState{
@@ -484,4 +508,208 @@ input:hover{
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+.updateItemPanelContainer{
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    height: 100%;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    background-color: rgba(100, 20, 20, 0.5);
+}
+.updateItemPanel{
+    width: 50%;
+    height: 80%;
+
+    display: grid;
+    grid-template-columns: 10% 25% 25% 30% auto;
+    grid-template-rows: 10% 25% 25% 10% 10% 10%;
+
+    outline: 2px solid black;
+    border-radius: 15px;
+    background-color: beige;
+}
+.updateItemPanelTitle{
+    grid-column: 1/5;
+    grid-row: 1/2;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    font-size: 2.5rem;
+    font-weight: bold;
+}
+.updateItemPanelExit{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    font-size: 2.5rem;
+    font-weight: bold;
+
+    grid-column: 5/6;
+    grid-row: 1/2;
+}
+.updateItemPanelExit:hover{
+    color: orange;
+    text-shadow: 3px 3px 3px black;
+}
+.updateItemPanelPic{
+    grid-column: 1/4;
+    grid-row: 2/4;
+
+    justify-self: center;
+    align-self: center;
+
+    width: 80%;
+    height: 90%;
+
+    border-radius: 20px;
+    outline: 2px solid black;
+
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+
+    background-color: brown;
+}
+.updateItemPanelName{
+    grid-column: 1/4;
+    grid-row: 4/5;
+
+    padding-left: 10%;
+    padding-right: 15%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 1.2rem;
+}
+.updateItemPanelName>input{
+    border: 0px;
+    outline: 2px solid black;
+    font-size: 1.3rem;
+    border-radius: 15px;
+    width: 70%;
+    height: 60%;
+}
+.updateItemPanelDepartment{
+    grid-column: 1/4;
+    grid-row: 5/6;
+
+    padding-left: 10%;
+    padding-right: 15%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 1.2rem;
+}
+.updateItemPanelDepartment>input{
+    border: 0px;
+    outline: 2px solid black;
+    font-size: 1.3rem;
+    border-radius: 15px;
+    width: 70%;
+    height: 60%;
+}
+.updateItemPanelExistance{
+    grid-column: 1/4;
+    grid-row: 6/7;
+
+    padding-left: 10%;
+    padding-right: 15%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 1.2rem;
+}
+.updateItemPanelExistance>input{
+    border: 0px;
+    outline: 2px solid black;
+    font-size: 1.3rem;
+    border-radius: 15px;
+    width: 70%;
+    height: 60%;
+}
+.updateItemPanelLast{
+    grid-column: 1/4;
+    grid-row: 7/8;
+
+    padding-left: 10%;
+    padding-right: 15%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 1.2rem;
+}
+.updateItemPanelLast>input{
+    border: 0px;
+    outline: 2px solid black;
+    font-size: 1.3rem;
+    border-radius: 15px;
+    width: 70%;
+    height: 60%;
+}
+.updateItemPanelPlace{
+    grid-column: 4/6;
+    grid-row: 2/4;
+    
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    border-radius: 10px;
+    background-color: beige;
+}
+.updateItemPanelPlace>div{
+    flex-shrink: 0;
+}
+.updatePanelButton{
+    grid-column: 4/6;
+    grid-row: 4/6;
+    width: 80%;
+    height: 60%;
+    justify-self: center;
+    align-self: center;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    font-size: 1.6rem;
+
+    border-radius: 25px;
+    outline: 2px solid black;
+    background-color: beige;
+}
+.cancelPanelButton{
+    grid-column: 4/6;
+    grid-row: 6/8;
+    width: 80%;
+    height: 60%;
+    justify-self: center;
+    align-self: center;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    font-size: 1.6rem;
+
+    border-radius: 25px;
+    outline: 2px solid black;
+    background-color: orange;
+}
+.updatePanelButton:hover,
+.cancelPanelButton:hover{
+    font-size: 2rem;
+    text-shadow: 2px 2px 2px brown;
+    outline: 3px solid black;
 }

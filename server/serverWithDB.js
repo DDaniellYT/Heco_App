@@ -244,14 +244,11 @@ const getItems = async (database,query)=>{
       }
     }
   }
-  console.log(values);
   if(queryItems.length > 0)
     getItemsQuery += ` WHERE ` + queryItems.join(' AND ');
-  console.log(getItemsQuery);
   return await new Promise((resolve)=>{
     database.all(getItemsQuery,values,(err,rows)=>{
       if(err){
-        console.log(err);
         resolve(503);
       }
       else resolve(rows);
@@ -280,7 +277,7 @@ const updateItem = async (database,item)=>{
       }
     }
   }
-  updateItemQuery += queryItems.join(',') + `WHERE id = ${item.id}`;
+  updateItemQuery += queryItems.join(',') + ` WHERE id = ${item.id}`;
   return await new Promise((resolve)=>{
     database.run(updateItemQuery,values,(err)=>{
       if(err)resolve(503);
@@ -288,6 +285,17 @@ const updateItem = async (database,item)=>{
     })
   })
 }
+const deleteItem = async (database,item)=>{
+  const deleteItemQuery = `DELETE FROM Inventory WHERE id = ?`;
+  return await new Promise((resolve)=>{
+    database.run(deleteItemQuery,item.id,(err)=>{
+      if(err)resolve(503);
+      else resolve(200);
+    })
+  })
+}
+
+
 
 const user = {
   userName:'admin3',
@@ -332,56 +340,57 @@ console.log(await createTask(factory,task) + ' -> createTask');
 console.log(await createItem(factory,item) + ' -> createItem');
 
 
-// NOT WORKING YET
-//// TODO: do like for getItems for all the other get functions for better flexibility and safety because of the values replacing only "?"
-
-// UD FOR INVENTORY NOT MADE YET
-
-
-// UPDATE
-// app.post('/inventory', async (req,res)=>{
-//   const status = await updateItem(factory,req.body.item);
-//   res.sendStatus(status);
-// })
-
-// TO BE TESTED
-
-
 // WORKING : 
 
 // CREATE
 app.put('/inventory',async (req,res)=>{
-  console.log(req.body,' <- put endpoint');
+  console.log(req.body,' <- create endpoint inventory');
   const status = await createItem(factory,req.body.item);
   res.sendStatus(status);
 })
 // READ
 app.get('/inventory', async (req,res)=>{
-  console.log(req.query);
+  console.log(req.query,' <- read endpoint inventory');
   const items = await getItems(factory,req.query);
   if(items != 204) res.status(200).send(items);
   else res.sendStatus(204);
+})
+// UPDATE
+app.post('/inventory',async (req,res)=>{
+  console.log(req.body,' <- update endpoint inventory');
+  const status = await updateItem(factory,req.body.item);
+  res.sendStatus(status);
+})
+// DELETE
+app.delete('/inventory', async (req,res)=>{
+  console.log(req.query,' <- delete endpoint inventory');
+  const status = await deleteItem(factory,req.query.item);
+  res.sendStatus(status);
 })
 
 
 
 // CREATE
 app.put('/requests', async (req,res)=>{
-    const status = await createTask(factory,req.body);
-    res.sendStatus(status);
+  console.log(req.body,' <- create endpoint requests')
+  const status = await createTask(factory,req.body);
+  res.sendStatus(status);
 });
 // READ
 app.get('/requests',async (req,res)=>{
+  console.log(req.query,' <- read endpoint requests')
   const requests = await readTasks(factory,req.query.reciever_role,req.query.reciever,req.query.accepted);
   res.send(requests);
 });
 // UPDATE
 app.post('/requests', async (req,res)=>{
+  console.log(req.body,' <- update endpoint requests')
   const status = await updateTask(factory,req.body.reciever,req.body.id,req.body.accepted);
   res.sendStatus(status);
 });
 // DELETE
 app.delete('/requests',async (req,res)=>{
+  console.log(req.query,' <- delete endpoint requests')
   const status = await deleteTask(factory,req.query.id);
   res.sendStatus(status);
 });
@@ -391,11 +400,13 @@ app.delete('/requests',async (req,res)=>{
 
 // CREATE
 app.put('/user',async (req,res)=>{
+  console.log(req.body,' <- create endpoint users');
   const status = await createUser(factory,req.body.user);
   res.sendStatus(status);
 });
 // READ
 app.get('/user',async (req,res)=>{
+  console.log(req.query,' <- read endpoint users');
   const user = await getUser(factory,req.query);
   if(user == undefined) res.status(204).send({});
   else if(user.length>1)
@@ -405,11 +416,13 @@ app.get('/user',async (req,res)=>{
 });
 // UPDATE /// maybe not wokring, to be tested
 app.post('/user', async (req,res)=>{
+  console.log(req.body,' <- update endpoint users');
   const status = await updateUser(factory,req.body);
   res.sendStatus(status);
 });
 // DELETE
 app.delete('/user', async (req,res)=>{
+  console.log(req.query,' <- delete endpoint users');
   const status = await deleteUser(factory,req.query.user);
   res.sendStatus(status);
 })

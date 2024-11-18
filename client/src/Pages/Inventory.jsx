@@ -5,6 +5,7 @@ import axios from "axios";
 import styles from "../Styles/Inventory.module.css";
 import NavBar from "./Admin/NavBar";
 import Menu from "./Menu";
+import UpdateItemPanel from "./UpdateItemPanel";
 import StorageSpace from "./StorageSpace";
 
 
@@ -14,11 +15,10 @@ const Inventory = (props)=>{
     const user = {...navState.state};
 
     const [items,setItems] = useState([]);
-
-    const [storage1,setStorage1] = useState(false);
-    const [storage2,setStorage2] = useState(false);
-    const [storage3,setStorage3] = useState(false);
-    const [storage4,setStorage4] = useState(false);
+    const [searched,setSearched] = useState('');
+    const [itemChange,setItemChange] = useState(false);
+    const [itemToBeChanged,setItemToBeChanged] = useState({});
+    const [storageSpace,setStorage] = useState('Hall 1');
 
     const [change,setChange] = useState(false);
     const [requestPage,setRequestPage] = useState(false);
@@ -35,15 +35,15 @@ const Inventory = (props)=>{
     useEffect(()=>{
         axios.get(`http://${props.ipOfServer}:8080/inventory`).then((req)=>{
             setItems(req.data);
-            console.log(req.data);
         });
     },[change]);
 
     return <div className={styles.container}>
         <NavBar user={user} ipOfServer={props.ipOfServer} change={change} setChange={setChange} requestPage={requestPage} setRequestPage={setRequestPage}/>
         <div className={styles.inventoryContainer}>
-            <Menu  setStorage1={setStorage1} setStorage2={setStorage2} setStorage3={setStorage3} setStorage4={setStorage4}/>
-            <StorageSpace ipOfServer={props.ipOfServer} items={items} storage1={storage1} storage2={storage2} storage3={storage3} storage4={storage4} change={change} setChange={setChange}/>
+            <Menu searched={searched} setSearched={setSearched} setStorage={setStorage}/>
+            <StorageSpace storageSpace={storageSpace} setItemChange={setItemChange} setItemToBeChanged={setItemToBeChanged} searched={searched} ipOfServer={props.ipOfServer} items={items} change={change} setChange={setChange}/>
+            {itemChange?<UpdateItemPanel change={change} setChange={setChange} setItemChange={setItemChange} ipOfServer={props.ipOfServer} item={itemToBeChanged}/>:null}
         </div>
     </div>;
 }

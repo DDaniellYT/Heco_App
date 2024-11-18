@@ -22,6 +22,62 @@
     font-weight: bold;
     font-size: 40px;
 }
+.infoSortButtonContainer{
+    grid-column: 1/2;
+    grid-row: 1/2;
+
+    justify-self: right;
+    align-self: flex-end;
+    
+    display: grid;
+    grid-template-columns: 100%;
+    grid-template-rows: 100%;
+    grid-auto-rows: 50%;
+    width: 25%;
+    height: 100%;
+}
+.infoSortButton{
+    width: 60%;
+    height: 80%;
+    margin-top: 7%;
+
+    display: grid;
+    grid-template-columns: 100%;
+    grid-template-rows: 100%;
+    grid-auto-rows: 100%;
+
+    text-align: center; 
+    text-justify: center;
+    
+    font-size: 1.3rem;
+    font-weight: bold;
+
+    outline: 2px solid black;
+    border-radius: 20px;
+    background-color: orange;
+}
+.infoSortButton:hover{
+    outline: 3px solid black;
+    font-size: 1.5rem;
+    text-shadow: 3px 3px 3px red;
+}
+.dropDownItem{
+    justify-self: center;
+    align-self: center;
+
+    font-size: 1rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 0px 0px 10px 10px;
+    width: 100%;
+    height: 100%;
+    z-index: 99;
+    background-color: orange;
+    outline: 2px solid black;
+}
+
+
 .infoListContainer{
     width: 100%;
     height: 100%;
