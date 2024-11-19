@@ -44,7 +44,7 @@ function Activity(props){
         {props.infoRequests.length!=0?null:<div className={styles.infoAddMessageContainer}><div className={styles.infoAddMessage}>Add a request from the Requests Tab</div></div>}
         <ul className={styles.infoList}>{
             props.infoRequests.map((item,index)=>{
-                return <RequestItem user={props.user} ipOfServer={props.ipOfServer} key={index} change={props.change} setChange={props.setChange} item={item} index={index+1}/>
+                return <RequestItem permisions={props.department == props.user.department?props.user.role=='Admin'?2:1:0} ipOfServer={props.ipOfServer} key={index} change={props.change} setChange={props.setChange} item={item} index={index+1}/>
             })}
         </ul>
     </div>;

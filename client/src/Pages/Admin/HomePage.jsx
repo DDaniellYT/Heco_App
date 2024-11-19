@@ -65,7 +65,7 @@ function HomePage(props){
         <NavBar user={user} ipOfServer={props.ipOfServer} change={change} setChange={setChange} requestPage={requestPage} setRequestPage={setRequestPage}/>
         <div className={styles.interface}>
             <div className={activity.info}>
-                <Activity user={user} ipOfServer={props.ipOfServer} change={change} setChange={setChange} requestPage={requestPage} infoRequests={infoRequests} setInfoRequests={setInfoRequests} infoAccepted={infoAccepted} setInfoAccepted={setInfoAccepted}/> 
+                <Activity department={user.department} user={user} ipOfServer={props.ipOfServer} change={change} setChange={setChange} requestPage={requestPage} infoRequests={infoRequests} setInfoRequests={setInfoRequests} infoAccepted={infoAccepted} setInfoAccepted={setInfoAccepted}/> 
             </div>
             <div className={profile.profileContainer}>
                 <Profile ipOfServer={props.ipOfServer} user={user} photo={photo} change={change} setChange={setChange} infoAccepted={infoAccepted}/>

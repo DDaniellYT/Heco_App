@@ -15,7 +15,7 @@ const UserProfile = props => {
     const seconds = 0;
 
     return <div className={styles.userProfileContainer}>
-        {changePanel?<ChangeUserPanel item={props.item} user={props.item} userActivity={userActivity} setChangePanel={setChangePanel}/>:null}
+        {changePanel?<ChangeUserPanel user={props.user} item={props.item} userItem={props.item} userActivity={userActivity} setChangePanel={setChangePanel}/>:null}
         <div className={styles.userProfilePic} style={{
                     backgroundImage:`url(${props.item.pic})`
         }}>picture</div>
@@ -23,15 +23,19 @@ const UserProfile = props => {
             <label>UserName:</label>
             <div>{props.item.userName}</div>
         </div>
-        <div className={styles.userProfileDelete} onClick={()=>{
+        {props.user.role == 'Admin'?<div className={styles.userProfileDelete} onClick={()=>{
             setSure(true);
-        }}>DELETE</div>    
+        }}>DELETE</div>:null}    
         <div className={styles.userProfileClockHour}>
             {hours.toString().length<2?`0${hours}`:hours}:
             {minutes.toString().length<2?`0${minutes}`:minutes}:
             {seconds.toString().length<2?`0${seconds}`:seconds}
         </div>
-        <div className={styles.userProfileDetails} onClick={async ()=>{
+        <div className={styles.userProfileDetails} style={props.user.role == 'Admin'?null:{
+            borderLeft:'2px solid black',
+            gridColumn:'4/6',
+            backgroundColor:'moccasin'
+        }} onClick={async ()=>{
             await axios.get(`http://${props.ipOfServer}:8080/requests`,{params:{reciever:props.item.userName,accepted:'YES'}}).then((req)=>{
                 console.log(props.item);
                 console.log(req.data);

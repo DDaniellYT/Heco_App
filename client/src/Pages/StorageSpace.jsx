@@ -54,7 +54,7 @@ const StorageSpace = (props)=>{
     const [addItem,setAddItem] = useState(false);
     return <div className={styles.storageSpaceContainer}>
         <label className={styles.storageSpace}>{props.storageSpace}</label>
-        {addItem?<AddItemPanel hall={props.storageSpace} setAddItem={setAddItem} ipOfServer={props.ipOfServer} change={props.change} setChange={props.setChange}/>:null}
+        {addItem?<AddItemPanel user={props.user} hall={props.storageSpace} setAddItem={setAddItem} ipOfServer={props.ipOfServer} change={props.change} setChange={props.setChange}/>:null}
         <div className={styles.addItem} onClick={()=>{
             setAddItem(true);
         }}>+ Add</div>

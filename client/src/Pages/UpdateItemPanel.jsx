@@ -10,7 +10,6 @@ const UpdateItemPanel = (props)=>{
     const [itemName, setItemName] = useState(props.item.name);
     const [itemDepartment, setItemDepartment] = useState(props.item.department);
     const [itemExistance, setItemExistance] = useState(props.item.existance);
-    const [itemLast, setItemLast] = useState(props.item.last);
     const [place,setPlace] = useState(JSON.parse(props.item.place));
 
     const [hallDropDown,setHallDropDown] = useState(false);
@@ -101,7 +100,7 @@ const UpdateItemPanel = (props)=>{
                     name:itemName,
                     department:itemDepartment,
                     existance:itemExistance,
-                    last:itemLast,
+                    last:props.user.userName,
                     place:JSON.stringify(place)
                 }
                 console.log(tempItem);

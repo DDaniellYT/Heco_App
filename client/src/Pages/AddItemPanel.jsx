@@ -20,7 +20,7 @@ const AddItemPanel = (props)=>{
         name:'',
         state:'',
         existance:'',
-        last:'',
+        last:props.user.userName,
         place:[0,0,0],
         department: navState.state.department
     })
@@ -176,12 +176,6 @@ const AddItemPanel = (props)=>{
                 setItem({
                     ...item,
                     existance:e.target.value
-                })
-            }}/>
-            <input className={styles.itemLast} placeholder="itemLast" value={item.last} onChange={(e)=>{
-                setItem({
-                    ...item,
-                    last:e.target.value
                 })
             }}/>
             <div className={styles.submit} onClick={()=>{

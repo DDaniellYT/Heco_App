@@ -66,9 +66,9 @@ const Department = (props) => {
         <NavBar user={user} ipOfServer={ipOfServer} change={change} setChange={setChange} requestPage={requestPage} setRequestPage={setRequestPage}/>
         <div className={styles.interface}>
             <div className={activity.info}>
-                <Activity user={user} ipOfServer={ipOfServer} change={change} setChange={setChange} requestPage={requestPage} infoRequests={infoRequests} setInfoRequests={setInfoRequests} infoAccepted={infoAccepted} setInfoAccepted={setInfoAccepted}/>    
+                <Activity department={props.department} user={user} ipOfServer={ipOfServer} change={change} setChange={setChange} requestPage={requestPage} infoRequests={infoRequests} setInfoRequests={setInfoRequests} infoAccepted={infoAccepted} setInfoAccepted={setInfoAccepted}/>    
             </div>
-            <ProfileList department={props.department} ipOfServer={ipOfServer} change={change} setChange={setChange}/>
+            <ProfileList user={user} department={props.department} ipOfServer={ipOfServer} change={change} setChange={setChange}/>
             <div className={stats.quickContainer}>
                 {hrProg!=undefined?<Stats hrProg={hrProg} />:null}
                 {mechProg!=undefined?<Stats mechProg={mechProg} />:null}
