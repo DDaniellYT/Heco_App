@@ -13,6 +13,8 @@ const UpdateItemPanel = (props)=>{
     const [itemLast, setItemLast] = useState(props.item.last);
     const [place,setPlace] = useState(JSON.parse(props.item.place));
 
+    const [hallDropDown,setHallDropDown] = useState(false);
+
     const placementStyle = {
         backgroundColor:'red'
     };
@@ -40,37 +42,56 @@ const UpdateItemPanel = (props)=>{
                 }}/>
             </div>
             <div className={styles.updateItemPanelPlace}>
+                <div className={styles.hall} onClick={()=>{
+                        setHallDropDown(true);
+                    }} onMouseLeave={()=>{
+                        setHallDropDown(false);
+                    }}>
+                    <label>{place[0]}</label>
+                    {hallDropDown?<div onClick={()=>{
+                        setPlace(['Hall 1',place[1],place[2]]);
+                    }}>Hall 1</div>:null}
+                    {hallDropDown?<div onClick={()=>{
+                        setPlace(['Hall 2',place[1],place[2]]);
+                    }}>Hall 2</div>:null}
+                    {hallDropDown?<div onClick={()=>{
+                        setPlace(['Hall 3',place[1],place[2]]);
+                    }}>Hall 3</div>:null}
+                    {hallDropDown?<div onClick={()=>{
+                        setPlace(['Hall 4',place[1],place[2]]);
+                    }}>Hall 4</div>:null}
+                </div>
                 <div className={styles.shelf}>
                     <div className={styles.space} style={place[1]==1&&place[2]==1?placementStyle:null} onClick={()=>{
-                        setPlace([JSON.parse(props.item.place)[0],1,1]);
+                        setPlace([place[0],1,1]);
                     }}></div>
                     <div className={styles.space} style={place[1]==1&&place[2]==2?placementStyle:null} onClick={()=>{
-                        setPlace([JSON.parse(props.item.place)[0],1,2]);
+                        setPlace([place[0],1,2]);
                     }}></div>
                     <div className={styles.space} style={place[1]==1&&place[2]==3?placementStyle:null} onClick={()=>{
-                        setPlace([JSON.parse(props.item.place)[0],1,3]);
+                        setPlace([place[0],1,3]);
                     }}></div>
                 </div>
                 <div className={styles.shelf}>
                     <div className={styles.space} style={place[1]==2&&place[2]==1?placementStyle:null} onClick={()=>{
-                        setPlace([JSON.parse(props.item.place)[0],2,1]);
+                        setPlace([place[0],2,1]);
                     }}></div>
                     <div className={styles.space} style={place[1]==2&&place[2]==2?placementStyle:null} onClick={()=>{
-                        setPlace([JSON.parse(props.item.place)[0],2,2]);
+                        setPlace([place[0],2,2]);
                     }}></div>
                     <div className={styles.space} style={place[1]==2&&place[2]==3?placementStyle:null} onClick={()=>{
-                        setPlace([JSON.parse(props.item.place)[0],2,3]);
+                        setPlace([place[0],2,3]);
                     }}></div>
                 </div>
                 <div className={styles.shelf}>
                     <div className={styles.space} style={place[1]==3&&place[2]==1?placementStyle:null} onClick={()=>{
-                        setPlace([JSON.parse(props.item.place)[0],3,1]);
+                        setPlace([place[0],3,1]);
                     }}></div>
                     <div className={styles.space} style={place[1]==3&&place[2]==2?placementStyle:null} onClick={()=>{
-                        setPlace([JSON.parse(props.item.place)[0],3,2]);
+                        setPlace([place[0],3,2]);
                     }}></div>
                     <div className={styles.space} style={place[1]==3&&place[2]==3?placementStyle:null} onClick={()=>{
-                        setPlace([JSON.parse(props.item.place)[0],3,3]);
+                        setPlace([place[0],3,3]);
                     }}></div>
                 </div>
             </div>

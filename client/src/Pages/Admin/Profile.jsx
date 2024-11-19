@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import styles from '../../Styles/Profile.module.css'
 import axios from "axios";
 
 function Profile(props){
+    const nav = useNavigate();
 
     return <div className={styles.profileListContainer}>
         <div className={styles.profilePicture} style={{
@@ -17,8 +19,10 @@ function Profile(props){
             <div>Role : {props.user.role}</div>
         </div>
         <div className={styles.profileClock} onClick={()=>{
-            axios.post(`http://${props.ipOfServer}:8080/users`,{userName:props.user.userName}).then(req => props.setChange(!props.change))
-        }}>{props.user.existance == 'IN'?'Clock OUT':'Clock IN'}
+            axios.post(`http://${props.ipOfServer}:8080/user`,{user:{id:props.user.id,existance:'OUT'}}).then(req => {
+                nav('/',{state:{}});
+            })
+        }}>Clock OUT
         </div>
         <div className={styles.profileChat}>Chat</div>
         <div className={styles.profileAccepted}>Accepted Tasks</div>

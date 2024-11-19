@@ -100,23 +100,39 @@ const createInventoryTable = async (database)=>{
 
 
 const getUser = async (database,user) =>{
-  const getUserQuery = `SELECT * FROM Users ${user.userName || user.department?`WHERE(
-    ${user.userName?`userName = '${user.userName}'`:` `}
-    ${user.userName && user.department ?` AND `:``}
-    ${user.department?`department = '${user.department}'`:``}
-    )`:``}`;
-    // console.log(getUserQuery);
+  let getQuery = `SELECT * FROM Users `;
+  let queryItems = [];
+  let values = [];
+  for(let key in user)
+    if(user.hasOwnProperty(key))
+      if(['id','userName','firstName','lastName','department','role','existance'].includes(key)){
+        queryItems.push(`${key} = ? `);
+        values.push(user[key]);
+      }
+    
+
+    getQuery += ` WHERE ` + queryItems.join(' AND ');
+  // const getUserQuery = `SELECT * FROM Users ${user.userName || user.department?`WHERE(
+  //   ${user.userName?`userName = '${user.userName}'`:` `}
+  //   ${user.userName && user.department ?` AND `:``}
+  //   ${user.department?`department = '${user.department}'`:``}
+  //   )`:``}`;
+  console.log(getQuery, '<- getQuery');
+  console.log(queryItems, '<- queryItems');
+  console.log(values, '<- values');
   return new Promise((resolve)=>{
-    database.all(getUserQuery,(err,rows)=>{
+    database.all(getQuery,values,(err,rows)=>{
+      console.log(err);
       if(err)resolve(503);
       else resolve(rows);
     });
   });
 };
 const getUserById = async (database,id) =>{
-  const getUserQuery = `SELECT * FROM Users WHERE id = ${id}}`;
+  const getUserQuery = `SELECT * FROM Users WHERE id = ${id}`;
   return new Promise((resolve)=>{
     database.all(getUserQuery,(err,rows)=>{
+      console.log(err);
       if(err)resolve(503);
       else resolve(rows[0]);
     });
@@ -146,22 +162,40 @@ const createUser = async (database,user) => {
     };
   });
 };
-const updateUser = async (database,user,userId)=>{
-  const tempUser = await getUserById(database,userId)
-  const updateQuery = `UPDATE Users SET(
-      userName = '${user.userName}',
-      password = '${user.password}',
-      firstName = '${user.firstName}',
-      lastName = '${user.lastName}',
-      department = '${user.department}',
-      role = '${user.role}',
-      time = '${user.time}',
-      existance = '${user.existance}')
-      WHERE (id = ${user.id})`;
+const updateUser = async (database,user)=>{
+  console.log(user);
+  const tempUser = await getUserById(database,user.id);
+  console.log(tempUser);
+  let updateQuery = `UPDATE Users Set `;
+  let queryItems = [];
+  let values = [];
+  for(let key in user)
+    if(user.hasOwnProperty(key))
+      if(['userName','password','firstName','lastName','department','role','existance'].includes(key)){
+        queryItems.push(`${key} = ?`)
+        values.push(user[key]);
+      }
+  values.push(user.id);
+  updateQuery += queryItems.join(', ') + ` WHERE id = ?`;
+  // const updateQuery = `UPDATE Users SET(
+  //     userName = '${user.userName}',
+  //     password = '${user.password}',
+  //     firstName = '${user.firstName}',
+  //     lastName = '${user.lastName}',
+  //     department = '${user.department}',
+  //     role = '${user.role}',
+  //     time = '${user.time}',
+  //     existance = '${user.existance}')
+  //     WHERE (id = ${user.id})`;
+
+  console.log(updateQuery,' <- inside updateUser');
+  console.log(queryItems,' <- queryItems');
+  console.log(values,' <- values');
   return new Promise(async (resolve)=>{
     if(await doesUserExist(database,tempUser) == 204)resolve(204);
     else {
-      database.run(updateQuery,(err)=>{
+      database.run(updateQuery,values,(err)=>{
+        console.log(err);
         if(err)resolve(503);
         else resolve(200);
       })
@@ -407,7 +441,7 @@ app.put('/user',async (req,res)=>{
 // READ
 app.get('/user',async (req,res)=>{
   console.log(req.query,' <- read endpoint users');
-  const user = await getUser(factory,req.query);
+  const user = await getUser(factory,req.query.user);
   if(user == undefined) res.status(204).send({});
   else if(user.length>1)
     res.status(200).send(user);
@@ -417,7 +451,7 @@ app.get('/user',async (req,res)=>{
 // UPDATE /// maybe not wokring, to be tested
 app.post('/user', async (req,res)=>{
   console.log(req.body,' <- update endpoint users');
-  const status = await updateUser(factory,req.body);
+  const status = await updateUser(factory,req.body.user);
   res.sendStatus(status);
 });
 // DELETE

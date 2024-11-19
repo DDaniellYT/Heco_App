@@ -13,7 +13,7 @@ const ProfileList = (props)=>{
     const [image,setImage] = useState(null);
     
     useEffect(()=>{
-        axios.get(`http://${props.ipOfServer}:8080/user`,{params:{department:props.department}}).then(async req => {
+        axios.get(`http://${props.ipOfServer}:8080/user`,{params:{user:{department:props.department}}}).then(async req => {
             console.log('from profilelist');
             console.log(req.data);
             if(req.data)

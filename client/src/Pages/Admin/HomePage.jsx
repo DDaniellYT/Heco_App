@@ -23,7 +23,6 @@ async function getProg(rec,ip){
             if(item.accepted == 'YES')return item;
         })
         prog = (tempYes.length+tempNo.length)==0?0:(tempYes.length/(tempYes.length+tempNo.length)*100).toFixed(0);
-        console.log(prog);
     });
     return prog;
 }
@@ -37,7 +36,7 @@ function HomePage(props){
     const [change,setChange] = useState(false);
     const [photo,setPhoto] = useState(null);
 
-    const user = {...navState.state};
+    const [user,setUser] = useState({...navState.state});
 
     const [hrProg,setHrProg] = useState(50);
     const [mechProg,setMechProg] = useState(50);
@@ -50,6 +49,10 @@ function HomePage(props){
         document.getElementById("root").className = styles.root;
         axios.get(`http://${props.ipOfServer}:8080/requests`,{params:{reciever:user.userName, accepted:'YES'}}).then(req => setInfoAccepted(req.data));
         axios.get(`http://${props.ipOfServer}:8080/requests`,{params:{reciever_role:user.department,accepted:'NO'}}).then(req => setInfoRequests(req.data));
+        axios.get(`http://${props.ipOfServer}:8080/user`,{params:{user:{id:user.id}}}).then((req)=>{
+            setUser(req.data);
+        });
+
         getProg('HResources',props.ipOfServer).then(prog => setHrProg(prog));
         getProg('Mechanics',props.ipOfServer).then(prog => setMechProg(prog));
         getProg('Chemists',props.ipOfServer).then(prog => setChemProg(prog));

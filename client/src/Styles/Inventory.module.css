@@ -509,6 +509,29 @@
     justify-content: center;
     align-items: center;
 }
+.hall{
+    width: 80%;
+    height: 15%;
+    margin-bottom: 5%;
+
+    display: grid;
+    grid-template-columns: 100%;
+    grid-template-rows: 100%;
+    grid-auto-rows: 100%;
+
+    border-radius: 15px;
+    background-color: firebrick;
+}
+.hall label{
+    justify-self: center;
+    align-self: center;
+}
+.hall >div{
+    justify-self: center;
+    width: 80%;
+    z-index: 99;
+    background-color: violet;
+}
 
 .updateItemPanelContainer{
     position: absolute;

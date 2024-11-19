@@ -25,7 +25,6 @@ async function getProg(rec,ip){
             if(item.accepted == 'YES')return item;
         })
         prog = (tempYes.length+tempNo.length)==0?0:(tempYes.length/(tempYes.length+tempNo.length)*100).toFixed(0);
-        console.log(prog);
     });
     return prog;
 }
@@ -69,8 +68,6 @@ const Department = (props) => {
             <div className={activity.info}>
                 <Activity user={user} ipOfServer={ipOfServer} change={change} setChange={setChange} requestPage={requestPage} infoRequests={infoRequests} setInfoRequests={setInfoRequests} infoAccepted={infoAccepted} setInfoAccepted={setInfoAccepted}/>    
             </div>
-            {/* <div className={profileList.}>
-            </div> */}
             <ProfileList department={props.department} ipOfServer={ipOfServer} change={change} setChange={setChange}/>
             <div className={stats.quickContainer}>
                 {hrProg!=undefined?<Stats hrProg={hrProg} />:null}
