@@ -4,14 +4,14 @@ import RequestItem from "./RequestItem";
 
 function Activity(props){
 
-    const [dropDown,setDropDown] = useState(false);
-    const priorityOrder = ['Lowest','Low','Somewhat','High','Top'];
-    const departmentOrder = ['HResources','Mechanics','Chemists','Workers','Security','Cleaning'];
+    // const [dropDown,setDropDown] = useState(false);
+    // const priorityOrder = ['Lowest','Low','Somewhat','High','Top'];
+    // const departmentOrder = ['HResources','Mechanics','Chemists','Workers','Security','Cleaning'];
 
     return <div className={styles.infoListContainer}>
-        {props.infoRequests.length==0?null:<div className={styles.infoTitle}>Activity</div>}
+        {props.infoRequests.length===0?null:<div className={styles.infoTitle}>Activity</div>}
         {/* sorting button to be made */}
-        {/* {props.infoRequests.length==0?null:<div className={styles.infoSortButtonContainer}>
+        {/* {props.infoRequests.length===0?null:<div className={styles.infoSortButtonContainer}>
             <div className={styles.infoSortButton} onClick={()=>{
                 setDropDown(true);
             }} onMouseLeave={()=>{
@@ -40,11 +40,11 @@ function Activity(props){
             }}>By What Department</div>:null}
             </div> 
         </div>} */}
-        {props.infoRequests.length!=0?null:<div className={styles.noActivity}>No Activity Yet</div>}
-        {props.infoRequests.length!=0?null:<div className={styles.infoAddMessageContainer}><div className={styles.infoAddMessage}>Add a request from the Requests Tab</div></div>}
+        {props.infoRequests.length!==0?null:<div className={styles.noActivity}>No Activity Yet</div>}
+        {props.infoRequests.length!==0?null:<div className={styles.infoAddMessageContainer}><div className={styles.infoAddMessage}>Add a request from the Requests Tab</div></div>}
         <ul className={styles.infoList}>{
             props.infoRequests.map((item,index)=>{
-                return <RequestItem permisions={props.department == props.user.department?props.user.role=='Admin'?2:1:0} ipOfServer={props.ipOfServer} key={index} change={props.change} setChange={props.setChange} item={item} index={index+1}/>
+                return <RequestItem permisions={props.user.department==='all'?3:props.department === props.user.department?props.user.role==='Admin'?3:1:0} user={props.user} ipOfServer={props.ipOfServer} key={index} change={props.change} setChange={props.setChange} item={item} index={index+1}/>
             })}
         </ul>
     </div>;

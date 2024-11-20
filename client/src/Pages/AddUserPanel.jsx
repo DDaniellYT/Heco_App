@@ -1,5 +1,6 @@
 import React , { useState } from "react";
 import axios from "axios";
+import CryptoJS from 'crypto-js'
 
 import styles from "../Styles/ProfileList.module.css";
 
@@ -12,6 +13,7 @@ const AddUserPanel = (props)=>{
     const [password, setPassword] = useState('');
 
     const [statusMessage, setStatusMessage] = useState('');
+    const [passType,setPassType] = useState('');
 
 
     return <div className={styles.userPanelBackground}>
@@ -51,10 +53,13 @@ const AddUserPanel = (props)=>{
             </div>
             <div className={styles.userPassword}>
                 <label>Password:</label> 
-                <input maxLength={20} value={password} onChange={(e)=>{
+                <input type={passType} maxLength={20} value={password} onChange={(e)=>{
                     setPassword(e.target.value);
                     console.log(e.target.value);
                 }}/>
+                <button className={styles.seePass} onClick={()=>{
+                    setPassType(passType==='password'?'':'password');
+                }}>{passType==='password'?'show':'hide'}</button>
             </div>
             {/* {props.department=='admin'?<div className={styles.userDepartment}>
                 <label>DEPARTMENT</label>
@@ -77,7 +82,7 @@ const AddUserPanel = (props)=>{
                     props.setDepartment('Cleaning');
                 }}>Cleaning</div>
             </div>:null} */}
-            <div style={props.department=='admin'?{
+            <div style={props.department==='admin'?{
                 gridColumn : '3/4'
             }:null} className={styles.userRole}>
                 <label>ROLE</label>
@@ -103,17 +108,17 @@ const AddUserPanel = (props)=>{
 
                 const user = {
                     userName: userName,
-                    password: password,
+                    password: CryptoJS.SHA256(password).toString(),
                     firstName: firstName,
                     lastName: lastName,
                     department: props.department,
                     role: role,
                 }
-                if(user.userName == '' || user.firstName == '' || user.lastName == '' || user.password == '' || user.role == '')setStatusMessage('No empty spaces allowed!');
+                if(user.userName === '' || user.firstName === '' || user.lastName === '' || user.password === '' || user.role === '')setStatusMessage('No empty spaces allowed!');
                 else {
                     axios.put(`http://${props.ipOfServer}:8080/user`,{user:user}).then((req)=>{
-                        if(req.status == 208) setStatusMessage('User already exists!');
-                        if(req.status == 200) props.setUserPanel(false);
+                        if(req.status === 208) setStatusMessage('User already exists!');
+                        if(req.status === 200) props.setUserPanel(false);
                         props.setImage(null);
                         props.setChange(!props.change);
                     });

@@ -10,7 +10,7 @@
     "stopNoDB": "pm2 stop serverWithCurrentFileStorage.js",
     "start": "pm2 start serverWithDB.js",
     "restart": "pm2 restart serverWithDB.js",
-    "stop": "pm2 stop serverWithDB.js"
+    "stop": "pm2 stop ./serverWithDB.js"
   },
   "author": "",
   "license": "ISC",

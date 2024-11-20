@@ -17,13 +17,13 @@ function RequestItem(props){
         <div className={styles.infoUrgency}>{props.item.urgency}</div>
         <div className={styles.infoSubject}>{props.item.subject}</div>
         <div className={styles.infoMessage}>{props.item.message}</div>
-        {props.permisions>0?<div className={styles.infoAccept} onClick={()=>{
+        {props.permisions==1 || props.permisions==3?<div className={styles.infoAccept} onClick={()=>{
             obj.when = new Date().getHours() + ":" + new Date().getMinutes();
             axios.post(`http://${props.ipOfServer}:8080/requests`,{reciever:props.user.userName,id:props.item.id,accepted:'YES'}).then((req)=>{
                 props.setChange(!props.change);
             });
         }}>Accept</div>:null}
-        {props.permisions>1?<div className={styles.infoRemove} onClick={async ()=>{
+        {props.permisions==2 || props.permisions==3?<div className={styles.infoRemove} onClick={async ()=>{
             obj.when = new Date().getHours() + ":" + new Date().getMinutes()
             await axios.delete(`http://${props.ipOfServer}:8080/requests`,{params:{id:props.item.id}}).then((req)=>{
                 props.setChange(!props.change);

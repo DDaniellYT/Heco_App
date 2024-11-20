@@ -15,7 +15,7 @@ const UserProfile = props => {
     const seconds = 0;
 
     return <div className={styles.userProfileContainer}>
-        {changePanel?<ChangeUserPanel user={props.user} item={props.item} userItem={props.item} userActivity={userActivity} setChangePanel={setChangePanel}/>:null}
+        {changePanel?<ChangeUserPanel change={props.change} setChange={props.setChange} ipOfServer={props.ipOfServer} user={props.user} userItem={props.item} userActivity={userActivity} setChangePanel={setChangePanel}/>:null}
         <div className={styles.userProfilePic} style={{
                     backgroundImage:`url(${props.item.pic})`
         }}>picture</div>

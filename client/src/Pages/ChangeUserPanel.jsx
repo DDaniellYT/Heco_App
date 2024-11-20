@@ -6,9 +6,9 @@ import styles from "../Styles/ProfileList.module.css";
 
 
 const ChangeUserPanel = (props)=>{
-    const hours = Math.floor(props.item.time/3600);
-    const minutes = Math.floor((props.item.time-hours*3600)/60);
-    const seconds = props.item.time-hours*3600-minutes*60;
+    const hours = Math.floor(props.userItem.time/3600);
+    const minutes = Math.floor((props.userItem.time-hours*3600)/60);
+    const seconds = props.userItem.time-hours*3600-minutes*60;
 
     return <div className={styles.detailsPanelContainer}>
         <div className={styles.detailsPanel}> 
@@ -31,7 +31,7 @@ const ChangeUserPanel = (props)=>{
             }}>X</div>
             <div className={styles.detailsPanelActivity}>
                 {props.userActivity.map((item,index)=>{
-                    return <RequestItem permisions={1} user={props.userItem} ipOfServer={props.ipOfServer} key={index} change={props.details} setChange={props.setChange} item={item} index={index+1}/>
+                    return <RequestItem permisions={['Admin','Manager'].includes(props.user.role)?2:0} user={props.userItem} ipOfServer={props.ipOfServer} key={index} change={props.details} setChange={props.setChange} item={item} index={index+1}/>
                 })}
             </div>
         </div>

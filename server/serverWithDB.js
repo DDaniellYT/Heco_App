@@ -16,6 +16,7 @@ app.use(bodyParser.urlencoded({extended:true}));
 app.use(cors());
 app.use(express.json({ limit: '10mb', extended: true }));
 
+
 const createUsersTable = async (database) => {
   const createUsersQuery = `CREATE TABLE IF NOT EXISTS Users(
     id INTEGER PRIMARY KEY,
@@ -33,28 +34,6 @@ const createUsersTable = async (database) => {
       if(err)resolve(503);
       else resolve(200); 
     })
-  });
-};
-const createUserActivityTable = async (database,user)=>{ /// not needed anymore
-  const tempUser = await getUser(database,user);
-  const createUserActivityTableQuery = `CREATE TABLE IF NOT EXISTS _${tempUser.userName}_${tempUser.id}_(
-    id INTEGER PRIMARY KEY,
-    globalId INTEGER NOT NULL,
-    reciever TEXT NOT NULL,
-    sender TEXT NOT NULL,
-    sender_role TEXT NOT NULL,
-    subject TEXT NOT NULL,
-    message TEXT NOT NULL,
-    urgency TEXT NOT NULL,
-    dateRequested INTEGER NOT NULL,
-    dateAccepted INTEGER,
-    dateFinished INTEGER 
-  )`;
-  return await new Promise(async (resolve)=>{
-    database.run(createUserActivityTableQuery,(err)=>{
-      if(err)resolve(503);
-      else resolve(200);
-    });
   });
 };
 const createTaskTable = async (database)=>{
@@ -463,7 +442,34 @@ app.delete('/user', async (req,res)=>{
 
 
 
-
-app.listen(port, () => {
+const server = app.listen(port, () => {
   console.log(`HecoServer Listening ${port}`);
 });
+
+
+
+/// Maybe make it work at some point
+/// It just skips to close, no db, also async ad await for db dont do nothing
+/// The console.logs dont even work, not entering the function
+const handleShutDown = async ()=>{
+  console.log(' recieved shutdown signal ');
+  console.log(' logging everyone out ');
+
+  const delogQuery = `UPDATE Users SET existance = 'OUT'`;
+  factory.run(delogQuery,(err)=>{
+    if(err)resolve(err);
+    else resolve(200);
+  })
+  server.close(() => {
+    console.log(' finished closing in time ');
+    process.exit(0);
+  });
+
+  setTimeout(() => {
+    console.error(' something happened along, force shutdown ');
+    process.exit(1);
+  }, 10000);
+}
+
+process.on('SIGTERM',handleShutDown);
+process.on('SIGINT',handleShutDown);

@@ -17,12 +17,12 @@ async function getProg(rec,ip){
     await axios.get(`http://${ip}:8080/requests`,{params:{reciever_role:`${rec}`}}).then(async (req,res)=>{
         const tempAll = req.data;
         const tempNo = tempAll.filter((item)=>{
-            if(item.accepted == 'NO')return item;
+            if(item.accepted === 'NO')return item;
         })
         const tempYes = tempAll.filter((item)=>{
-            if(item.accepted == 'YES')return item;
+            if(item.accepted === 'YES')return item;
         })
-        prog = (tempYes.length+tempNo.length)==0?0:(tempYes.length/(tempYes.length+tempNo.length)*100).toFixed(0);
+        prog = (tempYes.length+tempNo.length)===0?0:(tempYes.length/(tempYes.length+tempNo.length)*100).toFixed(0);
     });
     return prog;
 }
@@ -47,8 +47,22 @@ function HomePage(props){
 
     useEffect(()=>{
         document.getElementById("root").className = styles.root;
-        axios.get(`http://${props.ipOfServer}:8080/requests`,{params:{reciever:user.userName, accepted:'YES'}}).then(req => setInfoAccepted(req.data));
-        axios.get(`http://${props.ipOfServer}:8080/requests`,{params:{reciever_role:user.department,accepted:'NO'}}).then(req => setInfoRequests(req.data));
+        axios.get(`http://${props.ipOfServer}:8080/requests`,{params:{reciever:user.userName, accepted:'YES'}}).then(req => {
+            let tempArr = [];
+            for(let i = req.data.length-1; i>=0 ;i--){
+                tempArr.push(req.data[i]);
+            }
+            console.log(req.data,' <- data');
+            console.log(tempArr,' <- tempArr');
+            setInfoAccepted(tempArr);
+        });
+        axios.get(`http://${props.ipOfServer}:8080/requests`,{params:{reciever_role:user.department,accepted:'NO'}}).then(req => {
+            let tempArr = [];
+            for(let i = req.data.length-1; i>=0 ;i--){
+                tempArr.push(req.data[i]);
+            }
+            setInfoRequests(tempArr);
+        });
         axios.get(`http://${props.ipOfServer}:8080/user`,{params:{user:{id:user.id}}}).then((req)=>{
             setUser(req.data);
         });
