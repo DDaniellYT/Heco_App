@@ -15,11 +15,13 @@ function Profile(props){
 
     const leftStyle = {
         alignSelf:'flex-start',
-        justifyContent:'left'
+        justifyContent:'left',
+        backgroundColor:'rgb(173, 56, 219)'
     }
     const rightStyle = {
         alignSelf:'flex-end',
-        justifyContent:'right'
+        justifyContent:'right',
+        backgroundColor:'rgb(56, 176, 219)'
     }
 
     const socket = useRef(null);
@@ -27,7 +29,7 @@ function Profile(props){
     useEffect(()=>{
         new Promise(async ()=>{
             if(reciever!==undefined){
-                await axios.get(`http://${props.ipOfServer}:${props.httpPort}/chat`,{params:{sender:props.user.userName,reciever:reciever.userName}}).then((req)=>{
+                await axios.get(`http://${props.ipOfServer}:${props.httpPort}/chat`,{params:{sender:props.user.userName,reciever:reciever.userName,amount:30}}).then((req)=>{
                     setMessages(req.data);
                     setChatState(2);
                     if(!socket.current){
@@ -35,13 +37,15 @@ function Profile(props){
                         socket.current = tempSocket;
                         tempSocket.onopen = ()=>{
                             console.log('opened socket');
+                            socket.current.send(JSON.stringify({type:'set_userName',userName:props.user.userName}));
                         };
+                        tempSocket.onmessage = (req) => {
+                            setMessages(JSON.parse(req.data));
+                            console.log(JSON.parse(req.data),' <- message from websocket server');
+                        }
                         tempSocket.onclose = ()=>{
                             console.log('closed socket');
                             socket.current = null;
-                        }
-                        tempSocket.onmessage = (message) => {
-                            console.log(message,' <- message from websocket server');
                         }
                     }
                 });
@@ -76,7 +80,11 @@ function Profile(props){
             }}>
             <label>Chat</label>
             {chatState>0?<div className={styles.chatContainer}>
-                <div className={styles.chatTitle}>{chatState===1?'Chat':reciever.userName}</div>
+                <div className={styles.chatTitle}>{chatState===1?<label className={styles.chatLabel}>Chat</label>:<label className={styles.chatLabel}>{reciever.userName}</label>}
+                    <label className={styles.chatExit} onClick={()=>{
+                        setChatState(0);
+                    }}>X</label>
+                </div>
                 {chatState===1?<div className={styles.chatUsers}>
                     {props.userNames.map((item)=>{
                         return <label onClick={async ()=>{
@@ -96,20 +104,15 @@ function Profile(props){
                     </div>
                     <div className={styles.inputArea} onKeyDown={(e)=>{
                             if(e.key==='Enter'){
-                                console.log('sent a message to ws');
-                                console.log(socket.current);
-                                socket.current.send('testing message');
                                 const tempMessage = {
                                     sender:props.user.userName,
                                     reciever:reciever.userName,
                                     message:message,
-                                    time:new Date().getSeconds()
+                                    time:new Date().getTime()
                                 }
-                                axios.put(`http://${props.ipOfServer}:${props.httpPort}/chat`,{item:tempMessage}).then((req)=>{
-                                    console.log(req.data);
-                                    setMessage('');
-                                    props.setChange(!props.change);
-                                });
+                                if(tempMessage.message!=='')
+                                    socket.current.send(JSON.stringify({type:'chat_message',message:tempMessage}));
+                                setMessage('');
                             }
                         }}>
                         <input placeholder="Say something" value={message} onChange={(e)=>{
@@ -120,13 +123,11 @@ function Profile(props){
                                 sender:props.user.userName,
                                 reciever:reciever.userName,
                                 message:message,
-                                time:new Date().getSeconds()
+                                time:new Date().getTime()
                             }
-                            axios.put(`http://${props.ipOfServer}:${props.httpPort}/chat`,{item:tempMessage}).then((req)=>{
-                                console.log(req.data);
-                                setMessage('');
-                                props.setChange(!props.change);
-                            });
+                            if(tempMessage.message!=='')
+                                socket.current.send(JSON.stringify({type:'chat_message',message:tempMessage}));
+                            setMessage('');
                         }}>Send</button>
                     </div>
                 </div>:null}

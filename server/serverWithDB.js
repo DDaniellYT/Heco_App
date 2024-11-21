@@ -10,6 +10,7 @@ const factory = new sqlite3.Database('./db/Factory.db');
 
 const app = express();
 const port = 8080;
+const wsPort = 8081;
 // const upload = multer({dest: 'profilePics/'});
 
 app.use(bodyParser.urlencoded({extended:true}));
@@ -481,28 +482,33 @@ const createChatTableReciever = `CREATE TABLE IF NOT EXISTS _chat_${reciever}(
   });
   return [statusReciever,statusSender];
 }
-const getChatMessages = async (database,sender,reciever)=>{
-  const getSenderMessages = `SELECT * FROM _chat_${sender}`;
-  const getRecieverMessages = `SELECT * FROM _chat_${reciever}`;
+const getChatMessages = async (database,sender,reciever,amount)=>{
+  const getSenderMessages = `SELECT * FROM _chat_${sender} WHERE reciever = ? ${amount!==undefined?` ORDER BY id DESC LIMIT ${amount}`:''}`;
+  const getRecieverMessages = `SELECT * FROM _chat_${reciever} WHERE reciever = ? ${amount!==undefined?` ORDER BY id DESC LIMIT ${amount}`:''}`;
   const senderMessages = await new Promise((resolve)=>{
-    database.all(getSenderMessages,(err,rows)=>{
+    database.all(getSenderMessages,reciever,(err,rows)=>{
       if(err){
-        //console.log(err);
+        console.log(err);
         resolve(503);
       }
       else resolve(rows); 
     });
   });
   const recieverMessages = await new Promise((resolve)=>{
-    database.all(getRecieverMessages,(err,rows)=>{
+    database.all(getRecieverMessages,sender,(err,rows)=>{
       if(err){
-        //console.log(err);
+        console.log(err);
         resolve(503);
       }
       else resolve(rows); 
     });
   });
-  return [...senderMessages,...recieverMessages];
+  const totalMessages = [...senderMessages,...recieverMessages];
+  totalMessages.sort((a,b)=>{
+    return a.id-b.id;
+  })
+
+  return totalMessages.slice(-amount);
 };
 
 const createMessage = async (database,item)=>{
@@ -536,7 +542,7 @@ app.get(`/chat`,async (req,res)=>{
   const statuses = await createChatTable(factory,req.query.sender,req.query.reciever);
   if(statuses.includes(503))res.sendStatus(503);
   else{
-    const messages = await getChatMessages(factory,req.query.sender,req.query.reciever);
+    const messages = await getChatMessages(factory,req.query.sender,req.query.reciever,req.query.amount);
     res.status(200).send(messages);
   }
 });
