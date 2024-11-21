@@ -19,5 +19,7 @@ const server = new WebSocketServer({port});
 
 server.on('connection', (socket)=>{
     console.log('someone connected');
-    console.log(socket);
+    socket.on('message',(message)=>{
+        socket.send('back response from server');
+    })
 });

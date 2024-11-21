@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 import styles from '../../Styles/Profile.module.css'
 import axios from "axios";
 
-
 function Profile(props){
     const nav = useNavigate();
     const [chatState,setChatState] = useState(0);
@@ -22,19 +21,8 @@ function Profile(props){
         alignSelf:'flex-end',
         justifyContent:'right'
     }
-    useEffect(()=>{
-        // const socket = new WebSocket(`ws://${props.ipOfServer}:${props.wsPort}`);
-        // socket.onopen = ()=>{
-        //     console.log('opened socket');
-        // };
-        // socket.onclose = ()=>{
-        //     console.log('closed socket');
-        // }
-        // return ()=>{
-        //     socket.close();
-        // }
-    },[])
 
+    const socket = useRef(null);
 
     useEffect(()=>{
         new Promise(async ()=>{
@@ -42,6 +30,20 @@ function Profile(props){
                 await axios.get(`http://${props.ipOfServer}:${props.httpPort}/chat`,{params:{sender:props.user.userName,reciever:reciever.userName}}).then((req)=>{
                     setMessages(req.data);
                     setChatState(2);
+                    if(!socket.current){
+                        const tempSocket = new WebSocket(`ws://${props.ipOfServer}:${props.wsPort}/`);
+                        socket.current = tempSocket;
+                        tempSocket.onopen = ()=>{
+                            console.log('opened socket');
+                        };
+                        tempSocket.onclose = ()=>{
+                            console.log('closed socket');
+                            socket.current = null;
+                        }
+                        tempSocket.onmessage = (message) => {
+                            console.log(message,' <- message from websocket server');
+                        }
+                    }
                 });
             }
         })
@@ -94,13 +96,15 @@ function Profile(props){
                     </div>
                     <div className={styles.inputArea} onKeyDown={(e)=>{
                             if(e.key==='Enter'){
+                                console.log('sent a message to ws');
+                                console.log(socket.current);
+                                socket.current.send('testing message');
                                 const tempMessage = {
                                     sender:props.user.userName,
                                     reciever:reciever.userName,
                                     message:message,
                                     time:new Date().getSeconds()
                                 }
-                                // server.send('eadk');
                                 axios.put(`http://${props.ipOfServer}:${props.httpPort}/chat`,{item:tempMessage}).then((req)=>{
                                     console.log(req.data);
                                     setMessage('');
