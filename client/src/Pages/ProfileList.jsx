@@ -13,7 +13,7 @@ const ProfileList = (props)=>{
     const [image,setImage] = useState(null);
     
     useEffect(()=>{
-        axios.get(`http://${props.ipOfServer}:8080/user`,{params:{user:{department:props.department}}}).then(async req => {
+        axios.get(`http://${props.ipOfServer}:${props.httpPort}/user`,{params:{user:{department:props.department}}}).then(async req => {
             console.log('from profilelist');
             console.log(req.data);
             if(req.data)
@@ -31,7 +31,7 @@ const ProfileList = (props)=>{
         }}>+ Add</div>:null}
         <ul className={styles.userProfileList}>{
         users.map((item,index)=>{
-            return <UserProfile user={props.user} change={props.change} setChange={props.setChange} ipOfServer={props.ipOfServer} key={index} item={item}/>
+            return <UserProfile user={props.user} change={props.change} setChange={props.setChange} ipOfServer={props.ipOfServer} key={index} item={item} httpPort={props.httpPort}/>
         })}
         </ul>
     </div>

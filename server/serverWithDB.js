@@ -90,19 +90,21 @@ const getUser = async (database,user) =>{
       }
     
 
-    getQuery += ` WHERE ` + queryItems.join(' AND ');
+    getQuery += ` ${user?'WHERE ':''} ` + queryItems.join(' AND ');
   // const getUserQuery = `SELECT * FROM Users ${user.userName || user.department?`WHERE(
   //   ${user.userName?`userName = '${user.userName}'`:` `}
   //   ${user.userName && user.department ?` AND `:``}
   //   ${user.department?`department = '${user.department}'`:``}
   //   )`:``}`;
-  console.log(getQuery, '<- getQuery');
-  console.log(queryItems, '<- queryItems');
-  console.log(values, '<- values');
+  //console.log(getQuery, '<- getQuery');
+  //console.log(queryItems, '<- queryItems');
+  //console.log(values, '<- values');
   return new Promise((resolve)=>{
     database.all(getQuery,values,(err,rows)=>{
-      console.log(err);
-      if(err)resolve(503);
+      if(err){
+        //console.log(err);
+        resolve(503);
+      }
       else resolve(rows);
     });
   });
@@ -111,7 +113,7 @@ const getUserById = async (database,id) =>{
   const getUserQuery = `SELECT * FROM Users WHERE id = ${id}`;
   return new Promise((resolve)=>{
     database.all(getUserQuery,(err,rows)=>{
-      console.log(err);
+      //console.log(err);
       if(err)resolve(503);
       else resolve(rows[0]);
     });
@@ -142,9 +144,9 @@ const createUser = async (database,user) => {
   });
 };
 const updateUser = async (database,user)=>{
-  console.log(user);
+  //console.log(user);
   const tempUser = await getUserById(database,user.id);
-  console.log(tempUser);
+  //console.log(tempUser);
   let updateQuery = `UPDATE Users Set `;
   let queryItems = [];
   let values = [];
@@ -167,14 +169,14 @@ const updateUser = async (database,user)=>{
   //     existance = '${user.existance}')
   //     WHERE (id = ${user.id})`;
 
-  console.log(updateQuery,' <- inside updateUser');
-  console.log(queryItems,' <- queryItems');
-  console.log(values,' <- values');
+  //console.log(updateQuery,' <- inside updateUser');
+  //console.log(queryItems,' <- queryItems');
+  //console.log(values,' <- values');
   return new Promise(async (resolve)=>{
     if(await doesUserExist(database,tempUser) == 204)resolve(204);
     else {
       database.run(updateQuery,values,(err)=>{
-        console.log(err);
+        //console.log(err);
         if(err)resolve(503);
         else resolve(200);
       })
@@ -183,8 +185,8 @@ const updateUser = async (database,user)=>{
 }
 const deleteUser = (database, user)=>{
   const deleteQuery = `DELETE FROM Users WHERE userName='${user.userName}'`;
-  // console.log(deleteQuery);
-  // console.log(user);
+  // //console.log(deleteQuery);
+  // //console.log(user);
   return new Promise(async (resolve)=>{
     if(await doesUserExist(database,user) != 200)resolve(204);
     else{
@@ -204,10 +206,10 @@ const readTasks = (database,reciever_role,reciever,accepted)=>{
       ${reciever_role && reciever || reciever_role && accepted || reciever && accepted?` AND `:''}
       ${accepted ? `accepted = '${accepted}'`:' '}
     )`:''}`;
-    // console.log(getAllQuery)
+    // //console.log(getAllQuery)
   return new Promise((resolve)=>{
     database.all(getAllQuery,(err,rows)=>{
-      // console.log(err);
+      // //console.log(err);
       if(err)resolve(503);
       else resolve(rows);
     })
@@ -343,40 +345,40 @@ const item = {
 }
 
 
-console.log(await createUsersTable(factory) + ' -> usersTabel');
-console.log(await createTaskTable(factory) + ' -> tasksTable');
-console.log(await createInventoryTable(factory) + ' -> inventoryTable');
-
-// TEST DATA 
-console.log(await createUser(factory,user) + ' -> createUser');
-console.log(await createTask(factory,task) + ' -> createTask');
-console.log(await createItem(factory,item) + ' -> createItem');
+//console.log(await createUsersTable(factory) + ' -> usersTabel');
+//console.log(await createTaskTable(factory) + ' -> tasksTable');
+//console.log(await createInventoryTable(factory) + ' -> inventoryTable');
 
 
-// WORKING : 
+
+// // TEST DATA 
+// //console.log(await createUser(factory,user) + ' -> createUser');
+// //console.log(await createTask(factory,task) + ' -> createTask');
+// //console.log(await createItem(factory,item) + ' -> createItem');
+
 
 // CREATE
 app.put('/inventory',async (req,res)=>{
-  console.log(req.body,' <- create endpoint inventory');
+  //console.log(req.body,' <- create endpoint inventory');
   const status = await createItem(factory,req.body.item);
   res.sendStatus(status);
 })
 // READ
 app.get('/inventory', async (req,res)=>{
-  console.log(req.query,' <- read endpoint inventory');
+  //console.log(req.query,' <- read endpoint inventory');
   const items = await getItems(factory,req.query);
   if(items != 204) res.status(200).send(items);
   else res.sendStatus(204);
 })
 // UPDATE
 app.post('/inventory',async (req,res)=>{
-  console.log(req.body,' <- update endpoint inventory');
+  //console.log(req.body,' <- update endpoint inventory');
   const status = await updateItem(factory,req.body.item);
   res.sendStatus(status);
 })
 // DELETE
 app.delete('/inventory', async (req,res)=>{
-  console.log(req.query,' <- delete endpoint inventory');
+  //console.log(req.query,' <- delete endpoint inventory');
   const status = await deleteItem(factory,req.query.item);
   res.sendStatus(status);
 })
@@ -385,25 +387,25 @@ app.delete('/inventory', async (req,res)=>{
 
 // CREATE
 app.put('/requests', async (req,res)=>{
-  console.log(req.body,' <- create endpoint requests')
+  //console.log(req.body,' <- create endpoint requests')
   const status = await createTask(factory,req.body);
   res.sendStatus(status);
 });
 // READ
 app.get('/requests',async (req,res)=>{
-  console.log(req.query,' <- read endpoint requests')
+  //console.log(req.query,' <- read endpoint requests')
   const requests = await readTasks(factory,req.query.reciever_role,req.query.reciever,req.query.accepted);
   res.send(requests);
 });
 // UPDATE
 app.post('/requests', async (req,res)=>{
-  console.log(req.body,' <- update endpoint requests')
+  //console.log(req.body,' <- update endpoint requests')
   const status = await updateTask(factory,req.body.reciever,req.body.id,req.body.accepted);
   res.sendStatus(status);
 });
 // DELETE
 app.delete('/requests',async (req,res)=>{
-  console.log(req.query,' <- delete endpoint requests')
+  //console.log(req.query,' <- delete endpoint requests')
   const status = await deleteTask(factory,req.query.id);
   res.sendStatus(status);
 });
@@ -413,13 +415,13 @@ app.delete('/requests',async (req,res)=>{
 
 // CREATE
 app.put('/user',async (req,res)=>{
-  console.log(req.body,' <- create endpoint users');
+  //console.log(req.body,' <- create endpoint users');
   const status = await createUser(factory,req.body.user);
   res.sendStatus(status);
 });
 // READ
 app.get('/user',async (req,res)=>{
-  console.log(req.query,' <- read endpoint users');
+  //console.log(req.query,' <- read endpoint users');
   const user = await getUser(factory,req.query.user);
   if(user == undefined) res.status(204).send({});
   else if(user.length>1)
@@ -429,47 +431,154 @@ app.get('/user',async (req,res)=>{
 });
 // UPDATE /// maybe not wokring, to be tested
 app.post('/user', async (req,res)=>{
-  console.log(req.body,' <- update endpoint users');
+  //console.log(req.body,' <- update endpoint users');
   const status = await updateUser(factory,req.body.user);
   res.sendStatus(status);
 });
 // DELETE
 app.delete('/user', async (req,res)=>{
-  console.log(req.query,' <- delete endpoint users');
+  //console.log(req.query,' <- delete endpoint users');
   const status = await deleteUser(factory,req.query.user);
   res.sendStatus(status);
 })
 
 
 
-const server = app.listen(port, () => {
-  console.log(`HecoServer Listening ${port}`);
+/// TO BE TESTED
+
+const createChatTable = async (database,sender,reciever)=>{
+const createChatTableSender = `CREATE TABLE IF NOT EXISTS _chat_${sender}(
+  id INTEGER PRIMARY KEY,
+  sender TEXT NOT NULL,
+  reciever TEXT NOT NULL,
+  message TEXT NOT NULL,
+  time TEXT
+  )`;
+const createChatTableReciever = `CREATE TABLE IF NOT EXISTS _chat_${reciever}(
+  id INTEGER PRIMARY KEY,
+  sender TEXT NOT NULL,
+  reciever TEXT NOT NULL,
+  message TEXT NOT NULL,
+  time TEXT
+  )`;
+  const statusSender =  await new Promise((resolve)=>{
+    database.run(createChatTableSender,(err)=>{
+      if(err){
+        //console.log(err);
+        resolve(503);
+      }
+      else resolve(200);
+    })
+  });
+  const statusReciever = await new Promise((resolve)=>{
+    database.run(createChatTableReciever,(err)=>{
+      if(err){
+        //console.log(err);
+        resolve(503);
+      }
+      else resolve(200);
+    })
+  });
+  return [statusReciever,statusSender];
+}
+const getChatMessages = async (database,sender,reciever)=>{
+  const getSenderMessages = `SELECT * FROM _chat_${sender}`;
+  const getRecieverMessages = `SELECT * FROM _chat_${reciever}`;
+  const senderMessages = await new Promise((resolve)=>{
+    database.all(getSenderMessages,(err,rows)=>{
+      if(err){
+        //console.log(err);
+        resolve(503);
+      }
+      else resolve(rows); 
+    });
+  });
+  const recieverMessages = await new Promise((resolve)=>{
+    database.all(getRecieverMessages,(err,rows)=>{
+      if(err){
+        //console.log(err);
+        resolve(503);
+      }
+      else resolve(rows); 
+    });
+  });
+  return [...senderMessages,...recieverMessages];
+};
+
+const createMessage = async (database,item)=>{
+  let createMessageSender = `INSERT INTO _chat_${item.sender}(sender,reciever,message,time) VALUES(?,?,?,?) `;
+  let createMessageReciever = `INSERT INTO _chat_${item.reciever}(sender,reciever,message,time) VALUES(?,?,?,?) `;
+
+  const queryItems = [item.sender,item.reciever,item.message,item.time];
+  const statusSender = await new Promise((resolve)=>{
+    database.run(createMessageSender,queryItems,(err)=>{
+      if(err){
+        //console.log(err);
+        resolve(503);
+      }
+      else resolve(200);
+    });
+  });
+  const statusReciever = await new Promise((resolve)=>{
+    database.run(createMessageReciever,queryItems,(err)=>{
+      if(err){
+        //console.log(err);
+        resolve(503);
+      }
+      else resolve(200);
+    });
+  })
+  return [statusSender,statusReciever];
+}
+// READ
+app.get(`/chat`,async (req,res)=>{
+  //console.log(req.query, ' <- read endpoint chat');
+  const statuses = await createChatTable(factory,req.query.sender,req.query.reciever);
+  if(statuses.includes(503))res.sendStatus(503);
+  else{
+    const messages = await getChatMessages(factory,req.query.sender,req.query.reciever);
+    res.status(200).send(messages);
+  }
 });
+// CREATE
+app.put(`/chat`,async (req,res)=>{
+  //console.log(req.body,' <- create endpoint chat');
+  const statuses = await createMessage(factory,req.body.item);
+  if(statuses.includes(503))res.sendStatus(503);
+  else res.sendStatus(200);
+});
+
+
+
+const server = app.listen(port, () => {
+  //console.log(`HecoServer Listening ${port}`);
+});
+
 
 
 
 /// Maybe make it work at some point
 /// It just skips to close, no db, also async ad await for db dont do nothing
-/// The console.logs dont even work, not entering the function
-const handleShutDown = async ()=>{
-  console.log(' recieved shutdown signal ');
-  console.log(' logging everyone out ');
+/// The //console.logs dont even work, not entering the function
+// const handleShutDown = async ()=>{
+//   //console.log(' recieved shutdown signal ');
+//   //console.log(' logging everyone out ');
 
-  const delogQuery = `UPDATE Users SET existance = 'OUT'`;
-  factory.run(delogQuery,(err)=>{
-    if(err)resolve(err);
-    else resolve(200);
-  })
-  server.close(() => {
-    console.log(' finished closing in time ');
-    process.exit(0);
-  });
+//   const delogQuery = `UPDATE Users SET existance = 'OUT'`;
+//   factory.run(delogQuery,(err)=>{
+//     if(err)resolve(err);
+//     else resolve(200);
+//   })
+//   server.close(() => {
+//     //console.log(' finished closing in time ');
+//     process.exit(0);
+//   });
 
-  setTimeout(() => {
-    console.error(' something happened along, force shutdown ');
-    process.exit(1);
-  }, 10000);
-}
+//   setTimeout(() => {
+//     console.error(' something happened along, force shutdown ');
+//     process.exit(1);
+//   }, 10000);
+// }
 
-process.on('SIGTERM',handleShutDown);
-process.on('SIGINT',handleShutDown);
+// process.on('SIGTERM',handleShutDown);
+// process.on('SIGINT',handleShutDown);

@@ -4,18 +4,29 @@ import axios from "axios";
 import ChangeUserPanel from "./ChangeUserPanel";
 import styles from "../Styles/ProfileList.module.css";
 
-const UserProfile = props => {
+const UserProfile = (props) => {
     const [userActivity, setUserActivity] = useState([]);
     const [changePanel, setChangePanel] = useState(false);
-    // const [user, setUser] = useState({});
     const [sure,setSure] = useState(false);
+
+    const [clickedUser,setClickedUser] = useState();
     
     const hours = 0;
     const minutes = 0;
     const seconds = 0;
 
+    useEffect(()=>{
+        new Promise(async ()=>{
+            if(clickedUser!==undefined)
+                await axios.get(`http://${props.ipOfServer}:${props.httpPort}/requests`,{params:{reciever:clickedUser.userName,accepted:'YES'}}).then((req)=>{
+                    setUserActivity(req.data);
+                    console.log('changed user activity');
+                });
+        })
+    },[props.change])
+
     return <div className={styles.userProfileContainer}>
-        {changePanel?<ChangeUserPanel change={props.change} setChange={props.setChange} ipOfServer={props.ipOfServer} user={props.user} userItem={props.item} userActivity={userActivity} setChangePanel={setChangePanel}/>:null}
+        {changePanel?<ChangeUserPanel change={props.change} setChange={props.setChange} ipOfServer={props.ipOfServer} user={props.user} userItem={props.item} userActivity={userActivity} setChangePanel={setChangePanel} httpPort={props.httpPort}/>:null}
         <div className={styles.userProfilePic} style={{
                     backgroundImage:`url(${props.item.pic})`
         }}>picture</div>
@@ -36,20 +47,21 @@ const UserProfile = props => {
             gridColumn:'4/6',
             backgroundColor:'moccasin'
         }} onClick={async ()=>{
-            await axios.get(`http://${props.ipOfServer}:8080/requests`,{params:{reciever:props.item.userName,accepted:'YES'}}).then((req)=>{
+            await axios.get(`http://${props.ipOfServer}:${props.httpPort}/requests`,{params:{reciever:props.item.userName,accepted:'YES'}}).then((req)=>{
                 console.log(props.item);
                 console.log(req.data);
                 setUserActivity(req.data);
-                setChangePanel(!props.change);
+                setClickedUser(props.item);
+                setChangePanel(!props.changePanel);
             })
         }}>DETAILS</div>   
         {sure?<div className={styles.detailsPanelSureContainer}>
             <div className={styles.detailsPanelSure}>
                 <div className={styles.sureTitle}>Are you sure?</div>
                 <div className={styles.sureButtonLeft} onClick={()=>{
-                    axios.delete(`http://${props.ipOfServer}:8080/user`,{params:{user:props.item}}).then((req)=>{
+                    axios.delete(`http://${props.ipOfServer}:${props.httpPort}/user`,{params:{user:props.item}}).then((req)=>{
                         console.log(req);
-                        props.setChange(!props.change); 
+                        props.setChange(!props.change);
                         setSure(false);
                     })
                 }}>Yes</div>

@@ -12,9 +12,9 @@ import Activity from "./Activity";
 import Profile from "./Profile";
 import Stats from "../Stats";
 
-async function getProg(rec,ip){
+async function getProg(rec,ip,port){
     var prog = 0;
-    await axios.get(`http://${ip}:8080/requests`,{params:{reciever_role:`${rec}`}}).then(async (req,res)=>{
+    await axios.get(`http://${ip}:${port}/requests`,{params:{reciever_role:`${rec}`}}).then(async (req,res)=>{
         const tempAll = req.data;
         const tempNo = tempAll.filter((item)=>{
             if(item.accepted === 'NO')return item;
@@ -37,6 +37,7 @@ function HomePage(props){
     const [photo,setPhoto] = useState(null);
 
     const [user,setUser] = useState({...navState.state});
+    const [userNames,setUserNames] = useState([]);
 
     const [hrProg,setHrProg] = useState(50);
     const [mechProg,setMechProg] = useState(50);
@@ -47,45 +48,80 @@ function HomePage(props){
 
     useEffect(()=>{
         document.getElementById("root").className = styles.root;
-        axios.get(`http://${props.ipOfServer}:8080/requests`,{params:{reciever:user.userName, accepted:'YES'}}).then(req => {
+        axios.get(`http://${props.ipOfServer}:${props.httpPort}/requests`,{params:{reciever:user.userName, accepted:'YES'}}).then(req => {
             let tempArr = [];
             for(let i = req.data.length-1; i>=0 ;i--){
                 tempArr.push(req.data[i]);
             }
-            console.log(req.data,' <- data');
-            console.log(tempArr,' <- tempArr');
             setInfoAccepted(tempArr);
         });
-        axios.get(`http://${props.ipOfServer}:8080/requests`,{params:{reciever_role:user.department,accepted:'NO'}}).then(req => {
+        axios.get(`http://${props.ipOfServer}:${props.httpPort}/requests`,{params:{reciever_role:user.department,accepted:'NO'}}).then(req => {
             let tempArr = [];
             for(let i = req.data.length-1; i>=0 ;i--){
                 tempArr.push(req.data[i]);
             }
             setInfoRequests(tempArr);
         });
-        axios.get(`http://${props.ipOfServer}:8080/user`,{params:{user:{id:user.id}}}).then((req)=>{
-            setUser(req.data);
+        axios.get(`http://${props.ipOfServer}:${props.httpPort}/user`,{params:{user:{id:user.id}}}).then( req => setUser(req.data));
+        axios.get(`http://${props.ipOfServer}:${props.httpPort}/user`).then((req) => {
+            let tempArr = [];
+            req.data.map(item =>{
+                if(item.userName!==user.userName)
+                    tempArr.push(item.userName);
+            });
+            setUserNames(tempArr);
         });
 
-        getProg('HResources',props.ipOfServer).then(prog => setHrProg(prog));
-        getProg('Mechanics',props.ipOfServer).then(prog => setMechProg(prog));
-        getProg('Chemists',props.ipOfServer).then(prog => setChemProg(prog));
-        getProg('Workers',props.ipOfServer).then(prog => setWorkProg(prog));
-        getProg('Security',props.ipOfServer).then(prog => setSecProg(prog));
-        getProg('Cleaning',props.ipOfServer).then(prog => setCleanProg(prog));
+        getProg('HResources',props.ipOfServer,props.httpPort).then(prog => setHrProg(prog));
+        getProg('Mechanics',props.ipOfServer,props.httpPort).then(prog => setMechProg(prog));
+        getProg('Chemists',props.ipOfServer,props.httpPort).then(prog => setChemProg(prog));
+        getProg('Workers',props.ipOfServer,props.httpPort).then(prog => setWorkProg(prog));
+        getProg('Security',props.ipOfServer,props.httpPort).then(prog => setSecProg(prog));
+        getProg('Cleaning',props.ipOfServer,props.httpPort).then(prog => setCleanProg(prog));
     },[change]);
     
     return <div className={styles.container}>
-        <NavBar user={user} ipOfServer={props.ipOfServer} change={change} setChange={setChange} requestPage={requestPage} setRequestPage={setRequestPage}/>
+        <NavBar user={user} 
+                infoAccepted={infoAccepted}
+                change={change} 
+                setChange={setChange} 
+                requestPage={requestPage} 
+                setRequestPage={setRequestPage} 
+                ipOfServer={props.ipOfServer} 
+                httpPort={props.httpPort}/>
+
         <div className={styles.interface}>
             <div className={activity.info}>
-                <Activity department={user.department} user={user} ipOfServer={props.ipOfServer} change={change} setChange={setChange} requestPage={requestPage} infoRequests={infoRequests} setInfoRequests={setInfoRequests} infoAccepted={infoAccepted} setInfoAccepted={setInfoAccepted}/> 
+                <Activity department={user.department} 
+                            user={user} 
+                            change={change} 
+                            setChange={setChange} 
+                            requestPage={requestPage} 
+                            infoRequests={infoRequests} 
+                            setInfoRequests={setInfoRequests} 
+                            infoAccepted={infoAccepted} 
+                            setInfoAccepted={setInfoAccepted} 
+                            ipOfServer={props.ipOfServer} 
+                            httpPort={props.httpPort}/> 
             </div>
             <div className={profile.profileContainer}>
-                <Profile ipOfServer={props.ipOfServer} user={user} photo={photo} change={change} setChange={setChange} infoAccepted={infoAccepted}/>
+                <Profile userNames={userNames} 
+                            user={user} 
+                            photo={photo} 
+                            change={change} 
+                            setChange={setChange} 
+                            infoAccepted={infoAccepted} 
+                            ipOfServer={props.ipOfServer} 
+                            httpPort={props.httpPort} 
+                            wsPort={props.wsPort}/>
             </div>
             <div className={stats.quickContainer}>
-                <Stats hrProg={hrProg} mechProg={mechProg} chemProg={chemProg} workProg={workProg} secProg={secProg} cleanProg={cleanProg}/>
+                <Stats hrProg={hrProg} 
+                        mechProg={mechProg} 
+                        chemProg={chemProg} 
+                        workProg={workProg} 
+                        secProg={secProg} 
+                        cleanProg={cleanProg}/>
             </div>
         </div>
     </div>;

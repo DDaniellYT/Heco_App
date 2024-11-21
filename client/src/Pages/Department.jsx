@@ -14,9 +14,9 @@ import Activity from "./Admin/Activity";
 import ProfileList from "./ProfileList"
 import Stats from "./Stats";
 
-async function getProg(rec,ip){
+async function getProg(rec,ip,port){
     var prog = 0;
-    await axios.get(`http://${ip}:8080/requests`,{params:{reciever_role:`${rec}`}}).then(async (req,res)=>{
+    await axios.get(`http://${ip}:${port}/requests`,{params:{reciever_role:`${rec}`}}).then(async (req,res)=>{
         const tempAll = req.data;
         const tempNo = tempAll.filter((item)=>{
             if(item.accepted == 'NO')return item;
@@ -48,9 +48,9 @@ const Department = (props) => {
     // console.log(navState.state);
     useEffect(()=>{
         document.getElementById("root").className = styles.root;
-        axios.get(`http://${ipOfServer}:8080/requests`,{params:{reciever_role:props.department,accepted:'YES'}}).then(req => setInfoAccepted(req.data));
-        axios.get(`http://${ipOfServer}:8080/requests`,{params:{reciever_role:props.department,accepted:'NO'}}).then(req => setInfoRequests(req.data));
-        getProg(props.department,ipOfServer).then(prog => {
+        axios.get(`http://${ipOfServer}:${props.httpPort}/requests`,{params:{reciever_role:props.department,accepted:'YES'}}).then(req => setInfoAccepted(req.data));
+        axios.get(`http://${ipOfServer}:${props.httpPort}/requests`,{params:{reciever_role:props.department,accepted:'NO'}}).then(req => setInfoRequests(req.data));
+        getProg(props.department,ipOfServer,props.httpPort).then(prog => {
             switch (props.department){
                 case 'HResources' : setHrProg(prog);break;
                 case 'Mechanics' : setMechProg(prog);break;
@@ -63,12 +63,12 @@ const Department = (props) => {
     },[change]);
 
     return <div className={styles.container}>
-        <NavBar user={user} ipOfServer={ipOfServer} change={change} setChange={setChange} requestPage={requestPage} setRequestPage={setRequestPage}/>
+        <NavBar user={user} ipOfServer={ipOfServer} change={change} setChange={setChange} requestPage={requestPage} setRequestPage={setRequestPage} httpPort={props.httpPort}/>
         <div className={styles.interface}>
             <div className={activity.info}>
-                <Activity department={props.department} user={user} ipOfServer={ipOfServer} change={change} setChange={setChange} requestPage={requestPage} infoRequests={infoRequests} setInfoRequests={setInfoRequests} infoAccepted={infoAccepted} setInfoAccepted={setInfoAccepted}/>    
+                <Activity department={props.department} user={user} ipOfServer={ipOfServer} change={change} setChange={setChange} requestPage={requestPage} infoRequests={infoRequests} setInfoRequests={setInfoRequests} infoAccepted={infoAccepted} setInfoAccepted={setInfoAccepted} httpPort={props.httpPort}/>    
             </div>
-            <ProfileList user={user} department={props.department} ipOfServer={ipOfServer} change={change} setChange={setChange}/>
+            <ProfileList user={user} department={props.department} ipOfServer={ipOfServer} change={change} setChange={setChange} httpPort={props.httpPort}/>
             <div className={stats.quickContainer}>
                 {hrProg!=undefined?<Stats hrProg={hrProg} />:null}
                 {mechProg!=undefined?<Stats mechProg={mechProg} />:null}

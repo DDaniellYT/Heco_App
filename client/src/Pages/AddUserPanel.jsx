@@ -116,7 +116,7 @@ const AddUserPanel = (props)=>{
                 }
                 if(user.userName === '' || user.firstName === '' || user.lastName === '' || user.password === '' || user.role === '')setStatusMessage('No empty spaces allowed!');
                 else {
-                    axios.put(`http://${props.ipOfServer}:8080/user`,{user:user}).then((req)=>{
+                    axios.put(`http://${props.ipOfServer}:${props.httpPort}/user`,{user:user}).then((req)=>{
                         if(req.status === 208) setStatusMessage('User already exists!');
                         if(req.status === 200) props.setUserPanel(false);
                         props.setImage(null);

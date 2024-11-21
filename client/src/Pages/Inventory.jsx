@@ -33,17 +33,17 @@ const Inventory = (props)=>{
     };
 
     useEffect(()=>{
-        axios.get(`http://${props.ipOfServer}:8080/inventory`).then((req)=>{
+        axios.get(`http://${props.ipOfServer}:${props.httpPort}/inventory`).then((req)=>{
             setItems(req.data);
         });
     },[change]);
 
     return <div className={styles.container}>
-        <NavBar user={user} ipOfServer={props.ipOfServer} change={change} setChange={setChange} requestPage={requestPage} setRequestPage={setRequestPage}/>
+        <NavBar user={user} ipOfServer={props.ipOfServer} change={change} setChange={setChange} requestPage={requestPage} setRequestPage={setRequestPage} httpPort={props.httpPort}/>
         <div className={styles.inventoryContainer}>
             <Menu searched={searched} setSearched={setSearched} setStorage={setStorage}/>
-            <StorageSpace user={user} storageSpace={storageSpace} setItemChange={setItemChange} setItemToBeChanged={setItemToBeChanged} searched={searched} ipOfServer={props.ipOfServer} items={items} change={change} setChange={setChange}/>
-            {itemChange?<UpdateItemPanel user={user} change={change} setChange={setChange} setItemChange={setItemChange} ipOfServer={props.ipOfServer} item={itemToBeChanged}/>:null}
+            <StorageSpace user={user} storageSpace={storageSpace} setItemChange={setItemChange} setItemToBeChanged={setItemToBeChanged} searched={searched} ipOfServer={props.ipOfServer} items={items} change={change} setChange={setChange} httpPort={props.httpPort}/>
+            {itemChange?<UpdateItemPanel user={user} change={change} setChange={setChange} setItemChange={setItemChange} ipOfServer={props.ipOfServer} item={itemToBeChanged} httpPort={props.httpPort}/>:null}
         </div>
     </div>;
 }

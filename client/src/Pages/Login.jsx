@@ -24,13 +24,13 @@ function Login(props){
                     console.log('enter pressed');
                     if(user.name === '' || user.pass === '')setCheckText('User or Password cannot be empty!');
                     else{
-                        axios.get(`http://${props.ipOfServer}:8080/user`,{params:{user:{userName:user.name}}}).then(async (req,res)=>{
+                        axios.get(`http://${props.ipOfServer}:${props.httpPort}/user`,{params:{user:{userName:user.name}}}).then(async (req,res)=>{
                             if(req.status === 200){
                                 console.log(user.pass, '<- user normal');
                                 console.log(CryptoJS.SHA256(user.pass).toString(), '<- user pass hashed');
                                 console.log(req.data.password, '<- required pass');
                                 if(req.data.userName === user.name && req.data.password === CryptoJS.SHA256(user.pass).toString()){
-                                    await axios.post(`http://${props.ipOfServer}:8080/user`,{user:{id:req.data.id,existance:'IN'}});
+                                    await axios.post(`http://${props.ipOfServer}:${props.httpPort}/user`,{user:{id:req.data.id,existance:'IN'}});
                                     nav('/home',{state:req.data});
                                 }
                             else setCheckText('User or Password not found');}
@@ -54,10 +54,10 @@ function Login(props){
                 <button className={styles.button} onClick={()=>{
                     if(user.name === '' || user.pass === '')setCheckText('User or Password cannot be empty!');
                     else{
-                        axios.get(`http://${props.ipOfServer}:8080/user`,{params:{user:{userName:user.name}}}).then(async (req,res)=>{
+                        axios.get(`http://${props.ipOfServer}:${props.httpPort}/user`,{params:{user:{userName:user.name}}}).then(async (req,res)=>{
                             if(req.status === 200)
                                 if(req.data.userName === user.name && req.data.password === CryptoJS.SHA256(user.pass).toString()){
-                                    await axios.post(`http://${props.ipOfServer}:8080/user`,{user:{id:req.data.id,existance:'IN'}});
+                                    await axios.post(`http://${props.ipOfServer}:${props.httpPort}/user`,{user:{id:req.data.id,existance:'IN'}});
                                     nav('/home',{state:req.data});
                                 }
                             else setCheckText('User or Password not found');

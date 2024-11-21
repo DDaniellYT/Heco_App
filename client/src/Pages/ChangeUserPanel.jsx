@@ -31,7 +31,7 @@ const ChangeUserPanel = (props)=>{
             }}>X</div>
             <div className={styles.detailsPanelActivity}>
                 {props.userActivity.map((item,index)=>{
-                    return <RequestItem permisions={['Admin','Manager'].includes(props.user.role)?2:0} user={props.userItem} ipOfServer={props.ipOfServer} key={index} change={props.details} setChange={props.setChange} item={item} index={index+1}/>
+                    return <RequestItem permisions={['Admin','Manager'].includes(props.user.role)?2:0} user={props.userItem} key={index} change={props.change} setChange={props.setChange} item={item} index={index+1} ipOfServer={props.ipOfServer} httpPort={props.httpPort}/>
                 })}
             </div>
         </div>

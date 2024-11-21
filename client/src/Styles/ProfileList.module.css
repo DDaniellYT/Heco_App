@@ -502,7 +502,7 @@
     align-items: center;
     justify-content: left;
 
-    overflow: hidden;
+    overflow-y: scroll;
 }
 .detailsPanelActivity *{
     flex-shrink: 0;
