@@ -484,10 +484,17 @@ const createChatTableReciever = `CREATE TABLE IF NOT EXISTS _chat_${reciever}(
   });
   return [statusReciever,statusSender];
 }
-const getChatMessages = async (database,sender,reciever,amount)=>{
-  const getSenderMessages = `SELECT * FROM _chat_${sender} WHERE reciever = ? ${amount!==undefined?` ORDER BY id DESC LIMIT ${amount}`:''}`;
-  const getRecieverMessages = `SELECT * FROM _chat_${reciever} WHERE reciever = ? ${amount!==undefined?` ORDER BY id DESC LIMIT ${amount}`:''}`;
-  const senderMessages = await new Promise((resolve)=>{
+const getChatMessages = async (database,sender,reciever,amount,type)=>{
+  const getSenderMessages = `SELECT * FROM _chat_${sender} WHERE ${type==='sender'?'sender':'reciever'} = ? ${amount!==undefined?` ORDER BY id DESC LIMIT ${amount}`:''}`;
+  const getRecieverMessages = `SELECT * FROM _chat_${reciever} WHERE ${type==='sender'?'sender':'reciever'} = ? ${amount!==undefined?` ORDER BY id DESC LIMIT ${amount}`:''}`;
+  let senderMessages = [];
+  let recieverMessages = [];
+
+  console.log(getSenderMessages,` ${sender} `,' sendermsg');
+  console.log(getSenderMessages,` ${reciever} `,' recievermsg');
+
+  if(type === 'sender' || type === 'all'){
+  senderMessages = await new Promise((resolve)=>{
     database.all(getSenderMessages,reciever,(err,rows)=>{
       if(err){
         console.log(err);
@@ -495,16 +502,18 @@ const getChatMessages = async (database,sender,reciever,amount)=>{
       }
       else resolve(rows); 
     });
-  });
-  const recieverMessages = await new Promise((resolve)=>{
-    database.all(getRecieverMessages,sender,(err,rows)=>{
-      if(err){
-        console.log(err);
-        resolve(503);
-      }
-      else resolve(rows); 
+  });}
+  if(type === 'reciever' || type === 'all'){
+    recieverMessages = await new Promise((resolve)=>{
+      database.all(getRecieverMessages,sender,(err,rows)=>{
+        if(err){
+          console.log(err);
+          resolve(503);
+        }
+        else resolve(rows); 
+      });
     });
-  });
+  }
   const totalMessages = [...senderMessages,...recieverMessages];
   totalMessages.sort((a,b)=>{
     return a.time-b.time;
@@ -557,7 +566,7 @@ app.get(`/chat`,async (req,res)=>{
   const statuses = await createChatTable(factory,req.query.sender,req.query.reciever);
   if(statuses.includes(503))res.sendStatus(503);
   else{
-    const messages = await getChatMessages(factory,req.query.sender,req.query.reciever,req.query.amount);
+    const messages = await getChatMessages(factory,req.query.sender,req.query.reciever,req.query.amount,req.query.type);
     res.status(200).send(messages);
   }
 });
@@ -569,6 +578,7 @@ app.put(`/chat`,async (req,res)=>{
   else res.sendStatus(200);
 });
 
+// UPDATE
 app.post('/chat',async (req,res)=>{
   //console.log(req.body,' <- update endpoint chat');
   const status = await updateSeenMessage(factory,req.body.item);

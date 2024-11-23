@@ -29,10 +29,11 @@ server.on('connection', (socket)=>{
             clients[data.userName] = socket;
         else if(data.type === 'chat_message'){
             await axios.put(`http://localhost:${httpPort}/chat`,{item:data.message});
-            await axios.get(`http://localhost:${httpPort}/chat`,{params:{sender:data.message.sender,reciever:data.message.reciever,amount:30}}).then(req=>{
+            await axios.get(`http://localhost:${httpPort}/chat`,{params:{sender:data.message.sender,reciever:data.message.reciever,amount:30,type:'all'}}).then(req=>{
                 console.log('sent data to clients');
                 clients[data.message.sender].send(JSON.stringify(req.data));
                 if(clients[data.message.reciever])clients[data.message.reciever].send(JSON.stringify(req.data));
+                
             });
         }
     });

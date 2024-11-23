@@ -6,10 +6,11 @@ import axios from "axios";
 function Profile(props){
     const nav = useNavigate();
     const [chatState,setChatState] = useState(0);
+    const chatStateRef = useRef(chatState);
 
     const chatEndRef = useRef(null);
 
-    const seenMap = [];
+    const [seenMap,setSeenMap] = useState(new Map());
 
     const [reciever,setReciever] = useState();
     const [messages,setMessages] = useState();
@@ -30,6 +31,7 @@ function Profile(props){
     const socket = useRef(null);
 
     useEffect(()=>{
+        chatStateRef.current = chatState;
         if(chatState>=1){
             if(!socket.current){
                 const tempSocket = new WebSocket(`ws://${props.ipOfServer}:${props.wsPort}/`);
@@ -38,9 +40,35 @@ function Profile(props){
                     console.log('opened socket');
                     socket.current.send(JSON.stringify({type:'set_userName',userName:props.user.userName}));
                 };
-                tempSocket.onmessage = (req) => {
-                    setMessages(JSON.parse(req.data));
-                    console.log(JSON.parse(req.data),' <- message from websocket server');
+                tempSocket.onmessage = async (req) => {
+                    console.log(chatState,' <- chatstate');
+                    const data = JSON.parse(req.data);
+                    if(chatStateRef.current === 1){
+                        if(props.userNames){
+                            let tempMap = new Map(seenMap);
+                            for(let element of props.userNames){
+                                await axios.get(`http://${props.ipOfServer}:${props.httpPort}/chat`,{params:{sender:props.user.userName,reciever:element,amount:1,type:'sender'}}).then((req)=>{
+                                    if(req.data.length===0 || req.data[0].seen==='YES')tempMap.set(element,'YES');
+                                    else tempMap.set(element,'NO');
+                                });
+                                console.log(tempMap);
+                            };
+                            setSeenMap(tempMap);
+                            console.log(seenMap);
+                        }
+                    }
+                    if(chatStateRef.current === 2){
+                        console.log(reciever,' <-reciever from chatstate2 effect');
+                        if(data.length>0 && data[0].sender === reciever){
+                            await axios.post(`http://${props.ipOfServer}:${props.httpPort}/chat`,{item:{sender:props.user.userName,reciever:reciever}}).then((req)=>{
+                                let tempMap = seenMap;
+                                tempMap.set(reciever,'YES');
+                                setSeenMap(tempMap);
+                            });
+                        }
+                    }
+                    setMessages(data);
+                    console.log(data,' <- message from websocket server');
                 }
                 tempSocket.onclose = ()=>{
                     console.log('closed socket');
@@ -54,15 +82,18 @@ function Profile(props){
         }
 
         new Promise(async ()=>{
-            if(props.userNames)
-                props.userNames.forEach(async element => {
-                    await axios.get(`http://${props.ipOfServer}:${props.httpPort}/chat`,{params:{sender:props.user.userName,reciever:element,amount:1}}).then((req)=>{
-                        console.log(req.data);
-                        if(req.data.seen==='YES' || req.data.length===0)seenMap[element]='YES';
-                        else seenMap[element]='NO';
+            if(props.userNames && chatState === 1){
+                let tempMap = new Map(seenMap);
+                for(let element of props.userNames){
+                    await axios.get(`http://${props.ipOfServer}:${props.httpPort}/chat`,{params:{sender:props.user.userName,reciever:element,amount:1,type:'sender'}}).then((req)=>{
+                        if(req.data.length===0 || req.data[0].seen==='YES')tempMap.set(element,'YES');
+                        else tempMap.set(element,'NO');
                     });
-                });
-            console.log(seenMap);
+                    console.log(tempMap);
+                };
+                setSeenMap(tempMap);
+                console.log(seenMap);
+            }
         })
     },[props.change,chatState]);
     useEffect(()=>{
@@ -88,7 +119,8 @@ function Profile(props){
             })
         }}>Clock OUT
         </div>
-        <div className={styles.profileChat} onClick={()=>{
+        <div className={styles.profileChat} onClick={(e)=>{
+                e.stopPropagation();
                 if(chatState===0)setChatState(1);
             }}>
             <label>Chat</label>
@@ -102,22 +134,28 @@ function Profile(props){
                 </div>
                 {chatState===1?<div className={styles.chatUsers}>
                     {props.userNames.map((item)=>{
-                        return <label onClick={async ()=>{
+                        return <label key={item} onClick={async ()=>{
                             setReciever(item);
-                            await axios.get(`http://${props.ipOfServer}:${props.httpPort}/chat`,{params:{sender:props.user.userName,reciever:item,amount:30}}).then((req)=>{
+                            setChatState(2);
+                            await axios.get(`http://${props.ipOfServer}:${props.httpPort}/chat`,{params:{sender:props.user.userName,reciever:item,amount:30,type:'all'}}).then(async (req)=>{
                                 setMessages(req.data);
-                                setChatState(2);
+                                if(req.data.length>0 && req.data[req.data.length-1].reciever===props.user.userName)
+                                    await axios.post(`http://${props.ipOfServer}:${props.httpPort}/chat`,{item:{sender:item,reciever:props.user.userName}}).then((req)=>{
+                                        let tempMap = seenMap;
+                                        tempMap.set(item,'YES');
+                                        setSeenMap(tempMap);
+                                    });
                             });
-                            await axios.put()
+                                
                             props.setChange(!props.change);
-                        }}><div>{item}</div><label className={styles.chatUsersNewMessage}>seen</label><label>{'>'}</label></label>
+                        }}><div>{item}</div><label className={styles.chatUsersNewMessage}>{seenMap.get(item)==='YES'?null:'new'}</label><label>{'>'}</label></label>
                     })
                 }</div>:null}
                 {chatState===2?<div className={styles.messagesContainer}>
                     <div className={styles.messages}>
-                        {messages.map((item)=>{
+                        {messages?messages.map((item)=>{
                             return <label style={item.reciever===props.user.userName?{...leftStyle}:{...rightStyle}}>{item.message}</label>
-                        })}
+                        }):null}
                         <div ref={chatEndRef}></div>
                     </div>
                     <div className={styles.inputArea} onKeyDown={(e)=>{
