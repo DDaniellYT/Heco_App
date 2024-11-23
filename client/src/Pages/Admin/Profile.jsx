@@ -9,8 +9,11 @@ function Profile(props){
 
     const chatEndRef = useRef(null);
 
+    const seenMap = [];
+
     const [reciever,setReciever] = useState();
     const [messages,setMessages] = useState();
+
     const [message,setMessage] = useState('');
 
     const leftStyle = {
@@ -27,31 +30,41 @@ function Profile(props){
     const socket = useRef(null);
 
     useEffect(()=>{
-        new Promise(async ()=>{
-            if(reciever!==undefined){
-                await axios.get(`http://${props.ipOfServer}:${props.httpPort}/chat`,{params:{sender:props.user.userName,reciever:reciever.userName,amount:30}}).then((req)=>{
-                    setMessages(req.data);
-                    setChatState(2);
-                    if(!socket.current){
-                        const tempSocket = new WebSocket(`ws://${props.ipOfServer}:${props.wsPort}/`);
-                        socket.current = tempSocket;
-                        tempSocket.onopen = ()=>{
-                            console.log('opened socket');
-                            socket.current.send(JSON.stringify({type:'set_userName',userName:props.user.userName}));
-                        };
-                        tempSocket.onmessage = (req) => {
-                            setMessages(JSON.parse(req.data));
-                            console.log(JSON.parse(req.data),' <- message from websocket server');
-                        }
-                        tempSocket.onclose = ()=>{
-                            console.log('closed socket');
-                            socket.current = null;
-                        }
-                    }
-                });
+        if(chatState>=1){
+            if(!socket.current){
+                const tempSocket = new WebSocket(`ws://${props.ipOfServer}:${props.wsPort}/`);
+                socket.current = tempSocket;
+                tempSocket.onopen = ()=>{
+                    console.log('opened socket');
+                    socket.current.send(JSON.stringify({type:'set_userName',userName:props.user.userName}));
+                };
+                tempSocket.onmessage = (req) => {
+                    setMessages(JSON.parse(req.data));
+                    console.log(JSON.parse(req.data),' <- message from websocket server');
+                }
+                tempSocket.onclose = ()=>{
+                    console.log('closed socket');
+                    socket.current = null;
+                }
             }
+        }
+        if(chatState===0 && socket.current !== null){
+            socket.current.close();
+            socket.current = null;
+        }
+
+        new Promise(async ()=>{
+            if(props.userNames)
+                props.userNames.forEach(async element => {
+                    await axios.get(`http://${props.ipOfServer}:${props.httpPort}/chat`,{params:{sender:props.user.userName,reciever:element,amount:1}}).then((req)=>{
+                        console.log(req.data);
+                        if(req.data.seen==='YES' || req.data.length===0)seenMap[element]='YES';
+                        else seenMap[element]='NO';
+                    });
+                });
+            console.log(seenMap);
         })
-    },[props.change]);
+    },[props.change,chatState]);
     useEffect(()=>{
         chatEndRef.current?.scrollIntoView({behavior:'smooth'});
     },[messages]);
@@ -82,17 +95,22 @@ function Profile(props){
             {chatState>0?<div className={styles.chatContainer}>
                 <div className={styles.chatTitle}>{chatState===1?<label className={styles.chatLabel}>Chat</label>:<label className={styles.chatLabel}>{reciever.userName}</label>}
                     <label className={styles.chatExit} onClick={()=>{
-                        setChatState(0);
+                        setChatState(chatState-1);
+                        setMessages([]);
+                        setReciever(null);
                     }}>X</label>
                 </div>
                 {chatState===1?<div className={styles.chatUsers}>
                     {props.userNames.map((item)=>{
                         return <label onClick={async ()=>{
-                            await axios.get(`http://${props.ipOfServer}:${props.httpPort}/user`,{params:{user:{userName:item}}}).then((req)=>{
-                                setReciever(req.data);
-                                props.setChange(!props.change);
+                            setReciever(item);
+                            await axios.get(`http://${props.ipOfServer}:${props.httpPort}/chat`,{params:{sender:props.user.userName,reciever:item,amount:30}}).then((req)=>{
+                                setMessages(req.data);
+                                setChatState(2);
                             });
-                        }}>{item}</label>
+                            await axios.put()
+                            props.setChange(!props.change);
+                        }}><div>{item}</div><label className={styles.chatUsersNewMessage}>seen</label><label>{'>'}</label></label>
                     })
                 }</div>:null}
                 {chatState===2?<div className={styles.messagesContainer}>
@@ -106,7 +124,7 @@ function Profile(props){
                             if(e.key==='Enter'){
                                 const tempMessage = {
                                     sender:props.user.userName,
-                                    reciever:reciever.userName,
+                                    reciever:reciever,
                                     message:message,
                                     time:new Date().getTime()
                                 }

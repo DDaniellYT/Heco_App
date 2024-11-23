@@ -453,14 +453,16 @@ const createChatTableSender = `CREATE TABLE IF NOT EXISTS _chat_${sender}(
   sender TEXT NOT NULL,
   reciever TEXT NOT NULL,
   message TEXT NOT NULL,
-  time TEXT
+  seen TEXT,
+  time INTEGER
   )`;
 const createChatTableReciever = `CREATE TABLE IF NOT EXISTS _chat_${reciever}(
   id INTEGER PRIMARY KEY,
   sender TEXT NOT NULL,
   reciever TEXT NOT NULL,
   message TEXT NOT NULL,
-  time TEXT
+  seen TEXT,
+  time INTEGER
   )`;
   const statusSender =  await new Promise((resolve)=>{
     database.run(createChatTableSender,(err)=>{
@@ -505,15 +507,15 @@ const getChatMessages = async (database,sender,reciever,amount)=>{
   });
   const totalMessages = [...senderMessages,...recieverMessages];
   totalMessages.sort((a,b)=>{
-    return a.id-b.id;
+    return a.time-b.time;
   })
 
   return totalMessages.slice(-amount);
 };
 
 const createMessage = async (database,item)=>{
-  let createMessageSender = `INSERT INTO _chat_${item.sender}(sender,reciever,message,time) VALUES(?,?,?,?) `;
-  let createMessageReciever = `INSERT INTO _chat_${item.reciever}(sender,reciever,message,time) VALUES(?,?,?,?) `;
+  let createMessageSender = `INSERT INTO _chat_${item.sender}(sender,reciever,message,seen,time) VALUES(?,?,?,'YES',?) `;
+  let createMessageReciever = `INSERT INTO _chat_${item.reciever}(sender,reciever,message,seen,time) VALUES(?,?,?,'NO',?) `;
 
   const queryItems = [item.sender,item.reciever,item.message,item.time];
   const statusSender = await new Promise((resolve)=>{
@@ -533,9 +535,22 @@ const createMessage = async (database,item)=>{
       }
       else resolve(200);
     });
-  })
+  });
   return [statusSender,statusReciever];
 }
+const updateSeenMessage = async (database,item)=>{
+  let updateQuery = `UPDATE _chat_${item.reciever} SET seen='YES' where sender=?`;
+  return await new Promise((resolve)=>{
+    database.run(updateQuery,item.sender,(err)=>{
+      if(err){
+        console.log(err);
+        resolve(503);
+      }
+      else resolve(200);
+    });
+  });
+}
+
 // READ
 app.get(`/chat`,async (req,res)=>{
   //console.log(req.query, ' <- read endpoint chat');
@@ -553,6 +568,12 @@ app.put(`/chat`,async (req,res)=>{
   if(statuses.includes(503))res.sendStatus(503);
   else res.sendStatus(200);
 });
+
+app.post('/chat',async (req,res)=>{
+  //console.log(req.body,' <- update endpoint chat');
+  const status = await updateSeenMessage(factory,req.body.item);
+  res.sendStatus(status);
+})
 
 
 
