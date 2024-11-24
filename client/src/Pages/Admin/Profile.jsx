@@ -5,18 +5,18 @@ import axios from "axios";
 
 function Profile(props){
     const nav = useNavigate();
+    
     const [chatState,setChatState] = useState(0);
-    const chatStateRef = useRef(chatState);
-
-    const chatEndRef = useRef(null);
-
     const [seenMap,setSeenMap] = useState(new Map());
-
+    
     const [reciever,setReciever] = useState();
     const [messages,setMessages] = useState();
-
+    
     const [message,setMessage] = useState('');
-
+    
+    const chatStateRef = useRef(chatState);
+    const chatEndRef = useRef(null);
+    
     const leftStyle = {
         alignSelf:'flex-start',
         justifyContent:'left',
@@ -32,69 +32,115 @@ function Profile(props){
 
     useEffect(()=>{
         chatStateRef.current = chatState;
-        if(chatState>=1){
-            if(!socket.current){
-                const tempSocket = new WebSocket(`ws://${props.ipOfServer}:${props.wsPort}/`);
-                socket.current = tempSocket;
-                tempSocket.onopen = ()=>{
-                    console.log('opened socket');
-                    socket.current.send(JSON.stringify({type:'set_userName',userName:props.user.userName}));
-                };
-                tempSocket.onmessage = async (req) => {
-                    console.log(chatState,' <- chatstate');
-                    const data = JSON.parse(req.data);
-                    if(chatStateRef.current === 1){
-                        if(props.userNames){
-                            let tempMap = new Map(seenMap);
-                            for(let element of props.userNames){
-                                await axios.get(`http://${props.ipOfServer}:${props.httpPort}/chat`,{params:{sender:props.user.userName,reciever:element,amount:1,type:'sender'}}).then((req)=>{
-                                    if(req.data.length===0 || req.data[0].seen==='YES')tempMap.set(element,'YES');
-                                    else tempMap.set(element,'NO');
-                                });
-                                console.log(tempMap);
-                            };
+        console.log(chatState,' <- chatstate');
+        switch(chatState){
+            case 1:{ // creating the connection and getting the seen
+                if(!socket.current){
+                    const tempSocket = new WebSocket(`ws://${props.ipOfServer}:${props.wsPort}`);
+                    tempSocket.onopen = async ()=>{
+                        console.log(`socket alive for -> ${props.user.userName}`);
+                        socket.current.send(JSON.stringify({type:'set_userName',sender:props.user.userName}));
+                        socket.current.send(JSON.stringify({type:'get_seen',sender:props.user.userName}));
+                    };
+                    tempSocket.onmessage = async (req)=>{
+                        const data = JSON.parse(req.data);
+                        console.log(data);
+
+                        if(data.type === 'get_seen'){
+                            const tempMap = new Map();
+                            for(let element of data.data){
+                                tempMap.set(element.sender,'NO');
+                            }
                             setSeenMap(tempMap);
-                            console.log(seenMap);
                         }
-                    }
-                    if(chatStateRef.current === 2){
-                        console.log(reciever,' <-reciever from chatstate2 effect');
-                        if(data.length>0 && data[0].sender === reciever){
-                            await axios.post(`http://${props.ipOfServer}:${props.httpPort}/chat`,{item:{sender:props.user.userName,reciever:reciever}}).then((req)=>{
-                                let tempMap = seenMap;
-                                tempMap.set(reciever,'YES');
-                                setSeenMap(tempMap);
-                            });
+                        if(data.type === 'get_chat'){
+                            console.log(data.data,' <- messages from get_chat');
+                            setMessages(data.data);
                         }
-                    }
-                    setMessages(data);
-                    console.log(data,' <- message from websocket server');
+                    };
+                    tempSocket.onclose = async ()=>{
+                        console.log(`socket dead for -> ${props.userName}`);
+                    };
+                    socket.current = tempSocket;
                 }
-                tempSocket.onclose = ()=>{
-                    console.log('closed socket');
+                break;
+            }
+            case 2:{ // getting specific user messages
+                socket.current.send(JSON.stringify({type:'get_chat',req:{sender:props.user.userName,reciever:reciever,}}))
+                break;
+            }
+            case 0:{ // closing the connection if one exists
+                if(socket.current){
+                    socket.current.close();
                     socket.current = null;
                 }
+                break;
             }
-        }
-        if(chatState===0 && socket.current !== null){
-            socket.current.close();
-            socket.current = null;
         }
 
-        new Promise(async ()=>{
-            if(props.userNames && chatState === 1){
-                let tempMap = new Map(seenMap);
-                for(let element of props.userNames){
-                    await axios.get(`http://${props.ipOfServer}:${props.httpPort}/chat`,{params:{sender:props.user.userName,reciever:element,amount:1,type:'sender'}}).then((req)=>{
-                        if(req.data.length===0 || req.data[0].seen==='YES')tempMap.set(element,'YES');
-                        else tempMap.set(element,'NO');
-                    });
-                    console.log(tempMap);
-                };
-                setSeenMap(tempMap);
-                console.log(seenMap);
-            }
-        })
+        // if(chatState>=1){
+        //     if(!socket.current){
+        //         const tempSocket = new WebSocket(`ws://${props.ipOfServer}:${props.wsPort}`);
+        //         socket.current = tempSocket;
+        //         tempSocket.onopen = ()=>{
+        //             console.log('opened socket');
+        //             socket.current.send(JSON.stringify({type:'set_userName',userName:props.user.userName}));
+        //         };
+        //         tempSocket.onmessage = async (req) => {
+        //             console.log(chatState,' <- chatstate');
+        //             const data = JSON.parse(req.data);
+        //             if(chatStateRef.current === 1){
+        //                 if(props.userNames){
+        //                     let tempMap = new Map(seenMap);
+        //                     for(let element of props.userNames){
+        //                         await axios.get(`http://${props.ipOfServer}:${props.httpPort}/chat`,{params:{sender:props.user.userName,reciever:element,amount:1,type:'sender'}}).then((req)=>{
+        //                             if(req.data.length===0 || req.data[0].seen==='YES')tempMap.set(element,'YES');
+        //                             else tempMap.set(element,'NO');
+        //                         });
+        //                         console.log(tempMap);
+        //                     };
+        //                     setSeenMap(tempMap);
+        //                     console.log(seenMap);
+        //                 }
+        //             }
+        //             if(chatStateRef.current === 2){
+        //                 console.log(reciever,' <-reciever from chatstate2 effect');
+        //                 if(data.length>0 && data[0].sender === reciever){
+        //                     await axios.post(`http://${props.ipOfServer}:${props.httpPort}/chat`,{item:{sender:props.user.userName,reciever:reciever}}).then((req)=>{
+        //                         let tempMap = seenMap;
+        //                         tempMap.set(reciever,'YES');
+        //                         setSeenMap(tempMap);
+        //                     });
+        //                 }
+        //             }
+        //             setMessages(data);
+        //             console.log(data,' <- message from websocket server');
+        //         }
+        //         tempSocket.onclose = ()=>{
+        //             console.log('closed socket');
+        //             socket.current = null;
+        //         }
+        //     }
+        // }
+        // if(chatState===0 && socket.current !== null){
+        //     socket.current.close();
+        //     socket.current = null;
+        // }
+
+        // new Promise(async ()=>{
+        //     if(props.userNames && chatState === 1){
+        //         let tempMap = new Map(seenMap);
+        //         for(let element of props.userNames){
+        //             await axios.get(`http://${props.ipOfServer}:${props.httpPort}/chat`,{params:{sender:props.user.userName,reciever:element,amount:1,type:'sender'}}).then((req)=>{
+        //                 if(req.data.length===0 || req.data[0].seen==='YES')tempMap.set(element,'YES');
+        //                 else tempMap.set(element,'NO');
+        //             });
+        //             console.log(tempMap);
+        //         };
+        //         setSeenMap(tempMap);
+        //         console.log(seenMap);
+        //     }
+        // })
     },[props.change,chatState]);
     useEffect(()=>{
         chatEndRef.current?.scrollIntoView({behavior:'smooth'});
@@ -137,7 +183,7 @@ function Profile(props){
                         return <label key={item} onClick={async ()=>{
                             setReciever(item);
                             setChatState(2);
-                            await axios.get(`http://${props.ipOfServer}:${props.httpPort}/chat`,{params:{sender:props.user.userName,reciever:item,amount:30,type:'all'}}).then(async (req)=>{
+                            await axios.get(`http://${props.ipOfServer}:${props.httpPort}/chat`,{params:{sender:props.user.userName,reciever:item,amount:30,type:'chat'}}).then(async (req)=>{
                                 setMessages(req.data);
                                 if(req.data.length>0 && req.data[req.data.length-1].reciever===props.user.userName)
                                     await axios.post(`http://${props.ipOfServer}:${props.httpPort}/chat`,{item:{sender:item,reciever:props.user.userName}}).then((req)=>{
@@ -146,9 +192,8 @@ function Profile(props){
                                         setSeenMap(tempMap);
                                     });
                             });
-                                
                             props.setChange(!props.change);
-                        }}><div>{item}</div><label className={styles.chatUsersNewMessage}>{seenMap.get(item)==='YES'?null:'new'}</label><label>{'>'}</label></label>
+                        }}><div>{item}</div><label className={styles.chatUsersNewMessage}>{seenMap.get(item)==='NO'?'new':'seen'}</label><label>{'>'}</label></label>
                     })
                 }</div>:null}
                 {chatState===2?<div className={styles.messagesContainer}>
@@ -166,8 +211,10 @@ function Profile(props){
                                     message:message,
                                     time:new Date().getTime()
                                 }
-                                if(tempMessage.message!=='')
-                                    socket.current.send(JSON.stringify({type:'chat_message',message:tempMessage}));
+                                if(tempMessage.message!==''){
+                                    socket.current.send(JSON.stringify({type:'add_message',message:tempMessage}));
+                                    socket.current.send(JSON.stringify({type:'get_chat',req:{sender:props.user.userName,reciever:reciever}}))
+                                }
                                 setMessage('');
                             }
                         }}>
@@ -182,7 +229,7 @@ function Profile(props){
                                 time:new Date().getTime()
                             }
                             if(tempMessage.message!=='')
-                                socket.current.send(JSON.stringify({type:'chat_message',message:tempMessage}));
+                                socket.current.send(JSON.stringify({type:'add_message',message:tempMessage}));
                             setMessage('');
                         }}>Send</button>
                     </div>

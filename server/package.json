@@ -8,9 +8,9 @@
     "startNoDB": "pm2 start serverWithCurrentFileStorage.js",
     "restartNoDB": "pm2 restart serverWithCurrentFileStorage.js",
     "stopNoDB": "pm2 stop serverWithCurrentFileStorage.js",
-    "start": "pm2 start serverWithDB.js",
-    "restart": "pm2 restart serverWithDB.js",
-    "stop": "pm2 stop ./serverWithDB.js"
+    "start": "pm2 start serverWithDB.js && pm2 start chatSocket.js",
+    "restart": "pm2 restart serverWithDB.js && pm2 restart chatSocket.js",
+    "stop": "pm2 stop ./serverWithDB.js && pm2 stop chatSocket.js"
   },
   "author": "",
   "license": "ISC",
