@@ -43,21 +43,31 @@ server.on('connection',async (socket)=>{
         if(data.type === 'set_userName')
             clients.set(data.sender,{
                 socket: socket,
+                looking: null,
                 state: 1
             });
         if(data.type === 'get_seen'){
-            clients.set(data.sender,{...clients.get(data.sender),state:1});
+            clients.set(data.sender,{...clients.get(data.sender),looking:null,state:1});
             await axios.get(`http://localhost:${httpPort}/chat`,{params:{sender:data.sender,type:'seen'}}).then((req)=>{
                 clients.get(data.sender).socket.send(JSON.stringify({type:data.type,data:req.data}));
             });
         }
         if(data.type === 'add_message'){
             await axios.put(`http://localhost:${httpPort}/chat`,{item:data.message});
-            if(clients.get(data.message.reciever).state === 2)
+            if(clients.get(data.message.reciever) && clients.get(data.message.reciever).state === 2 && clients.get(data.message.reciever).looking === data.message.sender){
                 await axios.post(`http://localhost:${httpPort}/chat`,{item:data.message});
+                await axios.get(`http://localhost:${httpPort}/chat`,{params:{sender:data.message.reciever,type:'seen'}}).then((req)=>{
+                    clients.get(data.message.reciever).socket.send(JSON.stringify({type:'get_seen',data:req.data}));
+                });
+            }
+            if(clients.get(data.message.reciever && clients.get(data.message.reciever).state === 1))
+                await axios.get(`http://localhost:${httpPort}/chat`,{params:{sender:data.message.reciever,type:'seen'}}).then((req)=>{
+                    clients.get(data.message.reciever).socket.send(JSON.stringify({type:'get_seen',data:req.data}));
+                });
         }
         if(data.type === 'get_chat'){
-            clients.get(data.req.sender).state = 2;
+            clients.set(data.req.sender,{...clients.get(data.req.sender),state:2});
+            clients.set(data.req.sender,{...clients.get(data.req.sender),looking:data.req.reciever});
             await axios.get(`http://localhost:${httpPort}/chat`,{params:{sender:data.req.sender,reciever:data.req.reciever,amount:30,type:'chat'}}).then(async (req)=>{
                 if(clients.get(data.req.sender))clients.get(data.req.sender).socket.send(JSON.stringify({type:'get_chat',data:req.data}));
                 if(clients.get(data.req.reciever) && clients.get(data.req.reciever).state === 1){

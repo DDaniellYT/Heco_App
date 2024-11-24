@@ -464,6 +464,7 @@ const createChatTableReciever = `CREATE TABLE IF NOT EXISTS _chat_${reciever}(
 
 const getChatSeen = async (database,sender)=>{
   const getMessages = `SELECT DISTINCT sender FROM _chat_${sender} WHERE reciever = ? AND seen = 'NO'`;
+  console.log(' updating -> ',sender);
   return await new Promise((resolve)=>{
     database.all(getMessages,sender,(err,rows)=>{
       if(err){
@@ -483,7 +484,6 @@ const getChatMessages = async (database,sender,reciever,amount)=>{
 
   console.log(getSenderMessages,` | ${sender} `,' sendermsg');
   console.log(getSenderMessages,` | ${reciever} `,' recievermsg');
-
   senderMessages = await new Promise((resolve)=>{
     database.all(getSenderMessages,[reciever,sender],(err,rows)=>{
       if(err){

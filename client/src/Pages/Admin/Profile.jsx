@@ -35,6 +35,9 @@ function Profile(props){
         console.log(chatState,' <- chatstate');
         switch(chatState){
             case 1:{ // creating the connection and getting the seen
+                if(socket.current){
+                    socket.current.send(JSON.stringify({type:'get_seen',sender:props.user.userName}));
+                }
                 if(!socket.current){
                     setMessages([]);
                     const tempSocket = new WebSocket(`ws://${props.ipOfServer}:${props.wsPort}`);
@@ -45,9 +48,8 @@ function Profile(props){
                     };
                     tempSocket.onmessage = async (req)=>{
                         const data = JSON.parse(req.data);
-                        console.log(data);
-
                         if(data.type === 'get_seen'){
+                            console.log('update from get_seen');
                             const tempMap = new Map();
                             for(let element of data.data){
                                 tempMap.set(element.sender,'NO');
@@ -55,7 +57,7 @@ function Profile(props){
                             setSeenMap(tempMap);
                         }
                         if(data.type === 'get_chat'){
-                            console.log(data.data,' <- messages from get_chat');
+                            console.log(data.data,' <- update from get_chat');
                             setMessages(data.data);
                         }
                     };
@@ -200,7 +202,7 @@ function Profile(props){
                 {chatState===2?<div className={styles.messagesContainer}>
                     <div className={styles.messages}>
                         {messages?messages.map((item)=>{
-                            return <label style={item.reciever===props.user.userName?{...leftStyle}:{...rightStyle}}>{item.message}</label>
+                            return <label key={JSON.stringify(item)} style={item.reciever===props.user.userName?{...leftStyle}:{...rightStyle}}>{item.message}</label>
                         }):null}
                         <div ref={chatEndRef}></div>
                     </div>
