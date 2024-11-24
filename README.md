@@ -53,7 +53,14 @@ Like slow information propagation and inneficient commutes.
             -each user can take an item and use it and then place it back by saying its existance
             the users can place, replace or take out an item from the hall/shelf/space by either
             inserting, updating or deleting it
+
+            *Complete Chat with different users inside the factory
+                can send messages
+                knows when someone has sent a new message
             
+            A request/Response page can be made if needed for more communication like on the threads app but since there exists a chat area the idea was abandoned
+
+
     *Server-Side:
         I've used at the beggining storage inside arrays inside the server
             -hard to mentain
@@ -80,3 +87,26 @@ Like slow information propagation and inneficient commutes.
                 If i make a call with the name and department selectors
                 I get back the tasks/items that have that name and that department assigned to them
             Most of the calls are in this manner for ease of use
+        Another server file for managing a websocket for real-time updates on the chat part of the site
+        The webserver makes requests to the other server in order to store read update messages
+        The client can only see up to 30 messages at a time to not have big waiting times 
+            when opening a chat and the user efectively loads all the messages from the server
+        The client can acces the chat in 3 states
+            state = 0 
+                chat is inactive so no socket is made => no communication with this client
+            state = 1
+                chat is opened to the users page
+                the server sends to the client only the clients names where the current user has not seen their messages
+            state = 2
+                chat is open on a specific user
+                the server sends to the client the last 30 messages from the total of both of these users where the
+                 reciever of the messages is each other
+                if a user sends a message the server first stores the message inside the tables of the clients
+                if the other client is not connected nothing is sent to him
+                if the other clients state = 1 then the socket sends the seen data from the other server to the message reciever
+                if the other clients state = 2 then the socket sends the message to the reciever and updates the seen entry of the message
+                 that corresponds to both people
+            
+            switching between the states from smaller to bigger does as expected
+                                         from bigger to smaller sends the seen data to the recieving client if exists
+            
