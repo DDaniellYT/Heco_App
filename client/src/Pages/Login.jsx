@@ -38,6 +38,7 @@ function Login(props){
                     }
                 }
             }}>
+            <div className={styles.bigLogo}>HECO <label>©</label></div>
             <div className={styles.container}>
                 <div className={styles.fieldName}>Login</div>
                 <input className={styles.input} value = {user.name} onChange={(event)=>{
