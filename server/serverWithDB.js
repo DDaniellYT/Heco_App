@@ -476,8 +476,8 @@ const getChatSeen = async (database,sender)=>{
 
 }
 const getChatMessages = async (database,sender,reciever,amount)=>{
-  const getSenderMessages = `SELECT * FROM _chat_${sender} WHERE reciever = ? ${amount!==undefined?` ORDER BY id DESC LIMIT ${amount}`:''}`;
-  const getRecieverMessages = `SELECT * FROM _chat_${reciever} WHERE reciever = ? ${amount!==undefined?` ORDER BY id DESC LIMIT ${amount}`:''}`;
+  const getSenderMessages = `SELECT * FROM _chat_${sender} WHERE sender = ? AND reciever = ? ${amount!==undefined?` ORDER BY id DESC LIMIT ${amount}`:''}`;
+  const getRecieverMessages = `SELECT * FROM _chat_${reciever} WHERE sender = ? AND reciever = ? ${amount!==undefined?` ORDER BY id DESC LIMIT ${amount}`:''}`;
   let senderMessages = [];
   let recieverMessages = [];
 
@@ -485,7 +485,7 @@ const getChatMessages = async (database,sender,reciever,amount)=>{
   console.log(getSenderMessages,` | ${reciever} `,' recievermsg');
 
   senderMessages = await new Promise((resolve)=>{
-    database.all(getSenderMessages,sender,(err,rows)=>{
+    database.all(getSenderMessages,[reciever,sender],(err,rows)=>{
       if(err){
         console.log(err);
         resolve(503);
@@ -494,7 +494,7 @@ const getChatMessages = async (database,sender,reciever,amount)=>{
     });
   });
   recieverMessages = await new Promise((resolve)=>{
-    database.all(getRecieverMessages,reciever,(err,rows)=>{
+    database.all(getRecieverMessages,[sender,reciever],(err,rows)=>{
       if(err){
         console.log(err);
         resolve(503);

@@ -24,7 +24,7 @@ const ProfileList = (props)=>{
     },[props.change]);
 
     return <div className={styles.container}>
-        {userPanel && props.user.role == 'Admin'?<AddUserPanel department={props.department} image={image} setImage={setImage} setChange={props.setChange} change={props.change} ipOfServer={props.ipOfServer} userPanel={userPanel} setUserPanel={setUserPanel}/>:null}
+        {userPanel && props.user.role == 'Admin'?<AddUserPanel department={props.department} image={image} setImage={setImage} setChange={props.setChange} change={props.change} ipOfServer={props.ipOfServer} userPanel={userPanel} setUserPanel={setUserPanel} httpPort={props.httpPort}/>:null}
         <div className={styles.userProfileTitle}>User List</div>
         {props.user.role == 'Admin'?<div className={styles.addUserProfile} onClick={()=>{
             setUserPanel(true);

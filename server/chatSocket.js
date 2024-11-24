@@ -60,31 +60,13 @@ server.on('connection',async (socket)=>{
             clients.get(data.req.sender).state = 2;
             await axios.get(`http://localhost:${httpPort}/chat`,{params:{sender:data.req.sender,reciever:data.req.reciever,amount:30,type:'chat'}}).then(async (req)=>{
                 if(clients.get(data.req.sender))clients.get(data.req.sender).socket.send(JSON.stringify({type:'get_chat',data:req.data}));
-                if(clients.get(data.req.reciever).state === 1){
+                if(clients.get(data.req.reciever) && clients.get(data.req.reciever).state === 1){
                     await axios.get(`http://localhost:${httpPort}/chat`,{params:{sender:data.req.reciever,type:'seen'}}).then((req)=>{
                         clients.get(data.req.reciever).socket.send(JSON.stringify({type:'get_seen',data:req.data}));
                     });
                 }
-                if(clients.get(data.req.reciever).state === 2)clients.get(data.req.reciever).socket.send(JSON.stringify({type:'get_chat',data:req.data}));
+                if(clients.get(data.req.reciever) && clients.get(data.req.reciever).state === 2)clients.get(data.req.reciever).socket.send(JSON.stringify({type:'get_chat',data:req.data}));
             })
         }
     });
-
-    // // NOT WORKING AS INTENDED
-    // console.log('someone connected');
-    // clients[data.userName] = {socket:socket,state:1};
-    // socket.on('message',async (message)=>{
-    //     const data = JSON.parse(message);
-    //     if(data.type === 'set_userName')
-    //         clients[data.userName] = {socket:socket,state:2};
-    //     else if(data.type === 'chat_message'){
-    //         await axios.put(`http://localhost:${httpPort}/chat`,{item:data.message});
-    //         await axios.get(`http://localhost:${httpPort}/chat`,{params:{sender:data.message.sender,reciever:data.message.reciever,amount:30,type:'all'}}).then(req=>{
-    //             console.log('sent data to clients');
-    //             if(clients[data.message.sender].socket!==null)clients[data.message.sender].socket.send(JSON.stringify(req.data));
-    //             if(clients[data.message.reciever].socket!==null)clients[data.message.reciever].socket.send(JSON.stringify(req.data)); 
-    //             console.log(clients);
-    //         });
-    //     }
-    // });
 }); 

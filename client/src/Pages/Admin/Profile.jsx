@@ -36,6 +36,7 @@ function Profile(props){
         switch(chatState){
             case 1:{ // creating the connection and getting the seen
                 if(!socket.current){
+                    setMessages([]);
                     const tempSocket = new WebSocket(`ws://${props.ipOfServer}:${props.wsPort}`);
                     tempSocket.onopen = async ()=>{
                         console.log(`socket alive for -> ${props.user.userName}`);
