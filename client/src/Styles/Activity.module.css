@@ -1,3 +1,4 @@
+/* 
 .info{
     grid-column: 2/3;
     grid-row: 1/3;
@@ -296,4 +297,306 @@
     align-items: center;
     color: orange;
     text-shadow: 3px 3px orangered;
+} */
+    
+@media only screen and (min-width: 1000px) {
+.info{
+    grid-column: 2/3;
+    grid-row: 1/2;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: moccasin;
+}
+.infoTitle{
+    width: 100%;
+    height: 100%;
+    grid-column: 1/2;
+    grid-row: 1/2;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    color: black;
+    text-shadow: 3px 3px 3px gray;
+    font-weight: bold;
+    font-size: 40px;
+}
+.infoSortButtonContainer{
+    grid-column: 1/2;
+    grid-row: 1/2;
+
+    justify-self: right;
+    align-self: flex-end;
+    
+    display: grid;
+    grid-template-columns: 100%;
+    grid-template-rows: 100%;
+    grid-auto-rows: 50%;
+    width: 25%;
+    height: 100%;
+}
+.infoSortButton{
+    width: 60%;
+    height: 80%;
+    margin-top: 7%;
+
+    display: grid;
+    grid-template-columns: 100%;
+    grid-template-rows: 100%;
+    grid-auto-rows: 100%;
+
+    text-align: center; 
+    text-justify: center;
+    
+    font-size: 1.3rem;
+    font-weight: bold;
+
+    outline: 2px solid black;
+    border-radius: 20px;
+    background-color: orange;
+}
+.infoSortButton:hover{
+    outline: 3px solid black;
+    font-size: 1.5rem;
+    text-shadow: 3px 3px 3px red;
+}
+.dropDownItem{
+    justify-self: center;
+    align-self: center;
+
+    font-size: 1rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 0px 0px 10px 10px;
+    width: 100%;
+    height: 100%;
+    z-index: 99;
+    background-color: orange;
+    outline: 2px solid black;
+}
+
+
+.infoListContainer{
+    width: 100%;
+    height: 100%;
+    
+    display: grid;
+    align-items: center;
+    grid-template-columns: auto;
+    grid-template-rows: 10% 70% 20%;
+
+    border-left: 3px solid black;
+    border-right: 3px solid black;
+    background-color: beige;
+}
+.infoListContainer ::-webkit-scrollbar{
+    display: none;
+}
+.infoList{
+    grid-column: 1/2;
+    grid-row: 2/4;
+    margin-top: 10px;
+    padding: 20px;
+
+    height: 90%;
+    max-height: 70vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    overflow-y: scroll;
+}
+.infoList *{
+    flex-shrink: 0;
+    border-radius: 10px;
+}
+.infoItemContainer{
+    margin: 10px;
+    padding: 15px;
+
+    border: 3px solid black;
+
+    display: grid;
+    grid-template-columns: 5% 20% auto 20%;
+    grid-template-rows: 20% 10% 20% 20% 20%;
+
+    width: 75%;
+    height: 17%;
+
+    background-color: rgb(255, 128, 0);
+    box-shadow: 2px 2px 2px gray;
+}
+.infoId{
+    grid-column: 1/2;
+    grid-row: 1/2;
+    
+    border-radius: 5px 0px 5px 0px;
+    box-shadow: 2px 2px 5px gray;
+
+    width: 100%;
+    height: 100%;
+    
+    display: flex;
+    justify-content: center;
+    align-items: center;    
+    background-color: darkorange;
+}
+.infoSender{
+    grid-column: 2/3;
+    grid-row: 3/4;
+    
+    width: 100%;
+    height: 100%;
+    
+    display: flex;
+    justify-content: center;
+    align-items: center;    
+    background-color: darkorange;
+    border-radius: 5px 0px 0px 0px;
+    box-shadow: 2px 3px 5px gray;
+}
+.infoReceiver{
+    grid-column: 2/3;
+    grid-row: 4/5;
+    
+    width: 100%;
+    height: 100%;
+    
+    display: flex;
+    justify-content: center;
+    align-items: center;    
+    background-color: darkorange;
+    border-radius: 0px;
+    box-shadow: 2px 3px 5px gray;
+}
+.infoUrgency{
+    grid-column: 2/3;
+    grid-row: 5/6;
+    
+    width: 100%;
+    height: 100%;
+    
+    display: flex;
+    justify-content: center;
+    align-items: center;    
+    background-color: darkorange;
+    border-radius: 0px 0px 5px 0px;
+    box-shadow: 2px 2px 5px gray;
+}
+.infoSubject{
+    font-size: 20px;
+    font-weight: bold;
+
+    border-radius: 0px;
+    border-bottom: 1px solid black;
+
+    grid-column: 2/4;
+    grid-row: 1/2;
+
+    display: flex;
+    justify-content: left;
+    align-items:flex-end;
+    
+    margin-left: 5%;
+    width: 91.75%;
+    height: 100%;
+}
+.infoMessage{
+    grid-column: 3/4;
+    grid-row: 2/6;
+
+    margin-left: 5%;
+    padding-top: 5%;
+    padding-left: 5%;
+    padding-right: 5%;
+    width: 80%;
+    height: 100%;
+
+    font-size: 15px;
+    border-radius: 0px;
+    border-right: 1px solid black;
+    border-left: 1px solid black;
+
+    overflow-wrap: break-word;
+    overflow: hidden;
+    overflow-y: hidden;
+}
+.infoAccept{
+    grid-column: 4/5;
+    grid-row: 1/2;
+    
+    width: 100%;
+    height: 100%;
+
+    border: 2px solid black;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;    
+    background-color: white;
+}
+.infoRemove{
+    grid-column: 4/5;
+    grid-row: 3/4;
+    
+    width: 100%;
+    height: 100%;
+    
+    border: 2px solid black;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;    
+    background-color: orangered;
+}
+.infoAccept:hover{
+    box-shadow: 3px 3px 5px greenyellow;
+    border-bottom: 1px solid black;
+    border-right: 1px solid black;
+}
+.infoRemove:hover{
+    box-shadow: 3px 3px 5px red;
+    border-bottom: 1px solid black;
+    border-right: 1px solid black;
+}
+.infoAddMessageContainer{
+    height: 80%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    grid-column: 1/2;
+    grid-row: 3/4;
+}
+.infoAddMessage{
+    width: 100%;
+    height: 100%;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+    font-size: 25px;
+    font-weight: bold;
+    outline: 3px solid black;
+
+    background-color: firebrick;
+    color: orangered;
+    text-shadow: 0px 0px 5px beige;
+}
+.noActivity{
+    grid-column: 1/2;
+    grid-row: 2/3;
+
+    font-size: 50px;
+    font-weight: bold;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: orange;
+    text-shadow: 3px 3px orangered;
+}
 }

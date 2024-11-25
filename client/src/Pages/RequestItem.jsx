@@ -1,5 +1,5 @@
 import React from "react";
-import styles from '../../Styles/Activity.module.css'
+import styles from '../Styles/Activity.module.css'
 import axios from 'axios'
 
 function RequestItem(props){

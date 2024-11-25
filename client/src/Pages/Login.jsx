@@ -48,7 +48,8 @@ function Login(props){
                     <input type={passType} className={styles.input} value = {user.pass} onChange={(event)=>{
                         setUser({...user, pass: event.target.value});
                     }}/>
-                    <button className={styles.seePass} onClick={()=>{
+                    <button className={styles.seePass} onClick={(e)=>{
+                        e.stopPropagation();
                         setPassType(passType==='password'?'':'password');
                     }}>{passType==='password'?'show':'hide'}</button>
                 </div>

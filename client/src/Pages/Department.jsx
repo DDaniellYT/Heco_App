@@ -9,8 +9,8 @@ import activity from "../Styles/Activity.module.css";
 import profile from "../Styles/Profile.module.css";
 import stats from "../Styles/Stats.module.css";
 
-import NavBar from "./Admin/NavBar";
-import Activity from "./Admin/Activity";
+import NavBar from "./NavBar";
+import Activity from "./Activity";
 import ProfileList from "./ProfileList"
 import Stats from "./Stats";
 

@@ -2,26 +2,22 @@ import React, { useEffect } from "react";
 import { useState } from "react";
 import { useLocation } from "react-router-dom";
 import axios from "axios";
-import styles from '../../Styles/AdminPortal.module.css';
-import activity from '../../Styles/Activity.module.css'
-import profile from '../../Styles/Profile.module.css'
-import stats from "../../Styles/Stats.module.css";
+import styles from '../Styles/AdminPortal.module.css';
+import activity from '../Styles/Activity.module.css'
+import profile from '../Styles/Profile.module.css'
+import stats from "../Styles/Stats.module.css";
 
 import NavBar from "./NavBar";
 import Activity from "./Activity";
 import Profile from "./Profile";
-import Stats from "../Stats";
+import Stats from "./Stats";
 
 async function getProg(rec,ip,port){
     var prog = 0;
     await axios.get(`http://${ip}:${port}/requests`,{params:{reciever_role:`${rec}`}}).then(async (req,res)=>{
         const tempAll = req.data;
-        const tempNo = tempAll.filter((item)=>{
-            if(item.accepted === 'NO')return item;
-        })
-        const tempYes = tempAll.filter((item)=>{
-            if(item.accepted === 'YES')return item;
-        })
+        const tempNo = tempAll.filter( item =>{if(item.accepted === 'NO')return item})
+        const tempYes = tempAll.filter( item =>{if(item.accepted === 'YES')return item})
         prog = (tempYes.length+tempNo.length)===0?0:(tempYes.length/(tempYes.length+tempNo.length)*100).toFixed(0);
     });
     return prog;
@@ -46,20 +42,27 @@ function HomePage(props){
     const [secProg,setSecProg] = useState(50);
     const [cleanProg,setCleanProg] = useState(50);
 
+    const [windowWidth,setWindowWidth] = useState(window.innerWidth);
+    const [windowHeight,setWindowHeight] = useState(window.innerHeight);
+    useEffect(()=>{
+        window.addEventListener('resize',()=>{
+            setWindowWidth(window.innerWidth);
+            setWindowHeight(window.innerHeight);
+        })
+    })
+
     useEffect(()=>{
         document.getElementById("root").className = styles.root;
         axios.get(`http://${props.ipOfServer}:${props.httpPort}/requests`,{params:{reciever:user.userName, accepted:'YES'}}).then(req => {
             let tempArr = [];
-            for(let i = req.data.length-1; i>=0 ;i--){
+            for(let i = req.data.length-1; i>=0 ;i--)
                 tempArr.push(req.data[i]);
-            }
             setInfoAccepted(tempArr);
         });
         axios.get(`http://${props.ipOfServer}:${props.httpPort}/requests`,{params:{reciever_role:user.department,accepted:'NO'}}).then(req => {
             let tempArr = [];
-            for(let i = req.data.length-1; i>=0 ;i--){
+            for(let i = req.data.length-1; i>=0 ;i--)
                 tempArr.push(req.data[i]);
-            }
             setInfoRequests(tempArr);
         });
         axios.get(`http://${props.ipOfServer}:${props.httpPort}/user`,{params:{user:{id:user.id}}}).then( req => setUser(req.data));
@@ -87,6 +90,10 @@ function HomePage(props){
                 setChange={setChange} 
                 requestPage={requestPage} 
                 setRequestPage={setRequestPage} 
+                width={windowWidth}
+                height={windowHeight}
+                smallDim={props.smallDim}
+                largeDim={props.largeDim}
                 ipOfServer={props.ipOfServer} 
                 httpPort={props.httpPort}/>
 
@@ -101,16 +108,20 @@ function HomePage(props){
                             setInfoRequests={setInfoRequests} 
                             infoAccepted={infoAccepted} 
                             setInfoAccepted={setInfoAccepted} 
+                            width={windowWidth}
+                            height={windowHeight}
                             ipOfServer={props.ipOfServer} 
-                            httpPort={props.httpPort}/> 
+                            httpPort={props.httpPort}/>
             </div>
-            <div className={profile.profileContainer}>
+            {/* <div className={profile.profileContainer}>
                 <Profile userNames={userNames} 
                             user={user} 
                             photo={photo} 
                             change={change} 
                             setChange={setChange} 
                             infoAccepted={infoAccepted} 
+                            width={windowWidth}
+                            height={windowHeight}
                             ipOfServer={props.ipOfServer} 
                             httpPort={props.httpPort} 
                             wsPort={props.wsPort}/>
@@ -121,8 +132,10 @@ function HomePage(props){
                         chemProg={chemProg} 
                         workProg={workProg} 
                         secProg={secProg} 
-                        cleanProg={cleanProg}/>
-            </div>
+                        cleanProg={cleanProg}
+                        width={windowWidth}
+                        height={windowHeight}/>
+            </div> */}
         </div>
     </div>;
 

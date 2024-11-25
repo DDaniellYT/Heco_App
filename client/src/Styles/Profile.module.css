@@ -1,3 +1,4 @@
+@media only screen and (min-width: 1000px) {
 .profileContainer{
     grid-column: 3/4;
     grid-row: 1/3;
@@ -355,4 +356,6 @@
     align-items: center;
     color: whitesmoke;
     text-shadow: 3px 3px orange;
+}
+
 }

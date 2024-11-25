@@ -1,15 +1,98 @@
+@media only screen and (max-width:500){
 .navBar{
-    grid-column: 1/4;
     grid-row: 1/2;
+    grid-column: 1/2;
+    width: 100%;
+    height: 8%;
     display: flex;
-    justify-content: space-around;
+    justify-content: space-between;
     align-items: center;
-    top:0px;
-    left:0px;
-    background-color: rgb(255, 128, 0);
-
-    border-bottom: 3px solid black;
 }
+.menuDropDown{
+    background-image: url('C:\Users\ocris\Documents\PROJECTS\VSCode_Proj\Heco_App\client\public\dropDownMenu.svg');
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    margin-left: 10px;
+    width: 40px;
+    height: 70%;
+}
+.cover{
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0px;
+    left: 0px;
+    row-gap: 0px;
+    display: grid;
+    grid-template-columns: 50% auto;
+    grid-template-rows: 8% 90%;
+}
+.dropDownList{
+    grid-column: 1/2;   
+    grid-row: 2/3; 
+
+    display: grid;
+    grid-auto-rows: 10%;
+}
+.dropDownList>div{
+    margin: 0px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #DC5F00;
+}
+.inventoryIcon{
+    width: 30px;
+    height: 30px;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-image: url('../../public/inventoryIcon.svg');
+    margin-right: 10%;
+}
+.homeIcon{
+    width: 30px;
+    height: 30px;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-image: url('../../public/homeIcon.svg');
+    margin-right: 10%;
+}
+.contactIcon{
+    width: 30px;
+    height: 30px;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-image: url('../../public/contactIcon.svg');
+    margin-right: 10%;
+}
+.requestIcon{
+    width: 30px;
+    height: 30px;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-image: url('../../public/requestIcon.svg');
+    margin-right: 10%;
+}
+.departmentIcon{
+    width: 30px;
+    height: 30px;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-image: url('../../public/departmentIcon.svg');
+    margin-right: 10%;
+}
+.button{
+    font-size: 1.1rem;
+    font-weight: bold;
+    margin-left: 5%;
+}
+
 .logo{
     margin-left: 20px;
     color: black;
@@ -19,29 +102,6 @@
     background-size: 100%;
     width: 70px;
     height: 50px;
-}
-.department,
-.request,
-.response,
-.inventory,
-.contact{
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-    width: 15vw;
-    height: 100%;
-    color:white;
-    font-weight: bold;
-    font-size: 20px;
-}
-.department:hover,
-.request:hover,
-.response:hover,
-.inventory:hover,
-.contact:hover{
-    border-radius: 0px;
-    background-color: orangered;
 }
 .arrow{
     width: 10%;
@@ -76,36 +136,345 @@
     font-family: sans-serif;
     font-size: 40px;
 }
-.DepartmentDropdown{
-    position: absolute;
-    display: flex;
-    
-    flex-direction: column;
-    justify-content: space-around;
-    align-items: center;
 
-    top: 9.72%;
-    width: inherit;
-    height: 30vh;
-    border-radius: 0px 0px 10px 10px;
-    background-color: rgb(255, 128, 0);
+.profile{
+    height: 80%;
+    display: grid;
+    grid-template-columns: 50% 50%;
+    grid-template-rows: 100%;
 }
-.DepartmentDropdown div{
+.profile:hover label{
+    text-shadow: 0px 0px 5px white;
+}
+.profile:hover img{
+    box-shadow: 0px 0px 5px white;
+}
+.smallProfileLabel{
+    grid-column: 1/2;
+    grid-row: 1/2;
+    justify-self: center;
+    align-self: center;
+    font-size: 1.2rem;
+}
+.smallProfilePic{
+    width: 40px;
+    height: 40px;
+
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+
+    border: 2px solid black;
+
+    margin-left: 20px;
+    border-radius: 100%;
+    background-color: red;
+}
+    
+}
+@media only screen and (min-width: 500px) {
+.navBar{
+    grid-row: 1/2;
+    grid-column: 1/2;
+    width: 100%;
+    height: 70px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    top: 0px;
+    left: 0px;
+}
+.menuDropDown{
+    background-image: url('C:\Users\ocris\Documents\PROJECTS\VSCode_Proj\Heco_App\client\public\dropDownMenu.svg');
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    margin-left: 10px;
+    width: 40px;
+    height: 70%;
+}
+.cover{
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0px;
+    left: 0px;
+    row-gap: 0px;
+    display: grid;
+    grid-template-columns: 50% auto;
+    grid-template-rows: 8% 90%;
+}
+.dropDownList{
+    grid-column: 1/2;   
+    grid-row: 2/3; 
+
+    display: grid;
+    grid-auto-rows: 10%;
+}
+.dropDownList>div{
+    margin: 0px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #DC5F00;
+}
+.inventoryIcon{
+    width: 30px;
+    height: 30px;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-image: url('../../public/inventoryIcon.svg');
+    margin-right: 10%;
+}
+.homeIcon{
+    width: 30px;
+    height: 30px;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-image: url('../../public/homeIcon.svg');
+    margin-right: 10%;
+}
+.contactIcon{
+    width: 30px;
+    height: 30px;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-image: url('../../public/contactIcon.svg');
+    margin-right: 10%;
+}
+.requestIcon{
+    width: 30px;
+    height: 30px;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-image: url('../../public/requestIcon.svg');
+    margin-right: 10%;
+}
+.departmentIcon{
+    width: 30px;
+    height: 30px;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-image: url('../../public/departmentIcon.svg');
+    margin-right: 10%;
+}
+.button{
+    font-size: 1.1rem;
+    font-weight: bold;
+    margin-left: 5%;
+}
+
+.logo{
+    margin-left: 20px;
+    color: black;
+    background-image: url('../../public/heco_logo.png');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: 100%;
+    width: 70px;
+    height: 50px;
+}
+.arrow{
+    width: 10%;
+    height: 80%;
+    margin-bottom: 17px;
+    margin-left: 5px;
+    font-size: 30px;
+    font-weight: bold;
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 100%;
-    height: 100%;
-    font-size: 15px;
-    font-weight: bold;
-    border-radius: 0px 0px 10px 10px;
 }
-.DepartmentDropdown div:hover{
-    background-color: orangered;
+.input{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+.searchInput{
+    margin-right: 10%;
+    border-radius: 15px;
+    width: 200px;
+    height: 30px;
+    border: none;
+    box-shadow: 0px 0px 1px 1px whitesmoke;
+    text-align: center;
+    outline: none;
+}
+.searchButton{
+    margin-right: 20px;
+    font-weight: bold;
+    font-family: sans-serif;
+    font-size: 40px;
 }
 
 
 .profile{
+    height: 80%;
+    justify-self: center;
+    align-self: center;
+    display: grid;
+    grid-template-columns: 50% 50%;
+    grid-template-rows: 100%;
+}
+.profile:hover label{
+    text-shadow: 0px 0px 5px white;
+}
+.profile:hover img{
+    box-shadow: 0px 0px 5px white;
+}
+.smallProfileLabel{
+    grid-column: 1/2;
+    grid-row: 1/2;
+    justify-self: center;
+    align-self: center;
+    font-size: 1.2rem;
+}
+.smallProfilePic{
+    width: 40px;
+    height: 40px;
+    justify-self: center;
+    align-self: center;
+
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+
+    border: 2px solid black;
+
+    margin-left: 20px;
+    margin-right: 15px;
+    border-radius: 100%;
+    background-color: red;
+}
+    
+}
+@media only screen and (min-width: 1000px) {
+.navBar{
+    height: 100%;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+.logo{
+    flex-shrink: 0;
+    margin-left: 20px;
+    margin-right: 70px;
+    color: black;
+    background-image: url('../../public/heco_logo.png');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: contain;
+    width: 80px;    
+    height: 50px;
+}
+.department>label,
+.request,
+.response,
+.inventory,
+.contact{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    color:white;
+    font-weight: bold;
+    font-size: 20px;
+    padding: 0px;
+    margin: 0px;
+}
+.department:hover,
+.request:hover,
+.response:hover,
+.inventory:hover,
+.contact:hover{
+    border-radius: 0px;
+    background-color: #686D76;
+}
+.department>label:hover,
+.request:hover,
+.response:hover,
+.inventory:hover,
+.contact:hover{
+    font-size: 1.3rem;
+}
+.department{
+    width: 100%;
+    height: 100%;
+    display: grid;
+    grid-template-columns: 100%;
+    grid-template-rows: 100%;
+    grid-auto-rows: 70%;
+}
+.departmentItem{
+    width: 100%;
+    justify-self: center;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #686D76;
+    z-index: 10;
+}
+.departmentItem:hover{
+    background-color: orangered ;
+    font-size: 1.1rem;
+}
+.departmentItem>label{
+    color: #EEEEEE;
+    font-weight: bold;
+    margin: 0px 10% 0px 10%;
+}
+.arrow{
+    width: 10%;
+    height: 80%;
+    margin-bottom: 17px;
+    margin-left: 5px;
+    font-size: 30px;
+    font-weight: bold;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.departmentItem>.arrow{
+    background-image: url('../../public/arrow.svg');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: contain;
+    width: 7%;
+}
+.input{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+.searchInput{
+    margin-right: 10%;
+    border-radius: 15px;
+    width: 200px;
+    height: 30px;
+    border: none;
+    box-shadow: 0px 0px 1px 1px whitesmoke;
+    text-align: center;
+    outline: none;
+}
+.searchButton{
+    margin-right: 20px;
+    font-weight: bold;
+    font-family: sans-serif;
+    font-size: 40px;
+}
+
+
+.profile{
+    margin-left: 30px;
     height: 100%;
     display: grid;
     grid-template-columns: 50% 50%;
@@ -137,8 +506,10 @@
     background-repeat: no-repeat;
     background-size: cover;
 
+    border: 2px solid black;
+
     margin-left: 10px;
     border-radius: 100%;
     background-color: red;
 }
-
+}

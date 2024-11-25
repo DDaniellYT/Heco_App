@@ -1,6 +1,6 @@
 import React , { useState } from "react";
 
-import RequestItem from "./Admin/RequestItem"
+import RequestItem from "./RequestItem"
 
 import styles from "../Styles/ProfileList.module.css";
 

@@ -1,6 +1,8 @@
 import express, { query } from "express";
 import cors from "cors";
 import bodyParser from "body-parser";
+import os from "os";
+import fs from "fs"
 
 import sqlite3 from "sqlite3";
 import multer from "multer";
@@ -17,6 +19,18 @@ app.use(bodyParser.urlencoded({extended:true}));
 app.use(cors());
 app.use(express.json({ limit: '10mb', extended: true }));
 
+const getLocalIPAddress = ()=>{
+  const networkInterfaces = os.networkInterfaces();
+  for (const interfaceName in networkInterfaces) {
+    const addresses = networkInterfaces[interfaceName];
+    for (const address of addresses) {
+      if (address.family === 'IPv4' && !address.internal) {
+        return address.address;
+      }
+    }
+  }
+  return 'localhost';
+}
 
 const createUsersTable = async (database) => {
   const createUsersQuery = `CREATE TABLE IF NOT EXISTS Users(
@@ -322,11 +336,9 @@ const item = {
 }
 
 
-//console.log(await createUsersTable(factory) + ' -> usersTabel');
-//console.log(await createTaskTable(factory) + ' -> tasksTable');
-//console.log(await createInventoryTable(factory) + ' -> inventoryTable');
-
-
+console.log(await createUsersTable(factory) + ' -> usersTabel');
+console.log(await createTaskTable(factory) + ' -> tasksTable');
+console.log(await createInventoryTable(factory) + ' -> inventoryTable');
 
 // // TEST DATA 
 // //console.log(await createUser(factory,user) + ' -> createUser');
@@ -581,7 +593,13 @@ app.post('/chat',async (req,res)=>{
 
 
 const server = app.listen(port, () => {
-  //console.log(`HecoServer Listening ${port}`);
+  // const ipOfServer = `../ipOfServer.txt`;
+  // console.log('strting to write the ip to ',ipOfServer);
+  // fs.writeFile(ipOfServer,getLocalIPAddress(),'utf8',(err)=>{
+  //   if(err)console.log('errored while writing ip');
+  //   else console.log('succesful write of ip');
+  // })
+  console.log(`HecoServer now Listening at ${getLocalIPAddress()}:${port}`);
 });
 
 

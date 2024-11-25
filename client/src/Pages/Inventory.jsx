@@ -3,7 +3,7 @@ import { useLocation } from "react-router-dom";
 import axios from "axios";
 
 import styles from "../Styles/Inventory.module.css";
-import NavBar from "./Admin/NavBar";
+import NavBar from "./NavBar";
 import Menu from "./Menu";
 import UpdateItemPanel from "./UpdateItemPanel";
 import StorageSpace from "./StorageSpace";

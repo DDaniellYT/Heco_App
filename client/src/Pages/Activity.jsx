@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import styles from '../../Styles/Activity.module.css'
+import styles from '../Styles/Activity.module.css'
 import RequestItem from "./RequestItem";
 
 function Activity(props){

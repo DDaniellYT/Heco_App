@@ -1,6 +1,6 @@
 import React from "react";
 import { useState } from "react";
-import styles from '../../Styles/Requests.module.css'
+import styles from '../Styles/Requests.module.css'
 import axios from "axios";
 
 function RequestPanel(props){
