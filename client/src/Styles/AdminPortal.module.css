@@ -10,13 +10,16 @@
     width: 100%;
     height: 100%;
 
+    display: grid;
     grid-template-columns: 100%;
-    grid-template-rows: 10% 90%;
+    grid-template-rows: 10% 80% 10%;
 
     background-color: #373A40;
 }
 .interface{
     grid-row: 2/3;
+    max-width: 100%;
+    height: 100%;
     display: grid;
     grid-template-columns: 23% auto 35%;
     grid-template-rows: 100%;
@@ -24,6 +27,95 @@
 
     background-color: #EEEEEE;
 }
+.swapMenuButton{
+    position: absolute;
+    top: 12%;
+    right: 2%;
+    background-color: orangered;
+    justify-self: right;
+    height: 40px;
+    width: 20%;
+    max-width: 90px;
+    outline: 2px solid black;
+    border-radius: 20px;
+    display: grid;
+    grid-template-columns: 100%;
+    grid-template-rows: 100%;
+    grid-auto-rows: 70%;
+    z-index: 90;
+}
+.swapMenuButton>label{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+    font-size: 1.3rem;
+}
+.swapButton{
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    background-color: blue;
+}
+.swapButton>label{
+    margin-left: 10%;
+}
+.footerContainer{
+    grid-column: 1/2;
+    grid-row: 3/4;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.footer{
+    width: 100%;
+    height: 100%;
+    background-color: #EEEEEE;
+    border: 3px solid black;
+    border-bottom: 0px;
+    display: grid;
+    grid-template-columns: 33% 33% 33%;
+    grid-template-rows: 100%;
+}
+.clockButton{
+    grid-column: 3/4;
+    grid-row: 1/2;
+    width: 80%;
+    height: 70%;
+
+    justify-self: center;
+    align-self: center;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.3rem;
+    font-weight: bold;
+    background-color: orangered;
+    border: 2px solid black;
+    border-radius: 20px;
+}
+.chatButton{
+    grid-column: 2/3;
+    grid-row: 1/2;
+    width: 80%;
+    height: 70%;
+
+    justify-self: center;
+    align-self: center;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.3rem;
+    font-weight: bold;
+    background-color: orangered;
+    border: 2px solid black;
+    border-radius: 20px;
+}
+
 @media only screen and (min-width: 1000px) {
 *{
     user-select: none;
@@ -53,6 +145,12 @@
     grid-template-columns: 23% auto 35%;
     grid-template-rows: 100%;
     grid-auto-rows: 100%;
+    background-color: red;
+}
+.footer{
+    grid-row: 4/5;
+    width: 100%;
+    height: 100%;
     background-color: red;
 }
 }

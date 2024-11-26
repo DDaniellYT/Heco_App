@@ -1,16 +1,16 @@
 import React, { useEffect } from "react";
 import { useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 import styles from '../Styles/AdminPortal.module.css';
 import activity from '../Styles/Activity.module.css'
 import profile from '../Styles/Profile.module.css'
 import stats from "../Styles/Stats.module.css";
-
 import NavBar from "./NavBar";
 import Activity from "./Activity";
 import Profile from "./Profile";
 import Stats from "./Stats";
+import Chat from "./Chat";
 
 async function getProg(rec,ip,port){
     var prog = 0;
@@ -25,7 +25,13 @@ async function getProg(rec,ip,port){
 
 function HomePage(props){
 
+    const nav = useNavigate();
     const navState = useLocation();
+
+    const [state,setState] = useState('chat');
+    const [chatState,setChatState] = useState(2);
+    const [swapDropDown,setSwapDropDown] = useState(false);
+
     const [requestPage,setRequestPage] = useState(false);
     const [infoRequests,setInfoRequests] = useState([]);
     const [infoAccepted,setInfoAccepted] = useState([]);
@@ -41,15 +47,6 @@ function HomePage(props){
     const [workProg,setWorkProg] = useState(50);
     const [secProg,setSecProg] = useState(50);
     const [cleanProg,setCleanProg] = useState(50);
-
-    const [windowWidth,setWindowWidth] = useState(window.innerWidth);
-    const [windowHeight,setWindowHeight] = useState(window.innerHeight);
-    useEffect(()=>{
-        window.addEventListener('resize',()=>{
-            setWindowWidth(window.innerWidth);
-            setWindowHeight(window.innerHeight);
-        })
-    })
 
     useEffect(()=>{
         document.getElementById("root").className = styles.root;
@@ -90,52 +87,80 @@ function HomePage(props){
                 setChange={setChange} 
                 requestPage={requestPage} 
                 setRequestPage={setRequestPage} 
-                width={windowWidth}
-                height={windowHeight}
+                width={props.width}
+                height={props.height}
                 smallDim={props.smallDim}
                 largeDim={props.largeDim}
                 ipOfServer={props.ipOfServer} 
                 httpPort={props.httpPort}/>
-
+        <div className={styles.footerContainer}>
+            <div className={styles.footer}>
+            <div className={styles.clockButton} onClick={()=>{
+                axios.post(`http://${props.ipOfServer}:${props.httpPort}/user`,{user:{id:user.id,existance:'OUT'}}).then(req => {
+                    nav('/',{state:{}});
+                })
+            }}>Clock OUT</div>
+            <div className={styles.chatButton} onClick={()=>{
+                setState('chat');
+                setChatState(1);
+            }}>Chat</div>
+            </div>
+        </div>
         <div className={styles.interface}>
             <div className={activity.info}>
-                <Activity department={user.department} 
-                            user={user} 
-                            change={change} 
-                            setChange={setChange} 
-                            requestPage={requestPage} 
-                            infoRequests={infoRequests} 
-                            setInfoRequests={setInfoRequests} 
-                            infoAccepted={infoAccepted} 
-                            setInfoAccepted={setInfoAccepted} 
-                            width={windowWidth}
-                            height={windowHeight}
-                            ipOfServer={props.ipOfServer} 
-                            httpPort={props.httpPort}/>
-            </div>
-            {/* <div className={profile.profileContainer}>
-                <Profile userNames={userNames} 
-                            user={user} 
-                            photo={photo} 
-                            change={change} 
-                            setChange={setChange} 
-                            infoAccepted={infoAccepted} 
-                            width={windowWidth}
-                            height={windowHeight}
-                            ipOfServer={props.ipOfServer} 
-                            httpPort={props.httpPort} 
-                            wsPort={props.wsPort}/>
-            </div>
-            <div className={stats.quickContainer}>
+            {props.width<props.largeDim?<div style={swapDropDown?state==='chat'?{borderRadius:'10px 10px 2px 2px',backgroundColor:'#686D76'}:null:state==='chat'?{backgroundColor:'#686D76'}:null} className={styles.swapMenuButton} onClick={()=>{setSwapDropDown(true)}} onMouseLeave={()=>{setSwapDropDown(false)}}>
+                <label>Swap</label>
+                {swapDropDown?<div onClick={(e)=>{e.stopPropagation();setState('accepted');setSwapDropDown(false)}} style={{borderRight:'2px solid black',borderLeft:'2px solid black'}} className={styles.swapButton}><label>Accepted</label></div>:null}
+                {swapDropDown?<div onClick={(e)=>{e.stopPropagation();setState('stats');setSwapDropDown(false)}} style={{borderRight:'2px solid black',borderLeft:'2px solid black'}} className={styles.swapButton}><label>Stats</label></div>:null}
+                {swapDropDown?<div onClick={(e)=>{e.stopPropagation();setState('all');setSwapDropDown(false)}} style={{borderRadius:'0px 0px 10px 10px',borderBottom:'2px solid black',borderRight:'2px solid black',borderLeft:'2px solid black'}} className={styles.swapButton}><label>All</label></div>:null}
+            </div>:null}
+            {state==='all'?
+                <Activity key={0} department={user.department} 
+                    title={'All Tasks'}
+                    permisions={1}
+                    user={user} 
+                    change={change} 
+                    setChange={setChange} 
+                    infoRequests={infoRequests}
+                    width={props.width}
+                    height={props.height}
+                    smallDim={props.smallDim}
+                    largeDim={props.largeDim}
+                    ipOfServer={props.ipOfServer} 
+                    httpPort={props.httpPort}/>
+             :state==='stats'?
                 <Stats hrProg={hrProg} 
-                        mechProg={mechProg} 
-                        chemProg={chemProg} 
-                        workProg={workProg} 
-                        secProg={secProg} 
-                        cleanProg={cleanProg}
-                        width={windowWidth}
-                        height={windowHeight}/>
-            </div> */}
+                    mechProg={mechProg} 
+                    chemProg={chemProg} 
+                    workProg={workProg} 
+                    secProg={secProg} 
+                    cleanProg={cleanProg}
+                    width={props.width}
+                    height={props.height}/>
+             :state==='accepted'?
+                <Activity key={1} department={user.department} 
+                    title={'Accepted Tasks'}
+                    permisions={3}
+                    user={user} 
+                    change={change} 
+                    setChange={setChange} 
+                    infoRequests={infoAccepted}                     
+                    width={props.width}
+                    height={props.height}
+                    smallDim={props.smallDim}
+                    largeDim={props.largeDim}
+                    ipOfServer={props.ipOfServer} 
+                    httpPort={props.httpPort}/>
+             :state==='chat'?
+                <Chat user={user} 
+                    userNames={userNames} 
+                    chatState={chatState} 
+                    setChatState={setChatState} 
+                    ipOfServer={props.ipOfServer} 
+                    httpPort={props.httpPort} 
+                    wsPort={props.wsPort}/>
+                :null}
+            </div>
         </div>
     </div>;
 
