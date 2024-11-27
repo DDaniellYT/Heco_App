@@ -1,3 +1,174 @@
+@media only screen and (max-width: 1000px) {
+.profileContainer{
+    width: 100%;
+    height: 100%;
+
+    background-color: #EEE7DA;
+    display: grid;
+    grid-template-columns: 10% 40% 25% 25%;
+    grid-template-rows: 10% 15% 15% 40% 10%;
+}
+.profileImage{
+    grid-column: 1/3;
+    grid-row: 1/4;
+
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: contain;
+
+    border: 1px solid black;
+    border-radius: 0px 0px 10px 0px;
+    background-color: red;
+}
+.userName{
+    grid-column: 3/5;
+    grid-row: 1/2;
+
+    width: 90%;
+    justify-self: center;
+    align-self: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    font-size: 1.5rem;
+    font-weight: bold;
+
+    padding-bottom: 5%;
+    border-bottom: 1px solid #373A40;
+}
+.department{
+    grid-column: 3/4;
+    grid-row: 2/3;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+}
+.department>label{
+    font-size: 1rem;
+    font-weight: bold;
+}
+.department>span{
+    height: 60%;
+    font-size: 0.9rem;
+}
+.role{
+    grid-column: 4/5;
+    grid-row: 2/3;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    border-left: 1px solid #373A40;
+}
+.role>label{
+    font-size: 1rem;
+    font-weight: bold;
+}
+.role>span{
+    height: 60%;
+    font-size: 0.9rem;
+}
+.existanceLabel{
+    grid-column: 3/4;
+    grid-row: 3/4;
+    display: flex;
+    margin-right: 10px;
+    justify-content: right;
+    align-items: center;
+}
+.existanceSpan{
+    grid-column: 4/5;
+    grid-row: 3/4;
+    display: flex;
+    margin-left: 10px;
+    justify-content: left;
+    align-items: center;
+}
+.lastTask{
+    grid-column: 1/5;
+
+    width: 90%;
+    height: 60%;
+    max-width: 600px;
+
+    justify-self: center;
+    align-self: center;
+    display: grid;
+    grid-template-columns: 10% 80% 10%;
+    grid-template-rows: 25% 25% 25% 25%;
+    border-radius: 15px;
+
+    background-color: #FFAD60;
+    border: 1px solid black;
+}
+.subjectLabel{
+    grid-column: 1/2;
+    grid-row: 1/2;
+
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    margin-left: 10px;
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+.subject{
+    grid-column: 1/4;
+    grid-row: 1/2;
+    display: flex;
+    justify-content: right;
+    align-items: center;
+    margin-right: 15px;
+    font-size: 1.1rem;
+
+    border-bottom: 1px solid #373A40;
+}
+.messageLabel{
+    grid-column: 1/4;
+    grid-row: 2/3;
+    display: flex;
+    justify-content: left;
+    align-items: top;
+
+    font-size: 1.1rem;
+    font-weight: bold;
+    margin: 10px 0px 0px 10px;
+}
+.message{
+    grid-column: 1/4;
+    grid-row: 3/5;
+    margin-left: 10px;
+}
+.messageAcceptedLabel{
+    border-top: 1px solid #373A40;
+    grid-column: 1/5;
+    grid-row: 5/6;
+    width: 90%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-left: 5%;
+
+    font-size: 1.3rem;
+    font-weight: bold;
+}
+.messageAcceptedTime{
+    grid-column: 1/5;
+    grid-row: 6/7;
+    width: 90%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-left: 5%;
+
+    font-size: 1.3rem;
+    font-weight: bold;
+}
+
+
+}
 @media only screen and (min-width: 1000px) {
 .profileContainer{
     grid-column: 3/4;

@@ -10,7 +10,8 @@ import Inventory from "./Pages/Inventory";
 
 function App(){
     // const ipOfServer= 'localhost';
-    const ipOfServer= '192.168.0.100';
+    const ipOfServer= '192.168.198.147';
+    // const ipOfServer= '192.168.0.100';
     const httpPort = '8080';
     const wsPort = '8081';
 

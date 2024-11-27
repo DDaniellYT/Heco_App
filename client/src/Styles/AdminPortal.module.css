@@ -28,21 +28,19 @@
     background-color: #EEEEEE;
 }
 .swapMenuButton{
-    position: absolute;
-    top: 12%;
-    right: 2%;
-    background-color: orangered;
-    justify-self: right;
-    height: 40px;
-    width: 20%;
-    max-width: 90px;
-    outline: 2px solid black;
+    grid-column: 1/2;
+    grid-row: 1/2;
+    width: 80%;
+    height: 70%;
     border-radius: 20px;
+    justify-self: center;
+    align-self: center;
     display: grid;
+    border: 1px solid black;
     grid-template-columns: 100%;
     grid-template-rows: 100%;
-    grid-auto-rows: 70%;
-    z-index: 90;
+    grid-auto-rows: 100%;
+    background-color: orangered;
 }
 .swapMenuButton>label{
     display: flex;
@@ -55,10 +53,21 @@
     display: flex;
     justify-content: left;
     align-items: center;
-    background-color: blue;
+    background-color: #dc5f00;
 }
 .swapButton>label{
     margin-left: 10%;
+}
+.swapDropDown{
+    transform: translateY(-20vh);
+    display: grid;
+    height: 20vh;
+    grid-template-columns: 100%;
+    grid-template-rows: 34%;
+    grid-auto-rows: 33%;
+    border-radius: 10px;
+    border: 1px solid black;
+    z-index: 99;
 }
 .footerContainer{
     grid-column: 1/2;
@@ -73,7 +82,6 @@
     width: 100%;
     height: 100%;
     background-color: #EEEEEE;
-    border: 3px solid black;
     border-bottom: 0px;
     display: grid;
     grid-template-columns: 33% 33% 33%;
@@ -94,7 +102,7 @@
     font-size: 1.3rem;
     font-weight: bold;
     background-color: orangered;
-    border: 2px solid black;
+    border: 1px solid black;
     border-radius: 20px;
 }
 .chatButton{
@@ -112,7 +120,7 @@
     font-size: 1.3rem;
     font-weight: bold;
     background-color: orangered;
-    border: 2px solid black;
+    border: 1px solid black;
     border-radius: 20px;
 }
 

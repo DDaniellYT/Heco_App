@@ -4,15 +4,13 @@ import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 import styles from '../Styles/AdminPortal.module.css';
 import activity from '../Styles/Activity.module.css'
-import profile from '../Styles/Profile.module.css'
-import stats from "../Styles/Stats.module.css";
 import NavBar from "./NavBar";
 import Activity from "./Activity";
 import Profile from "./Profile";
 import Stats from "./Stats";
 import Chat from "./Chat";
 
-async function getProg(rec,ip,port){
+const getProg = async (rec,ip,port) => {
     var prog = 0;
     await axios.get(`http://${ip}:${port}/requests`,{params:{reciever_role:`${rec}`}}).then(async (req,res)=>{
         const tempAll = req.data;
@@ -28,8 +26,8 @@ function HomePage(props){
     const nav = useNavigate();
     const navState = useLocation();
 
-    const [state,setState] = useState('chat');
-    const [chatState,setChatState] = useState(2);
+    const [state,setState] = useState('all');
+    const [chatState,setChatState] = useState(1);
     const [swapDropDown,setSwapDropDown] = useState(false);
 
     const [requestPage,setRequestPage] = useState(false);
@@ -92,28 +90,32 @@ function HomePage(props){
                 smallDim={props.smallDim}
                 largeDim={props.largeDim}
                 ipOfServer={props.ipOfServer} 
-                httpPort={props.httpPort}/>
+                httpPort={props.httpPort}
+                setState={setState}
+                />
         <div className={styles.footerContainer}>
             <div className={styles.footer}>
             <div className={styles.clockButton} onClick={()=>{
                 axios.post(`http://${props.ipOfServer}:${props.httpPort}/user`,{user:{id:user.id,existance:'OUT'}}).then(req => {
                     nav('/',{state:{}});
                 })
-            }}>Clock OUT</div>
+            }}>Leave</div>
             <div className={styles.chatButton} onClick={()=>{
                 setState('chat');
                 setChatState(1);
             }}>Chat</div>
+            {props.width<props.largeDim?<div style={swapDropDown?{border:'0px',backgroundColor:'rgb(0,0,0,0)'}:null} className={styles.swapMenuButton} onClick={()=>{setSwapDropDown(true)}} onMouseLeave={()=>{setSwapDropDown(false)}}>
+                <label>Swap</label>
+                {swapDropDown?<div className={styles.swapDropDown}>
+                    <div onClick={(e)=>{e.stopPropagation();setState('accepted');setSwapDropDown(false)}} style={{borderRadius:'10px 10px 0px 0px'}} className={styles.swapButton}><label>Accepted</label></div>
+                    <div onClick={(e)=>{e.stopPropagation();setState('stats');setSwapDropDown(false)}} style={{borderTop:'1px solid black',borderBottom:'1px solid black'}} className={styles.swapButton}><label>Stats</label></div>
+                    <div onClick={(e)=>{e.stopPropagation();setState('all');setSwapDropDown(false)}} style={{borderRadius:'0px 0px 10px 10px'}} className={styles.swapButton}><label>All</label></div>
+                </div>:null}
+            </div>:null}
             </div>
         </div>
         <div className={styles.interface}>
             <div className={activity.info}>
-            {props.width<props.largeDim?<div style={swapDropDown?state==='chat'?{borderRadius:'10px 10px 2px 2px',backgroundColor:'#686D76'}:null:state==='chat'?{backgroundColor:'#686D76'}:null} className={styles.swapMenuButton} onClick={()=>{setSwapDropDown(true)}} onMouseLeave={()=>{setSwapDropDown(false)}}>
-                <label>Swap</label>
-                {swapDropDown?<div onClick={(e)=>{e.stopPropagation();setState('accepted');setSwapDropDown(false)}} style={{borderRight:'2px solid black',borderLeft:'2px solid black'}} className={styles.swapButton}><label>Accepted</label></div>:null}
-                {swapDropDown?<div onClick={(e)=>{e.stopPropagation();setState('stats');setSwapDropDown(false)}} style={{borderRight:'2px solid black',borderLeft:'2px solid black'}} className={styles.swapButton}><label>Stats</label></div>:null}
-                {swapDropDown?<div onClick={(e)=>{e.stopPropagation();setState('all');setSwapDropDown(false)}} style={{borderRadius:'0px 0px 10px 10px',borderBottom:'2px solid black',borderRight:'2px solid black',borderLeft:'2px solid black'}} className={styles.swapButton}><label>All</label></div>:null}
-            </div>:null}
             {state==='all'?
                 <Activity key={0} department={user.department} 
                     title={'All Tasks'}
@@ -159,7 +161,13 @@ function HomePage(props){
                     ipOfServer={props.ipOfServer} 
                     httpPort={props.httpPort} 
                     wsPort={props.wsPort}/>
-                :null}
+            :state==='profile'?
+                <Profile user={user}
+                    lastTask={infoAccepted.at(infoAccepted.length-1)}
+                    ipOfServer={props.ipOfServer}
+                    httpPort={props.httpPort}
+                />
+            :null}
             </div>
         </div>
     </div>;
