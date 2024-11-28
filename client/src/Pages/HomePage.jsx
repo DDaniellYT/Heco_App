@@ -9,6 +9,7 @@ import Activity from "./Activity";
 import Profile from "./Profile";
 import Stats from "./Stats";
 import Chat from "./Chat";
+import RequestPanel from "./RequestPanel";
 
 const getProg = async (rec,ip,port) => {
     var prog = 0;
@@ -89,29 +90,29 @@ function HomePage(props){
                 height={props.height}
                 smallDim={props.smallDim}
                 largeDim={props.largeDim}
+                setState={setState}
                 ipOfServer={props.ipOfServer} 
                 httpPort={props.httpPort}
-                setState={setState}
                 />
         <div className={styles.footerContainer}>
-            <div className={styles.footer}>
-            <div className={styles.clockButton} onClick={()=>{
-                axios.post(`http://${props.ipOfServer}:${props.httpPort}/user`,{user:{id:user.id,existance:'OUT'}}).then(req => {
-                    nav('/',{state:{}});
-                })
-            }}>Leave</div>
-            <div className={styles.chatButton} onClick={()=>{
-                setState('chat');
-                setChatState(1);
-            }}>Chat</div>
-            {props.width<props.largeDim?<div style={swapDropDown?{border:'0px',backgroundColor:'rgb(0,0,0,0)'}:null} className={styles.swapMenuButton} onClick={()=>{setSwapDropDown(true)}} onMouseLeave={()=>{setSwapDropDown(false)}}>
-                <label>Swap</label>
-                {swapDropDown?<div className={styles.swapDropDown}>
-                    <div onClick={(e)=>{e.stopPropagation();setState('accepted');setSwapDropDown(false)}} style={{borderRadius:'10px 10px 0px 0px'}} className={styles.swapButton}><label>Accepted</label></div>
-                    <div onClick={(e)=>{e.stopPropagation();setState('stats');setSwapDropDown(false)}} style={{borderTop:'1px solid black',borderBottom:'1px solid black'}} className={styles.swapButton}><label>Stats</label></div>
-                    <div onClick={(e)=>{e.stopPropagation();setState('all');setSwapDropDown(false)}} style={{borderRadius:'0px 0px 10px 10px'}} className={styles.swapButton}><label>All</label></div>
-                </div>:null}
-            </div>:null}
+                <div className={styles.footer}>
+                <div className={styles.clockButton} onClick={()=>{
+                    axios.post(`http://${props.ipOfServer}:${props.httpPort}/user`,{user:{id:user.id,existance:'OUT'}}).then(req => {
+                        nav('/',{state:{}});
+                    })
+                }}>Leave</div>
+                <div className={styles.chatButton} onClick={()=>{
+                    setState('chat');
+                    setChatState(1);
+                }}>Chat</div>
+                <div style={swapDropDown?{border:'0px',backgroundColor:'rgb(0,0,0,0)'}:null} className={styles.swapMenuButton} onClick={()=>{setSwapDropDown(true)}} onMouseLeave={()=>{setSwapDropDown(false)}}>
+                    <label>Swap</label>
+                    {swapDropDown?<div className={styles.swapDropDown}>
+                        <div onClick={(e)=>{e.stopPropagation();setState('accepted');setSwapDropDown(false)}} style={{borderRadius:'10px 10px 0px 0px'}} className={styles.swapButton}><label>Accepted</label></div>
+                        <div onClick={(e)=>{e.stopPropagation();setState('stats');setSwapDropDown(false)}} style={{borderTop:'1px solid black',borderBottom:'1px solid black'}} className={styles.swapButton}><label>Stats</label></div>
+                        <div onClick={(e)=>{e.stopPropagation();setState('all');setSwapDropDown(false)}} style={{borderRadius:'0px 0px 10px 10px'}} className={styles.swapButton}><label>All</label></div>
+                    </div>:null}
+                </div>
             </div>
         </div>
         <div className={styles.interface}>
@@ -167,6 +168,8 @@ function HomePage(props){
                     ipOfServer={props.ipOfServer}
                     httpPort={props.httpPort}
                 />
+            :state==='request'?
+                <RequestPanel/>
             :null}
             </div>
         </div>
