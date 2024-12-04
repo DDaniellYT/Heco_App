@@ -8,7 +8,6 @@ function Activity(props){
         {props.infoRequests.length!==0?null:<div className={styles.noActivity}>No Activity Yet</div>}
         <ul className={styles.infoList}>{
             props.infoRequests.map((item,index)=>{
-                // perm : props.user.department==='all'?3:props.department === props.user.department?props.user.role==='Admin'?3:1:0
                 return <RequestItem permisions={props.permisions} 
                                     user={props.user} 
                                     key={index} 

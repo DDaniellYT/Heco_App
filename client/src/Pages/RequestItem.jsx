@@ -27,7 +27,7 @@ function RequestItem(props){
                 props.setChange(!props.change);
             });
         }}>Accept</div>:null}
-        {props.permisions?<div className={styles.infoRemove} onClick={async ()=>{
+        {props.permisions!=='none' || props.permisions==='all'?<div className={styles.infoRemove} onClick={async ()=>{
             obj.when = new Date().getHours() + ":" + new Date().getMinutes()
             await axios.delete(`http://${props.ipOfServer}:${props.httpPort}/requests`,{params:{id:props.item.id}}).then((req)=>{
                 props.setChange(!props.change);

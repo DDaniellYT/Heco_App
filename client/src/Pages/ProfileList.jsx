@@ -31,8 +31,15 @@ const ProfileList = (props)=>{
         }}>+ Add</div>:null}
         <ul className={styles.userProfileList}>{
         users.map((item,index)=>{
-            return <UserProfile user={props.user} change={props.change} setChange={props.setChange} ipOfServer={props.ipOfServer} key={index} item={item} httpPort={props.httpPort}/>
-        })}
+            return <UserProfile 
+                key={index} 
+                item={item} 
+                user={props.user} 
+                change={props.change} 
+                setChange={props.setChange} 
+                ipOfServer={props.ipOfServer} 
+                httpPort={props.httpPort}/>
+            })}
         </ul>
     </div>
 }
