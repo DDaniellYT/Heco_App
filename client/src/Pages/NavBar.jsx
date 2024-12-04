@@ -106,7 +106,7 @@ function NavBar(props){
             {departmentDropDown?<div style={{borderLeft:'2px solid black',borderRight:'2px solid black'}} className={styles.departmentItem} onClick={()=>{nav('/DEP_Cleaning',{state:props.user});setDepartmentDropDown(false)}}><label>Cleaning</label><label className={styles.arrow}></label></div>:null}
             {departmentDropDown?<div style={{borderRadius:'0px 0px 15px 15px',borderLeft:'2px solid black',borderRight:'2px solid black',borderBottom:'2px solid black'}} className={styles.departmentItem} onClick={()=>{nav('/DEP_Security',{state:props.user});setDepartmentDropDown(false)}}><label>Security</label><label className={styles.arrow}></label></div>:null}
         </div>
-        <div className={styles.request} onClick={()=>{if(!props.requestPage)props.setRequestPage(true)}}>Request
+        <div className={styles.request} onClick={()=>{props.setRequestPage(props.requestPage?false:true)}}>Request
         <div className={styles.arrow}>⌄</div>{
             props.requestPage?
                 <RequestPanel 
@@ -123,11 +123,10 @@ function NavBar(props){
         }</div>
         <div className={styles.inventory} onClick={()=>{nav('/inventory',{state:props.user})}}>Inventory<div className={styles.arrow}>⌄</div></div>
         <div className={styles.contact} onClick={()=>{nav('/contact',{state:props.user})}}>Contact<div className={styles.arrow}>⌄</div></div>
-        <div className={styles.profile} onClick={()=>{setSeeProfile(true);}}>
+        <div className={styles.profile} onClick={()=>{props.setState(props.state==='profile'?'all':'profile')}}>
             <label className={styles.smallProfileLabel}>{props.user.userName}</label>
             <img className={styles.smallProfilePic} alt='no profile pic yet' src='../../profileImages/heco_slider_img3.jpg'/>
         </div>
-        {seeProfile?<ChangeUserPanel change={props.change} setChange={props.setChange} user={props.user} userItem={props.user} userActivity={props.infoAccepted} setChangePanel={setSeeProfile} ipOfServer={props.ipOfServer} httpPort={props.httpPort}/>:null}
         </div>;
     }
 }

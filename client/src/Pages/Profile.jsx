@@ -1,13 +1,9 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styles from '../Styles/Profile.module.css'
-import axios from "axios";
-
-import RequestItem from "./RequestItem";
 
 function Profile(props){
 
-    const nav = useNavigate();
     const [date,setDate] = useState(new Date());
 
     useEffect(()=>{
@@ -22,17 +18,13 @@ function Profile(props){
         <div className={styles.role}><label>Role:</label><span>{props.user.role}</span></div>
         <label className={styles.existanceLabel}>Existance:</label>
         <span className={styles.existanceSpan}>{props.user.existance}</span>
-        <label className={styles.messageAcceptedLabel}>Message Accepted at :</label>
+        <label className={styles.messageAcceptedLabel}>Task Accepted at :</label>
         <span className={styles.messageAcceptedTime}>{date.toLocaleString('default',{month:'short'})}{'-'}{date.getDate()}{'  '}{date.getHours()}:{date.getMinutes()}:{date.getSeconds()}</span>
         {props.lastTask?<div className={styles.lastTask}>
             <div className={styles.subjectLabel}>Subject:</div>
             <div className={styles.subject}>{props.lastTask.subject}</div>
             <div className={styles.messageLabel}>Message:</div>
             <div className={styles.message}>{props.lastTask.message}</div>
-            {/* <div className={styles.sender}></div>
-            <div className={styles.reciever}></div>
-            <div className={styles.urgency}></div>
-            <div className={styles.status}></div> */}
         </div>:<div className={styles.noTaskContainer}>
             <label>No Accepted Task</label>
             <span>Get To Work</span>

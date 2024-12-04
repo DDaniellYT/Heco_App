@@ -89,6 +89,7 @@ function HomePage(props){
                 height={props.height}
                 smallDim={props.smallDim}
                 largeDim={props.largeDim}
+                state={state}
                 setState={setState}
                 ipOfServer={props.ipOfServer} 
                 httpPort={props.httpPort}
@@ -119,7 +120,7 @@ function HomePage(props){
             {state==='all'?
                 <Activity key={0} department={user.department} 
                     title={'All Tasks'}
-                    permisions={1}
+                    permisions={'accept'}
                     user={user} 
                     change={change} 
                     setChange={setChange} 
@@ -142,7 +143,7 @@ function HomePage(props){
              :state==='accepted'?
                 <Activity key={1} department={user.department} 
                     title={'Accepted Tasks'}
-                    permisions={3}
+                    permisions={'done'}
                     user={user} 
                     change={change} 
                     setChange={setChange} 
@@ -166,10 +167,7 @@ function HomePage(props){
                     lastTask={infoAccepted.at(infoAccepted.length-1)}
                     ipOfServer={props.ipOfServer}
                     httpPort={props.httpPort}
-                />
-            :state==='request'?
-                <RequestPanel/>
-            :null}
+                />:null}
             </div>
         </div>
     </div>;
