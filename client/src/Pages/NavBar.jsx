@@ -16,10 +16,10 @@ function NavBar(props){
     if(props.width <= props.smallDim){
         return <div className={styles.navBar}>
                 {dropDownButtons?<div className={styles.dropDownList}>
-                    <div style={{borderRight:'2px solid black'}} onClick={()=>{nav('/home',{state:props.user});setDropDownButtons(false);props.setState('all')}}><label className={styles.button}>Home</label><label className={styles.homeIcon}></label></div>
-                    <div style={{borderRight:'2px solid black'}} onClick={()=>{console.log('create another dropdown for this');setDropDownButtons(false)}}><label className={styles.button}>Departments</label><label className={styles.departmentIcon}></label></div>
+                    <div style={{borderRight:'2px solid black'}} onClick={()=>{nav('/home',{state:props.user});setDropDownButtons(false);props.setRequestPage(false);props.setState('all')}}><label className={styles.button}>Home</label><label className={styles.homeIcon}></label></div>
+                    <div style={{borderRight:'2px solid black'}} onClick={()=>{console.log('create another dropdown for this');setDropDownButtons(false);props.setRequestPage(false)}}><label className={styles.button}>Departments</label><label className={styles.departmentIcon}></label></div>
                     <div style={{borderRight:'2px solid black'}} onClick={()=>{props.setRequestPage(true);setDropDownButtons(false)}}><label className={styles.button}>Request</label><label className={styles.requestIcon}></label></div>
-                    <div style={{borderRight:'2px solid black'}} onClick={()=>{nav('/inventory',{state:props.user});setDropDownButtons(false)}}><label className={styles.button}>Inventory</label><label className={styles.inventoryIcon}></label></div>
+                    <div style={{borderRight:'2px solid black'}} onClick={()=>{nav('/inventory',{state:props.user});setDropDownButtons(false);props.setRequestPage(false)}}><label className={styles.button}>Inventory</label><label className={styles.inventoryIcon}></label></div>
                     <div style={{
                         borderRadius:'0px 0px 15px 10px',
                         borderBottom:'2px solid black',
@@ -71,7 +71,20 @@ function NavBar(props){
                 }} onMouseLeave={(e)=>{
                     setDropDownButtons(false);
                 }}>
-            </div>
+            </div>{
+                props.requestPage?
+                    <RequestPanel 
+                        user={props.user}
+                        change={props.change}
+                        setChange={props.setChange}
+                        requestPage={props.requestPage}
+                        setRequestPage={props.setRequestPage}
+                        width={props.width}
+                        smallDim={props.smallDim}
+                        ipOfServer={props.ipOfServer}
+                        httpPort={props.httpPort}/>
+                :null
+            }
             <div className={styles.profile} onClick={()=>{props.setState('profile')}}>
                 <label className={styles.smallProfileLabel}>{props.user.userName}</label>
                 <img className={styles.smallProfilePic} alt='no profile pic yet' src='../../profileImages/heco_slider_img3.jpg'/>

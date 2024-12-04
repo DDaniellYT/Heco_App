@@ -30,7 +30,7 @@ function HomePage(props){
     const [chatState,setChatState] = useState(1);
     const [swapDropDown,setSwapDropDown] = useState(false);
 
-    const [requestPage,setRequestPage] = useState(true);
+    const [requestPage,setRequestPage] = useState(false);
     const [infoRequests,setInfoRequests] = useState([]);
     const [infoAccepted,setInfoAccepted] = useState([]);
     const [change,setChange] = useState(false);
