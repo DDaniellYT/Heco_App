@@ -265,7 +265,7 @@
 .requestContainer{
     position: absolute;
     height: 90%;
-    width: 90%;
+    width: 100%;
     display: grid;
     grid-template-columns: 33% 34% 33%;
     grid-template-rows: 20%;
@@ -303,15 +303,10 @@
     justify-content: center;
     align-items: center;
     
-    color: black;
     font-size: 50px;
     font-weight: bold;
     font-family: sans-serif;
     margin-bottom: 5px;
-}
-.requestExit:hover{
-    color: gray;
-    text-shadow: 2px 2px black;
 }
 .requestRecieverDropdown_Menu{
     width: 90%;    
@@ -320,7 +315,7 @@
     grid-row: 8/9;
 
     border-radius: 10px;
-    border: 2px solid black;
+    border: 2px solid black;   
 
     display: flex;
     flex-direction: column;
@@ -351,31 +346,36 @@
     background-color: darkred;
 }
 .requestRecieverDropdown, .requestSenderDropdown, .requestImportanceDropdown{
-    position: absolute;
-    top: 80%;
-    width: inherit;
-    height: fit-content;
+    transform: translateY(-197%);
+    width: 100%;
+    height: 25vh;
+    justify-self: center;
+    align-self: center;
+    margin-top: 40%;
 
-    display: flex;
-    flex-direction: column;
-    background-color: darkred;
-    border-radius: 0px 0px 15px 15px;
-    border: 2px solid black;
+    display: grid;
+    grid-template-columns: 100%;
+    grid-template-rows: 34%;
+    grid-auto-rows: 33%;
+    
     border-top: 0px;
-    box-shadow: 0px 5px 5px darkred;
+    border-radius: 15px;
 }
 .requestRecieverDropdown div, .requestSenderDropdown div, .requestImportanceDropdown div{
-    width: inherit;
-    height: 6vh;
+    width: 100%;
+    height: 100%;
     
     display: flex;
     justify-content: center;
     align-items: center;    
+
+    border: 1px solid black;
+    border-bottom: 0px;
+    margin: 0px;
+    background-color: darkred;
 }
 .requestRecieverDropdown div:hover, .requestSenderDropdown div:hover, .requestImportanceDropdown div:hover{
     z-index: 99;
-    border-radius: 15px;
-    box-shadow: 0px 5px 3px orange;
 }
 .requestSubject{
     height: 70%;
@@ -433,6 +433,7 @@
     grid-row: 3/8;
     justify-self: center;
     align-self: flex-start;
+
     padding: 3%;
     border: 1px solid #173B45;
     border-top: 0px;

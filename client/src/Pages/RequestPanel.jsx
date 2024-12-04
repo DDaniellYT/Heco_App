@@ -25,13 +25,15 @@ function RequestPanel(props){
                 </div>
                 <div className={styles.requestRecieverDropdown_Menu} style={recieverDropdown?{
                     backgroundColor:'rgb(0,0,0,0)',
-                    border:'0px'
+                    border:'0px',
                 }:null} onClick={()=>{
                     setReceiverDropdown(true);
                 }} onMouseLeave={()=>{
                     setReceiverDropdown(false);
                 }}>{reciever}
-                {recieverDropdown ? <div className={styles.requestRecieverDropdown}>
+                {recieverDropdown ? <div style={{
+                    color:'white'
+                }} className={styles.requestRecieverDropdown}>
                     <div onClick={(e)=>{
                         e.stopPropagation();
                         setReceiver("HResources")
@@ -69,40 +71,50 @@ function RequestPanel(props){
                 </div>:null}</div>
                 <div style={importanceDropdown?{
                     backgroundColor:'rgb(0,0,0,0)',
-                    border:'0px'
+                    border:'0px',
+                    color:'rgb(0,0,0,0)'
                 }:null} className={styles.requestImportanceDropdown_Menu} onClick={()=>{
                     setImportanceDropdown(true);
                 }} onMouseLeave={()=>{
                     setImportanceDropdown(false);
                 }}>{urgency}
                 {importanceDropdown ? <div style={{
-                    transform:'translateY(-140%)'
+                    color:'white'
                 }} className={styles.requestImportanceDropdown}>
                     <div onClick={(e)=>{
                         e.stopPropagation(true);  
                         setUrgency("Lowest");
                         setImportanceDropdown(false);                            
-                    }}>Lowest</div>
+                    }} style={{
+                        borderRadius:'5px 5px 0px 0px'
+                    }}>Top</div>
                     <div onClick={(e)=>{
                         e.stopPropagation(true);  
                         setUrgency("Low");
                         setImportanceDropdown(false);                            
-                    }}>Low</div>
+                    }}>High</div>
                     <div onClick={(e)=>{
                         e.stopPropagation(true);  
                         setUrgency("Somewhat");
                         setImportanceDropdown(false);                            
-                    }}>Somewhat</div>
+                    }}>Medium High</div>
+                    <div onClick={(e)=>{
+                        e.stopPropagation(true);  
+                        setUrgency("Lowest");
+                        setImportanceDropdown(false);                            
+                    }}>Medium</div>
                     <div onClick={(e)=>{
                         e.stopPropagation(true);  
                         setUrgency("High");
                         setImportanceDropdown(false);                            
-                    }}>High</div>
+                    }}>Low</div>
                     <div onClick={(e)=>{
                         e.stopPropagation(true);  
                         setUrgency("Top");
                         setImportanceDropdown(false);                            
-                    }}>Top</div>
+                    }} style={{
+                        borderRadius:'0px 0px 5px 5px'
+                    }}>Lowest</div>
                 </div>:null}
                 </div>
                 <div className={styles.requestSubject}>
