@@ -12,13 +12,13 @@ function NavBar(props){
     const [seeProfile,setSeeProfile] = useState(false);
     const [dropDownButtons,setDropDownButtons] = useState(false);
 
-    // SMALL DEVICES LIKE PHONES
+    // SMALL DEVICES
     if(props.width <= props.smallDim){
         return <div className={styles.navBar}>
                 {dropDownButtons?<div className={styles.dropDownList}>
                     <div style={{borderRight:'2px solid black'}} onClick={()=>{nav('/home',{state:props.user});setDropDownButtons(false);props.setState('all')}}><label className={styles.button}>Home</label><label className={styles.homeIcon}></label></div>
                     <div style={{borderRight:'2px solid black'}} onClick={()=>{console.log('create another dropdown for this');setDropDownButtons(false)}}><label className={styles.button}>Departments</label><label className={styles.departmentIcon}></label></div>
-                    <div style={{borderRight:'2px solid black'}} onClick={()=>{console.log('create the requests tab');setDropDownButtons(false)}}><label className={styles.button}>Request</label><label className={styles.requestIcon}></label></div>
+                    <div style={{borderRight:'2px solid black'}} onClick={()=>{props.setRequestPage(true);setDropDownButtons(false)}}><label className={styles.button}>Request</label><label className={styles.requestIcon}></label></div>
                     <div style={{borderRight:'2px solid black'}} onClick={()=>{nav('/inventory',{state:props.user});setDropDownButtons(false)}}><label className={styles.button}>Inventory</label><label className={styles.inventoryIcon}></label></div>
                     <div style={{
                         borderRadius:'0px 0px 15px 10px',
@@ -30,7 +30,20 @@ function NavBar(props){
                     setDropDownButtons(true);
                 }} onMouseLeave={(e)=>{
                     setDropDownButtons(false);
-                }}>
+                }}>{
+                    props.requestPage?
+                        <RequestPanel 
+                            user={props.user}
+                            change={props.change}
+                            setChange={props.setChange}
+                            requestPage={props.requestPage}
+                            setRequestPage={props.setRequestPage}
+                            width={props.width}
+                            smallDim={props.smallDim}
+                            ipOfServer={props.ipOfServer}
+                            httpPort={props.httpPort}/>
+                    :null
+                }
             </div>
             <div className={styles.profile} onClick={()=>{props.setState('profile')}}>
                 <label className={styles.smallProfileLabel}>{props.user.userName}</label>
@@ -39,7 +52,7 @@ function NavBar(props){
         </div>
     }
 
-    // MEDIUM DEVICES LIKE TABLETS
+    // MEDIUM DEVICES
     if(props.width > props.smallDim && props.width < props.largeDim){
         return <div className={styles.navBar}>
                 {dropDownButtons?<div className={styles.dropDownList}>
@@ -82,7 +95,18 @@ function NavBar(props){
         </div>
         <div className={styles.request} onClick={()=>{if(!props.requestPage)props.setRequestPage(true)}}>Request
         <div className={styles.arrow}>⌄</div>{
-            props.requestPage ? <RequestPanel user={props.user} change={props.change} setChange={props.setChange} requestPage={props.requestPage} setRequestPage={props.setRequestPage} ipOfServer={props.ipOfServer} httpPort={props.httpPort}/> :null
+            props.requestPage?
+                <RequestPanel 
+                    user={props.user}
+                    change={props.change}
+                    setChange={props.setChange}
+                    requestPage={props.requestPage}
+                    setRequestPage={props.setRequestPage}
+                    width={props.width}
+                    smallDim={props.smallDim}
+                    ipOfServer={props.ipOfServer}
+                    httpPort={props.httpPort}/>
+            :null
         }</div>
         <div className={styles.inventory} onClick={()=>{nav('/inventory',{state:props.user})}}>Inventory<div className={styles.arrow}>⌄</div></div>
         <div className={styles.contact} onClick={()=>{nav('/contact',{state:props.user})}}>Contact<div className={styles.arrow}>⌄</div></div>

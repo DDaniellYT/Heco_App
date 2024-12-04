@@ -23,7 +23,6 @@ const getProg = async (rec,ip,port) => {
 }
 
 function HomePage(props){
-
     const nav = useNavigate();
     const navState = useLocation();
 
@@ -31,7 +30,7 @@ function HomePage(props){
     const [chatState,setChatState] = useState(1);
     const [swapDropDown,setSwapDropDown] = useState(false);
 
-    const [requestPage,setRequestPage] = useState(false);
+    const [requestPage,setRequestPage] = useState(true);
     const [infoRequests,setInfoRequests] = useState([]);
     const [infoAccepted,setInfoAccepted] = useState([]);
     const [change,setChange] = useState(false);

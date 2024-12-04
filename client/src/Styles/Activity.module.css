@@ -427,7 +427,7 @@
     grid-row: 2/4;
     padding: 20px;
 
-    height: 80%;
+    height: 90%;
     max-height: 70vh;
     display: flex;
     flex-direction: column;
@@ -759,7 +759,7 @@
     justify-self: center;
     align-self: center;
     width: 80%;
-    height: 90%;
+    height: 95%;
     max-height: 70vh;
     display: flex;
     flex-direction: column;
