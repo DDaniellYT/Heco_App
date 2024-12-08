@@ -21,6 +21,19 @@ app.use(express.json({ limit: '10mb', extended: true }));
 
 const getLocalIPAddress = ()=>{
   const networkInterfaces = os.networkInterfaces();
+
+  const wirelessLANIdentifiers = ['Wi-Fi', 'wlan0', 'wlp2s0'];
+
+  for (const interfaceName in networkInterfaces) {
+    if (wirelessLANIdentifiers.includes(interfaceName)) {
+      const addresses = networkInterfaces[interfaceName];
+      for (const address of addresses) {
+        if (address.family === 'IPv4' && !address.internal) {
+          return address.address;
+        }
+      }
+    }
+  }
   for (const interfaceName in networkInterfaces) {
     const addresses = networkInterfaces[interfaceName];
     for (const address of addresses) {

@@ -31,7 +31,6 @@ const UserProfile = (props) => {
                     backgroundImage:`url(${props.item.pic})`
         }}>picture</div>
         <div className={styles.userProfileName}>
-            <label>UserName:</label>
             <div>{props.item.userName}</div>
         </div>
         {props.user.role == 'Admin'?<div className={styles.userProfileDelete} onClick={()=>{

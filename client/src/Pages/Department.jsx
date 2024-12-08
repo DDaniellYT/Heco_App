@@ -36,7 +36,7 @@ const Department = (props) => {
 
     const user = useLocation().state;
 
-    const [state,setState] = useState('all');
+    const [state,setState] = useState('users');
     const [chatState,setChatState] = useState(1);
     const [swapDropDown,setSwapDropDown] = useState(false);
 
