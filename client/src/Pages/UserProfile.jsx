@@ -9,16 +9,14 @@ const UserProfile = (props) => {
     const [changePanel, setChangePanel] = useState(false);
     const [sure,setSure] = useState(false);
 
-    const [clickedUser,setClickedUser] = useState();
-    
     const hours = 0;
     const minutes = 0;
     const seconds = 0;
 
     useEffect(()=>{
         new Promise(async ()=>{
-            if(clickedUser!==undefined)
-                await axios.get(`http://${props.ipOfServer}:${props.httpPort}/requests`,{params:{reciever:clickedUser.userName,accepted:'YES'}}).then((req)=>{
+            if(props.clickedUser!==undefined)
+                await axios.get(`http://${props.ipOfServer}:${props.httpPort}/requests`,{params:{reciever:props.clickedUser.userName,accepted:'YES'}}).then((req)=>{
                     setUserActivity(req.data);
                     console.log('changed user activity');
                 });
@@ -50,8 +48,8 @@ const UserProfile = (props) => {
                 console.log(props.item);
                 console.log(req.data);
                 setUserActivity(req.data);
-                setClickedUser(props.item);
-                setChangePanel(!props.changePanel);
+                props.setClickedUser(props.item);
+                props.setState('details');
             })
         }}>DETAILS</div>   
         {sure?<div className={styles.detailsPanelSureContainer}>

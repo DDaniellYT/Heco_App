@@ -18,8 +18,8 @@ function Profile(props){
         <div className={styles.role}><label>Role:</label><span>{props.user.role}</span></div>
         <label className={styles.existanceLabel}>Existance:</label>
         <span className={styles.existanceSpan}>{props.user.existance}</span>
-        <label className={styles.messageAcceptedLabel}>Task Accepted at :</label>
-        <span className={styles.messageAcceptedTime}>{date.toLocaleString('default',{month:'short'})}{'-'}{date.getDate()}{'  '}{date.getHours()}:{date.getMinutes()}:{date.getSeconds()}</span>
+        <label className={styles.messageAcceptedLabel}>Task Accepted at :</label>   
+        <span className={styles.messageAcceptedTime}>{props.lastTask?date.toLocaleString('default',{month:'short'}):'no task'}{props.lastTask?'-':null}{props.lastTask?date.getDate():null}{props.lastTask?'  ':null}{props.lastTask?date.getHours():null}{props.lastTask?':':null}{props.lastTask?date.getMinutes():null}{props.lastTask?':':null}{props.lastTask?date.getSeconds():null}</span>
         {props.lastTask?<div className={styles.lastTask}>
             <div className={styles.subjectLabel}>Subject:</div>
             <div className={styles.subject}>{props.lastTask.subject}</div>

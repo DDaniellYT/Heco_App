@@ -37,6 +37,8 @@ const ProfileList = (props)=>{
                 user={props.user} 
                 change={props.change} 
                 setChange={props.setChange} 
+                setClickedUser={props.setClickedUser}
+                setState={props.setState}
                 ipOfServer={props.ipOfServer} 
                 httpPort={props.httpPort}/>
             })}

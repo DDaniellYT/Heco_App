@@ -166,6 +166,31 @@
     font-size: 1.3rem;
     font-weight: bold;
 }
+.noTaskContainer{
+    grid-column: 1/5;
+    width: 70%;
+    height: 60%;
+    justify-self: center;
+    align-self: center;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    
+    border-radius: 20px;
+    background-color: #FFAD60;
+}
+.noTaskContainer>label{
+    font-size: 1.6rem;
+    font-weight: bold;
+    padding: 5%;
+}
+.noTaskContainer>span{
+    font-size: 1.1rem;
+    font-weight: bold;
+    padding: 5%;
+}
 
 
 }
@@ -346,4 +371,30 @@
     font-size: 1.3rem;
     font-weight: bold;
 }   
+.noTaskContainer{
+    grid-column: 1/5;
+    width: 70%;
+    height: 60%;
+    justify-self: center;
+    align-self: center;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    
+    border-radius: 20px;
+    background-color: #FFAD60;
+}
+.noTaskContainer>label{
+    font-size: 2.6rem;
+    font-weight: bold;
+    padding: 5%;
+}
+.noTaskContainer>span{
+    font-size: 1.4rem;
+    font-weight: bold;
+    padding: 5%;
+}
+
 }

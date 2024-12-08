@@ -6,7 +6,6 @@ import axios from "axios";
 
 import styles from "../Styles/Department.module.css";
 import activity from "../Styles/Activity.module.css";
-import profile from "../Styles/Profile.module.css";
 import stats from "../Styles/Stats.module.css";
 
 import NavBar from "./NavBar";
@@ -36,7 +35,8 @@ const Department = (props) => {
 
     const user = useLocation().state;
 
-    const [state,setState] = useState('users');
+    const [clickedUser,setClickedUser] = useState({});
+    const [state,setState] = useState('all');
     const [chatState,setChatState] = useState(1);
     const [swapDropDown,setSwapDropDown] = useState(false);
 
@@ -54,7 +54,6 @@ const Department = (props) => {
     const [secProg,setSecProg] = useState(undefined);
     const [cleanProg,setCleanProg] = useState(undefined);
 
-    // console.log(navState.state);
     useEffect(()=>{
         document.getElementById("root").className = styles.root;
         axios.get(`http://${ipOfServer}:${props.httpPort}/requests`,{params:{reciever_role:props.department,accepted:'YES'}}).then(req => setInfoAccepted(req.data));
@@ -151,6 +150,8 @@ const Department = (props) => {
                     department={props.department} 
                     change={change} 
                     setChange={setChange} 
+                    setClickedUser={setClickedUser}
+                    setState={setState}
                     ipOfServer={ipOfServer} 
                     httpPort={props.httpPort}/>
             :state === 'stats'?
@@ -165,6 +166,11 @@ const Department = (props) => {
             :state==='profile'?
                 <Profile user={user}
                     lastTask={infoAccepted.at(infoAccepted.length-1)}
+                    ipOfServer={props.ipOfServer}
+                    httpPort={props.httpPort}
+                />
+            :state==='details'?
+                <Profile user={clickedUser}
                     ipOfServer={props.ipOfServer}
                     httpPort={props.httpPort}
                 />
