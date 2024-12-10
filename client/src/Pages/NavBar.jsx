@@ -30,7 +30,7 @@ function NavBar(props){
                     <div style={{borderRight:'2px solid black'}} onClick={()=>{props.setRequestPage(true);props.setState('all');setDropDownButtons(false)}}><label className={styles.button}>Request</label><label className={styles.requestIcon}></label></div>
                     <div style={{borderRight:'2px solid black'}} onClick={()=>{nav('/inventory',{state:props.user});setDropDownButtons(false);props.setRequestPage(false)}}><label className={styles.button}>Inventory</label><label className={styles.inventoryIcon}></label></div>
                     <div style={{
-                        borderRadius:'0px 0px 15px 10px',
+                        borderRadius:'0px 0px 15px 10px',   
                         borderBottom:'2px solid black',
                         borderRight:'2px solid black'
                     }} onClick={()=>{nav('/contact',{state:props.user})}}><label className={styles.button}>Contact</label><label className={styles.contactIcon}></label></div>

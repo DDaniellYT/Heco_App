@@ -9,8 +9,6 @@ import styles from "../Styles/ProfileList.module.css";
 const ProfileList = (props)=>{
     
     const [users,setUsers] = useState([]);
-    const [userPanel,setUserPanel] = useState(false);
-    const [image,setImage] = useState(null);
     
     useEffect(()=>{
         axios.get(`http://${props.ipOfServer}:${props.httpPort}/user`,{params:{user:{department:props.department}}}).then(async req => {
@@ -24,10 +22,9 @@ const ProfileList = (props)=>{
     },[props.change]);
 
     return <div className={styles.container}>
-        {userPanel && props.user.role == 'Admin'?<AddUserPanel department={props.department} image={image} setImage={setImage} setChange={props.setChange} change={props.change} ipOfServer={props.ipOfServer} userPanel={userPanel} setUserPanel={setUserPanel} httpPort={props.httpPort}/>:null}
         <div className={styles.userProfileTitle}>User List</div>
-        {props.user.role == 'Admin'?<div className={styles.addUserProfile} onClick={()=>{
-            setUserPanel(true);
+        {props.user.role === 'Admin'?<div className={styles.addUserProfile} onClick={()=>{
+            props.setState('add');
         }}>+ Add</div>:null}
         <ul className={styles.userProfileList}>{
         users.map((item,index)=>{

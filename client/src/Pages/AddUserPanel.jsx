@@ -30,13 +30,17 @@ const AddUserPanel = (props)=>{
                     document.getElementById('getFile').click();
                 }} className={styles.userPic}/>
             </div>
-            <div className={styles.userUserName}>
+
+            {/* <div className={styles.userUserName}>
                 <label>UserName:</label> 
                 <input maxLength={10} value={userName} onChange={(e)=>{
                     setUserName(e.target.value);
                     console.log(e.target.value);
                 }}/>
-            </div>
+            </div> */}
+            {
+                
+            }
             <div className={styles.userFirstName}>
                 <label>FirstName:</label> 
                 <input maxLength={20} value={firstName} onChange={(e)=>{
@@ -51,7 +55,7 @@ const AddUserPanel = (props)=>{
                     console.log(e.target.value);
                 }}/>
             </div>
-            <div className={styles.userPassword}>
+            {/* <div className={styles.userPassword}>
                 <label>Password:</label> 
                 <input type={passType} maxLength={20} value={password} onChange={(e)=>{
                     setPassword(e.target.value);
@@ -60,28 +64,8 @@ const AddUserPanel = (props)=>{
                 <button className={styles.seePass} onClick={()=>{
                     setPassType(passType==='password'?'':'password');
                 }}>{passType==='password'?'show':'hide'}</button>
-            </div>
-            {/* {props.department=='admin'?<div className={styles.userDepartment}>
-                <label>DEPARTMENT</label>
-                <div onClick={()=>{
-                    props.setDepartment('HResources');
-                }}>HResources</div>
-                <div onClick={()=>{
-                    props.setDepartment('Mechanics');
-                }}>Mechanics</div>
-                <div onClick={()=>{
-                    props.setDepartment('Chemists');
-                }}>Chemists</div>
-                <div onClick={()=>{
-                    props.setDepartment('Workers');
-                }}>Workers</div>
-                <div onClick={()=>{
-                    props.setDepartment('Security');
-                }}>Security</div>
-                <div onClick={()=>{
-                    props.setDepartment('Cleaning');
-                }}>Cleaning</div>
-            </div>:null} */}
+            </div> */}
+{/*             
             <div style={props.department==='admin'?{
                 gridColumn : '3/4'
             }:null} className={styles.userRole}>
@@ -126,7 +110,7 @@ const AddUserPanel = (props)=>{
             }}>Submit</div>
             <div className={styles.userCancel} onClick={()=>{
                 props.setUserPanel(false);
-            }}>Cancel</div>
+            }}>Cancel</div> */}
         </div>
     </div>;
 }

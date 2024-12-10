@@ -14,6 +14,7 @@ import ProfileList from "./ProfileList"
 import Profile from "./Profile"
 import Stats from "./Stats";
 import Chat from "./Chat"
+import AddUserPanel from "./AddUserPanel";
 
 async function getProg(rec,ip,port){
     var prog = 0;
@@ -41,7 +42,9 @@ const Department = (props) => {
     const [swapDropDown,setSwapDropDown] = useState(false);
 
     const [userNames,setUserNames] = useState([]);
+    const [image,setImage] = useState(null);
 
+    const [userPanel,setUserPanel] = useState(false);
     const [requestPage,setRequestPage] = useState(false);
     const [infoRequests,setInfoRequests] = useState([]);
     const [infoAccepted,setInfoAccepted] = useState([]);
@@ -163,17 +166,27 @@ const Department = (props) => {
                     {secProg!=undefined?<Stats secProg={secProg} />:null}
                     {cleanProg!=undefined?<Stats cleanProg={cleanProg} />:null}
                 </div>
-            :state==='profile'?
+            :state === 'profile'?
                 <Profile user={user}
                     lastTask={infoAccepted.at(infoAccepted.length-1)}
                     ipOfServer={props.ipOfServer}
                     httpPort={props.httpPort}
                 />
-            :state==='details'?
+            :state === 'details'?
                 <Profile user={clickedUser}
                     ipOfServer={props.ipOfServer}
                     httpPort={props.httpPort}
                 />
+            :state === 'add'?
+                <AddUserPanel department={props.department}
+                    image={image}
+                    setImage={setImage}
+                    setChange={props.setChange}
+                    change={props.change}
+                    ipOfServer={props.ipOfServer}
+                    userPanel={props.userPanel}
+                    setUserPanel={props.setUserPanel}
+                    httpPort={props.httpPort}/>
             :null
             }
             </div>
