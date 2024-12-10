@@ -37,14 +37,13 @@ const Department = (props) => {
     const user = useLocation().state;
 
     const [clickedUser,setClickedUser] = useState({});
-    const [state,setState] = useState('all');
+    const [state,setState] = useState('add');
     const [chatState,setChatState] = useState(1);
     const [swapDropDown,setSwapDropDown] = useState(false);
 
     const [userNames,setUserNames] = useState([]);
     const [image,setImage] = useState(null);
 
-    const [userPanel,setUserPanel] = useState(false);
     const [requestPage,setRequestPage] = useState(false);
     const [infoRequests,setInfoRequests] = useState([]);
     const [infoAccepted,setInfoAccepted] = useState([]);
@@ -181,11 +180,11 @@ const Department = (props) => {
                 <AddUserPanel department={props.department}
                     image={image}
                     setImage={setImage}
-                    setChange={props.setChange}
-                    change={props.change}
-                    ipOfServer={props.ipOfServer}
+                    change={change}
+                    setChange={setChange}
                     userPanel={props.userPanel}
-                    setUserPanel={props.setUserPanel}
+                    setState={setState}
+                    ipOfServer={props.ipOfServer}
                     httpPort={props.httpPort}/>
             :null
             }
