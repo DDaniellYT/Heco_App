@@ -29,7 +29,7 @@
     background-color: #EEEEEE;
 }
 .swapMenuButton{
-    grid-column: 1/2;
+    grid-column: 3/4;
     grid-row: 1/2;
     width: 80%;
     height: 70%;
@@ -40,7 +40,7 @@
     border: 1px solid black;
     grid-template-columns: 100%;
     grid-template-rows: 100%;
-    grid-auto-rows: 100%;
+    grid-auto-rows: 100%;   
     background-color: orangered;
 }
 .swapMenuButton>label{
@@ -89,7 +89,7 @@
     grid-template-rows: 100%;
 }
 .clockButton{
-    grid-column: 3/4;
+    grid-column: 1/2;
     grid-row: 1/2;
     width: 80%;
     height: 70%;
@@ -155,7 +155,7 @@
     background-color: #EEEEEE;
 }
 .swapMenuButton{
-    grid-column: 1/2;
+    grid-column: 3/4;
     grid-row: 1/2;
     width: 80%;
     height: 70%;
@@ -216,7 +216,7 @@
     grid-template-rows: 100%;
 }
 .clockButton{
-    grid-column: 3/4;
+    grid-column: 1/2;
     grid-row: 1/2;
     width: 80%;
     height: 70%;

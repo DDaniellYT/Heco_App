@@ -192,7 +192,7 @@
 
     display: grid;
     grid-template-columns: 33% 33% 33%;
-    grid-template-rows: 50% 10% 10% 5%;
+    grid-template-rows: 45% 13% 13% 5%;
 }
 .userPanel input{
     outline: none;
@@ -251,7 +251,7 @@
     justify-content: space-between;
     align-items: center;
 
-    background-color: #BCCCDC;
+    background-color: #FF8225;
     border-radius: 10px;
 
     padding-left: 5%;
@@ -275,7 +275,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background-color: #BCCCDC;
+    background-color: #FF8225;
     border-radius: 10px;
 
     padding-left: 5%;
@@ -298,7 +298,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background-color: #BCCCDC;
+    background-color: #FF8225;
     border-radius: 10px;
 
     padding-left: 5%;
@@ -322,7 +322,7 @@
     justify-content: space-between;
     align-items: center;
 
-    background-color: #BCCCDC;
+    background-color: #FF8225;
     border-radius: 10px;
 
     padding-left: 5%;
@@ -351,7 +351,6 @@
     font-weight: bold;
 }
 .userRole{
-    margin-top: 10px;
     grid-column: 1/4;
     grid-row: 2/5;
 
@@ -359,7 +358,7 @@
     flex-direction: column;
     justify-content: left;
     align-items: center;
-    font-size: 1.4rem;
+    font-size: 1.5rem;
     font-weight: bold;
 }
 .userDepartment div{
@@ -380,8 +379,8 @@
 .userRole div{
     background-color: orange;
     width: 80%;
-    height: 15%;
-    border-radius: 10px;
+    height: 17%;
+    border-radius: 5px;
     outline: 2px solid black;
     margin: 5px;
     display: flex;
@@ -879,32 +878,26 @@
 }
 
 .userPanelBackground{
-    position: absolute;
-    top: 0px;
-    left: 0px;
-    margin: 0px;
+    grid-column: 1/4;
+    grid-row: 2/4;
 
     width: 100%;
     height: 100%;
-    background-color: rgba(100, 20, 20, 0.5);
+    background-color: #F8EDED;
 
     display: flex;
     justify-content: center;
     align-items: center;
 }
 .userPanel{
-    width: 60%;
-    height: 70%;
+    width: 80%;
+    height: 100%;
 
-    background-color: firebrick;
-
-    border-radius: 30px;
-    box-shadow: 0px 0px 3px 30px firebrick;
-    outline: 1px solid black;
+    max-width: 1000px;
 
     display: grid;
-    grid-template-columns: 33% 33% 33%;
-    grid-template-rows: 70% 10% auto auto 5%;
+    grid-template-columns: 25% 25% 25% 25%;
+    grid-template-rows: 55% 17% 17% 11%;
 }
 .userPanel input{
     outline: none;
@@ -919,59 +912,200 @@
 .userPanel input:focus{
     outline: 2px solid black;
 }
-.userPic{
-    grid-column: 1/2;
+.userPanel input::placeholder{
+    color: #3C3D37;
+}
+.userProfilePicContainer{
+    grid-column: 1/3;
     grid-row: 1/2;
+
+    width: 80%;
+    height: 80%;
+    justify-self: center;
+    align-self: center;
+
+    border-radius: 10px;
+    display: grid;
+    grid-template-columns: 100%;
+    grid-template-rows: 100%;
+}
+.userPic{
     display: flex;
-    width: 100%;
-    height: 100%;
+
     justify-content: center;
     align-items: center;
-    border-radius: 30px 0px 0px 10px;
+
     border: 0px;
-    outline: 0px;
+    border-radius: 10px;
     outline: 2px solid black;
     background-color: blue;
 }
-.userPic:hover{
-    text-shadow: 0px 0px 10px white;
-    outline: 5px solid black;
-}
 .userUserName{
-    grid-column: 1/2;
-    grid-row: 3/4;
+    grid-column: 3/5;
+    grid-row: 2/3;
     
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin: 5px;
+    width: 80%;
+    height: 80%;
+
+    justify-self: center;
+    align-self: center;
+
+    display: grid;
+    grid-template-columns: 25% 75%;
+    grid-template-rows: 100%;
+
+    background-color: #FF8225;
+    border-radius: 10px;
+    padding-left: 5%;
+    padding-right: 5%;
+}
+.userUserName input{
+    grid-column: 2/3;
+    grid-row: 1/2;
+
+    height: 60%;
+    width: 80%;
+
+    justify-self: right;
+    align-self: center;
+}
+.userUserName label{
+    grid-column: 1/2;
+    grid-row: 1/2;
+    
+    justify-self: left;
+    align-self: center;
 }
 .userFirstName{
-    grid-column: 2/3;
-    grid-row: 3/4;
+    grid-column: 1/3;
+    grid-row: 2/3;
     
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin: 5px;
+    width: 80%;
+    height: 80%;
+
+    justify-self: center;
+    align-self: center;
+
+    display: grid;
+    grid-template-columns: 25% 75%;
+    grid-template-rows: 100%;
+
+    background-color: #FF8225;
+    border-radius: 10px;
+    padding-left: 5%;
+    padding-right: 5%;
+}
+.userFirstName input{
+    grid-column: 2/3;
+    grid-row: 1/2;
+
+    height: 60%;
+    width: 80%;
+
+    justify-self: right;
+    align-self: center;
+}
+.userFirstName label{
+    grid-column: 1/2;
+    grid-row: 1/2;
+    
+    justify-self: left;
+    align-self: center;
 }
 .userLastName{
-    grid-column: 2/3;
-    grid-row: 4/5;
+    grid-column: 1/3;
+    grid-row: 3/4;
     
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin: 5px;
+    width: 80%;
+    height: 80%;
+
+    justify-self: center;
+    align-self: center;
+
+    display: grid;
+    grid-template-columns: 25% 75%;
+    grid-template-rows: 100%;
+
+    background-color: #FF8225;
+    border-radius: 10px;
+    padding-left: 5%;
+    padding-right: 5%;
+}
+.userLastName input{
+    grid-column: 2/3;
+    grid-row: 1/2;
+
+    height: 60%;
+    width: 80%;
+
+    justify-self: right;
+    align-self: center;
+}
+.userLastName label{
+    grid-column: 1/2;
+    grid-row: 1/2;
+    
+    justify-self: left;
+    align-self: center;
 }
 .userPassword{
-    grid-column: 1/2;
-    grid-row: 4/5;
+    grid-column: 3/5;
+    grid-row: 3/4;
     
+    width: 80%;
+    height: 80%;
+
+    justify-self: center;
+    align-self: center;
+
+    display: grid;
+    grid-template-columns: 25% 75%;
+    grid-template-rows: 100%;
+
+    background-color: #FF8225;
+    border-radius: 10px;
+    padding-left: 5%;
+    padding-right: 5%;
+}
+.userPassword input{
+    grid-column: 2/3;
+    grid-row: 1/2;
+
+    height: 60%;
+    width: 80%;
+
+    justify-self: right;
+    align-self: center;
+}
+.userPassword label{
+    grid-column: 1/2;
+    grid-row: 1/2;
+    
+    justify-self: left;
+    align-self: center;
+}
+.userPassButtonContainer{
+    pointer-events: none;
+
+    grid-column: 1/3;
+    grid-row: 1/2;
+
     display: flex;
-    justify-content: space-between;
+    justify-content: right;
     align-items: center;
-    margin: 5px;
+
+    width: 100%;
+    height: 100%;
+
+    border: 0px;
+}
+.userPassButtonContainer button{
+    pointer-events: all;
+    border: 0px;
+    width: 20%;
+    height: 60%;
+    border-radius: 15px;
+    background-color: white;
 }
 .userDepartment{
     margin-top: 10px;
@@ -986,16 +1120,16 @@
     font-weight: bold;
 }
 .userRole{
-    margin-top: 10px;
-    grid-column: 2/4;
+    grid-column: 3/5;
     grid-row: 1/2;
 
     display: flex;
     flex-direction: column;
     justify-content: left;
     align-items: center;
-    font-size: 1.4rem;
+    font-size: 1.5rem;
     font-weight: bold;
+    padding-top: 15%;
 }
 .userDepartment div{
     background-color: orange;
@@ -1015,8 +1149,8 @@
 .userRole div{
     background-color: orange;
     width: 80%;
-    height: 15%;
-    border-radius: 10px;
+    height: 17%;
+    border-radius: 5px;
     outline: 2px solid black;
     margin: 5px;
     display: flex;
@@ -1028,20 +1162,23 @@
     background-color: orangered;
 }
 .statusMessage{
-    grid-column: 1/3;
-    grid-row: 2/3;
+    grid-column: 1/5;
+    grid-row: 1/2;
     
     display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: end;
+
+    font-weight: bold;
 }
 .userSubmit{
     background-color: white;
-    grid-row: 4/6;
-    grid-column: 3/4;
+    grid-row: 4/5;
+    grid-column: 3/5;
 
     width: 80%;
-    height: 50%;
+    height: 80%;
+    max-width: 300px;
 
     border-radius: 15px;
     outline: 2px solid black;
@@ -1058,32 +1195,12 @@
 }
 .userCancel{
     background-color: orangered;
-    grid-row: 4/6;
-    grid-column: 1/2;
+    grid-row: 4/5;
+    grid-column: 1/3;
 
     width: 80%;
-    height: 50%;
-
-    border-radius: 15px;
-    outline: 2px solid black;
-
-    display: flex;
-    align-self: center;
-    justify-self: center;
-
-    justify-content: center;
-    align-items: center;
-
-    font-size: 1.3rem;
-    font-weight: bold;
-}
-.userBack{
-    background-color: white;
-    grid-row: 4/6;
-    grid-column: 2/3;
-
-    width: 80%;
-    height: 50%;
+    height: 80%;
+    max-width: 300px;
 
     border-radius: 15px;
     outline: 2px solid black;

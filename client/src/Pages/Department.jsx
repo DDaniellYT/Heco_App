@@ -184,6 +184,8 @@ const Department = (props) => {
                     setChange={setChange}
                     userPanel={props.userPanel}
                     setState={setState}
+                    width={props.width}
+                    smallDim={props.smallDim}
                     ipOfServer={props.ipOfServer}
                     httpPort={props.httpPort}/>
             :null
